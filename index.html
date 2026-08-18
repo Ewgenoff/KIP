@@ -49,7 +49,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -102,8 +102,8 @@
             display: flex;
         }
 
-        /* Кнопка сортировки */
-        .sort-btn {
+        /* Кнопки управления (Сорт / Фильтр) */
+        .header-btn {
             background: var(--ios-card-bg);
             border: none;
             border-radius: 12px;
@@ -118,16 +118,125 @@
             align-items: center;
             justify-content: center;
             font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .header-btn:active {
+            background: var(--ios-bg);
+        }
+
+        /* Основной контейнер с сеткой и боковой панелью фильтров */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
         }
 
         /* Сетка карточек */
         .grid {
+            flex: 1;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 15px;
             padding: 20px 15px;
-            max-width: 1200px;
-            margin: 0 auto;
+            transition: margin-right 0.3s ease;
+        }
+
+        /* Панель фильтрации справа */
+        .filter-sidebar {
+            width: 320px;
+            background: var(--ios-card-bg);
+            border-left: 1px solid var(--ios-separator);
+            display: none;
+            flex-direction: column;
+            position: sticky;
+            top: 71px; /* Высота шапки */
+            height: calc(100vh - 71px);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+            z-index: 90;
+        }
+
+        .filter-sidebar.open {
+            display: flex;
+        }
+
+        .filter-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--ios-separator);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--ios-card-bg);
+        }
+
+        .filter-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--ios-blue);
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            padding: 0;
+        }
+
+        .close-filter-btn {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 14px;
+            color: var(--ios-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-body {
+            padding: 10px 15px;
+            overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--ios-separator);
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-item:last-child {
+            border-bottom: none;
+        }
+
+        .filter-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--ios-blue);
+            cursor: pointer;
+        }
+
+        .filter-item-label {
+            flex: 1;
+            word-break: break-word;
         }
 
         /* Карточка iOS — горизонтальная раскладка */
@@ -151,7 +260,6 @@
             box-shadow: 0 0 0 rgba(0,0,0,0);
         }
 
-        /* Левая часть: бэджи, название, разделитель, назначение */
         .card-body {
             flex: 1;
             display: flex;
@@ -162,7 +270,6 @@
             min-width: 0;
         }
 
-        /* Верхняя строка бэджей (ТЭГ + Фирма) */
         .badges-container {
             display: flex;
             gap: 6px;
@@ -191,7 +298,6 @@
             text-decoration: none;
         }
 
-        /* Наименование */
         .card-title {
             font-size: 13px;
             font-weight: 600;
@@ -200,7 +306,6 @@
             overflow-wrap: break-word;
         }
 
-        /* Горизонтальная линия-разделитель */
         .card-divider {
             height: 1px;
             background-color: var(--ios-separator);
@@ -208,7 +313,6 @@
             width: 100%;
         }
 
-        /* Назначение (Столбец N) */
         .card-subtitle {
             font-size: 11px;
             color: var(--ios-gray);
@@ -217,7 +321,6 @@
             overflow-wrap: break-word;
         }
 
-        /* Правая часть: Блок Picture */
         .card-img-container {
             position: relative;
             width: 110px;
@@ -233,7 +336,6 @@
             flex-shrink: 0;
         }
 
-        /* Вписанное изображение */
         .card-img-container img {
             width: 100%;
             height: 100%;
@@ -242,7 +344,6 @@
             cursor: zoom-in;
         }
 
-        /* Кружок статуса (Столбец AG) */
         .status-circle {
             position: absolute;
             top: 6px;
@@ -254,21 +355,15 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             z-index: 10;
         }
-        .status-true {
-            background-color: #34C759; /* Зеленый */
-        }
-        .status-false {
-            background-color: #FF3B30; /* Красный */
-        }
+        .status-true { background-color: #34C759; }
+        .status-false { background-color: #FF3B30; }
 
         /* Полноэкранный просмотрщик картинок */
         .image-viewer-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -303,10 +398,8 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0,0,0,0.4);
             z-index: 1000;
             justify-content: center;
@@ -422,10 +515,6 @@
             cursor: pointer;
         }
 
-        .modal-close-btn:active {
-            opacity: 0.8;
-        }
-
         .loader {
             text-align: center;
             padding: 40px;
@@ -433,7 +522,7 @@
             font-size: 16px;
         }
 
-        /* Модальное окно сортировки (Снизу) */
+        /* Модальное окно сортировки */
         .sort-modal-overlay {
             display: none;
             position: fixed;
@@ -516,14 +605,21 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        .cancel-btn:active { background: var(--ios-bg); }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .search-container {
                 flex-wrap: wrap;
             }
-            .sort-btn {
-                width: 100%;
+            .header-btn {
+                flex: 1;
+            }
+            .filter-sidebar {
+                position: fixed;
+                top: 0; right: 0;
+                width: 85%;
+                max-width: 320px;
+                height: 100vh;
+                z-index: 1500;
             }
             .modal {
                 width: 100%;
@@ -550,12 +646,29 @@
                 <button class="clear-btn" data-target="searchAll">✕</button>
             </div>
 
-            <button class="sort-btn" id="sortBtn">Сорт.</button>
+            <button class="header-btn" id="sortBtn">Сорт.</button>
+            <button class="header-btn" id="filterBtn">Фильтр</button>
         </div>
     </div>
 
-    <div class="grid" id="cardsGrid">
-        <div class="loader">Загрузка данных...</div>
+    <div class="main-container">
+        <div class="grid" id="cardsGrid">
+            <div class="loader">Загрузка данных...</div>
+        </div>
+
+        <!-- Боковая панель фильтрации -->
+        <aside class="filter-sidebar" id="filterSidebar">
+            <div class="filter-header">
+                <span class="filter-title">Заполненные поля</span>
+                <div class="filter-actions">
+                    <button class="reset-btn" id="resetFiltersBtn">Сбросить</button>
+                    <button class="close-filter-btn" id="closeFilterBtn">✕</button>
+                </div>
+            </div>
+            <div class="filter-body" id="filterBody">
+                <!-- Список чекбоксов со столбцами будет сгенерирован автоматически -->
+            </div>
+        </aside>
     </div>
 
     <!-- Модальное окно характеристик -->
@@ -565,9 +678,7 @@
                 <h3 class="modal-title" id="modalTitle">Характеристики</h3>
                 <button class="close-btn" id="modalCloseTop">✕</button>
             </div>
-            <div class="modal-content" id="modalContent">
-                <!-- Таблица характеристик будет здесь -->
-            </div>
+            <div class="modal-content" id="modalContent"></div>
             <div class="modal-footer">
                 <button class="modal-close-btn" id="modalCloseBottom">Закрыть</button>
             </div>
@@ -578,9 +689,7 @@
     <div class="sort-modal-overlay" id="sortModalOverlay">
         <div class="sort-modal">
             <div class="sort-modal-header">Сортировать по столбцу</div>
-            <div class="sort-list" id="sortList">
-                <!-- Кнопки сортировки появятся здесь -->
-            </div>
+            <div class="sort-list" id="sortList"></div>
             <button class="cancel-btn" id="closeSortModal">Отмена</button>
         </div>
     </div>
@@ -591,13 +700,12 @@
     </div>
 
     <script>
-        // Ссылка на CSV (опубликованная)
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4JrZveD8CqGu7WYz9aME8TMtZ-Zxu3Hrw7r1PTp8KsIXbk_VmAJLJwYHvv716aefg-MzYM9CrIyiY/pub?gid=0&single=true&output=csv";
         
         let rawData = [];
         let headers = [];
+        let selectedFilterCols = new Set(); // Выбранные столбцы для фильтрации
 
-        // Индексы столбцов (начиная с 0)
         const IDX = {
             TAG: 0,       // A
             NAME: 1,      // B
@@ -608,10 +716,8 @@
             BO_LINK: 66   // BO
         };
 
-        // Доступные для сортировки столбцы (индексы)
         const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
-        // Загрузка данных
         Papa.parse(CSV_URL, {
             download: true,
             header: false,
@@ -619,9 +725,10 @@
             complete: function(results) {
                 rawData = results.data;
                 if(rawData.length > 0) {
-                    headers = rawData[0]; // Первая строка - заголовки
-                    rawData.shift(); // Удаляем заголовки из данных
+                    headers = rawData[0];
+                    rawData.shift();
                     populateSortOptions();
+                    populateFilterOptions();
                     renderCards(rawData);
                 } else {
                     document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
@@ -633,7 +740,6 @@
             }
         });
 
-        // Функция отрисовки карточек
         function renderCards(data) {
             const grid = document.getElementById('cardsGrid');
             grid.innerHTML = '';
@@ -655,11 +761,9 @@
                 const oData = row[IDX.O_DATA] || '';
                 const boLink = row[IDX.BO_LINK] || '';
                 
-                // Экранируем и добавляем переносы строк после ';'
                 const nInfoRaw = row[IDX.N_INFO] || '';
                 const nInfo = escapeHtml(nInfoRaw).replace(/;/g, ';<br>');
                 
-                // Обработка статуса из столбца AG
                 const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
                 let statusHtml = '';
                 if (statusValue === 'true') {
@@ -668,7 +772,6 @@
                     statusHtml = '<div class="status-circle status-false"></div>';
                 }
 
-                // Картинка с кликом для просмотра в полном размере
                 let imgHtml = '';
                 if (imgUrl) {
                     try {
@@ -679,7 +782,6 @@
                     }
                 }
 
-                // Блок производителя (O) с поддержкой ссылки BO
                 let oTagHtml = '';
                 if (oData) {
                     if (boLink) {
@@ -694,7 +796,6 @@
                     }
                 }
 
-                // Внутренняя структура карточки
                 card.innerHTML = `
                     <div class="card-body">
                         <div class="badges-container">
@@ -711,6 +812,36 @@
                     </div>
                 `;
                 grid.appendChild(card);
+            });
+        }
+
+        // Заполнение панели фильтров всеми заголовками столбцов
+        function populateFilterOptions() {
+            const filterBody = document.getElementById('filterBody');
+            filterBody.innerHTML = '';
+
+            headers.forEach((headerName, index) => {
+                const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${index + 1}`;
+                
+                const item = document.createElement('label');
+                item.className = 'filter-item';
+                item.innerHTML = `
+                    <input type="checkbox" value="${index}">
+                    <span class="filter-item-label">${escapeHtml(labelText)}</span>
+                `;
+
+                const checkbox = item.querySelector('input');
+                checkbox.addEventListener('change', (e) => {
+                    const colIdx = parseInt(e.target.value, 10);
+                    if (e.target.checked) {
+                        selectedFilterCols.add(colIdx);
+                    } else {
+                        selectedFilterCols.delete(colIdx);
+                    }
+                    applyFilters();
+                });
+
+                filterBody.appendChild(item);
             });
         }
 
@@ -736,7 +867,6 @@
             });
         }
 
-        // Функция экранирования HTML
         function escapeHtml(text) {
             if(text === null || text === undefined) return '';
             const map = {
@@ -749,7 +879,7 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Поиск
+        // Применение всех фильтров (поиск + чекбоксы заполненности полей)
         function applyFilters() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
@@ -761,7 +891,17 @@
                 const matchName = nameQuery === '' || name.includes(nameQuery);
                 const matchAll = allQuery === '' || rowText.includes(allQuery);
 
-                return matchName && matchAll;
+                // Проверка фильтра по выбранным столбцам (должны быть не пустыми)
+                let matchColumns = true;
+                for (let colIdx of selectedFilterCols) {
+                    const cellVal = row[colIdx];
+                    if (!cellVal || cellVal.toString().trim() === '') {
+                        matchColumns = false;
+                        break;
+                    }
+                }
+
+                return matchName && matchAll && matchColumns;
             });
 
             renderCards(filtered);
@@ -798,6 +938,28 @@
             });
         });
 
+        // Открытие/закрытие боковой панели фильтров
+        const filterBtn = document.getElementById('filterBtn');
+        const filterSidebar = document.getElementById('filterSidebar');
+        const closeFilterBtn = document.getElementById('closeFilterBtn');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+        filterBtn.addEventListener('click', () => {
+            filterSidebar.classList.toggle('open');
+        });
+
+        closeFilterBtn.addEventListener('click', () => {
+            filterSidebar.classList.remove('open');
+        });
+
+        // Кнопка сброса всех выбранных чекбоксов фильтра
+        resetFiltersBtn.addEventListener('click', () => {
+            selectedFilterCols.clear();
+            const checkboxes = filterSidebar.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            applyFilters();
+        });
+
         // Логика окна сортировки
         const sortBtn = document.getElementById('sortBtn');
         const sortModalOverlay = document.getElementById('sortModalOverlay');
@@ -828,8 +990,6 @@
             modalTitle.innerText = row[IDX.NAME] || 'Характеристики';
             
             let tableHtml = '<table class="specs-table">';
-            
-            // Перебор от C (индекс 2) до BM (индекс 64)
             for (let i = 2; i <= 64; i++) {
                 const headerText = headers[i] ? escapeHtml(headers[i]) : '';
                 const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';

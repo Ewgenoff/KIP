@@ -145,7 +145,7 @@
 
         /* Панель фильтрации справа */
         .filter-sidebar {
-            width: 320px;
+            width: 340px;
             background: var(--ios-card-bg);
             border-left: 1px solid var(--ios-separator);
             display: none;
@@ -206,37 +206,49 @@
         }
 
         .filter-body {
-            padding: 10px 15px;
+            padding: 12px 15px;
             overflow-y: auto;
             flex: 1;
             -webkit-overflow-scrolling: touch;
-        }
-
-        .filter-item {
             display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--ios-separator);
-            font-size: 14px;
-            cursor: pointer;
-            user-select: none;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .filter-item:last-child {
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border-bottom: 1px solid var(--ios-separator);
+            padding-bottom: 10px;
+        }
+
+        .filter-group:last-child {
             border-bottom: none;
         }
 
-        .filter-item input[type="checkbox"] {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
-            accent-color: var(--ios-blue);
-            cursor: pointer;
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            word-break: break-word;
         }
 
-        .filter-item-label {
-            flex: 1;
-            word-break: break-word;
+        .filter-select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--ios-border);
+            background: var(--ios-bg);
+            font-size: 14px;
+            color: var(--ios-text);
+            outline: none;
+            cursor: pointer;
+            text-overflow: ellipsis;
+        }
+
+        .filter-select:focus {
+            border-color: var(--ios-blue);
         }
 
         /* Карточка iOS — горизонтальная раскладка */
@@ -617,7 +629,7 @@
                 position: fixed;
                 top: 0; right: 0;
                 width: 85%;
-                max-width: 320px;
+                max-width: 340px;
                 height: 100vh;
                 z-index: 1500;
             }
@@ -659,14 +671,14 @@
         <!-- Боковая панель фильтрации -->
         <aside class="filter-sidebar" id="filterSidebar">
             <div class="filter-header">
-                <span class="filter-title">Заполненные поля</span>
+                <span class="filter-title">Фильтрация по полям</span>
                 <div class="filter-actions">
                     <button class="reset-btn" id="resetFiltersBtn">Сбросить</button>
                     <button class="close-filter-btn" id="closeFilterBtn">✕</button>
                 </div>
             </div>
             <div class="filter-body" id="filterBody">
-                <!-- Список чекбоксов со столбцами будет сгенерирован автоматически -->
+                <!-- Выпадающие списки уникальных значений будут сгенерированы автоматически -->
             </div>
         </aside>
     </div>
@@ -704,7 +716,6 @@
         
         let rawData = [];
         let headers = [];
-        let selectedFilterCols = new Set(); // Выбранные столбцы для фильтрации
 
         const IDX = {
             TAG: 0,       // A
@@ -728,7 +739,7 @@
                     headers = rawData[0];
                     rawData.shift();
                     populateSortOptions();
-                    populateFilterOptions();
+                    populateFilterDropdowns();
                     renderCards(rawData);
                 } else {
                     document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
@@ -815,33 +826,47 @@
             });
         }
 
-        // Заполнение панели фильтров всеми заголовками столбцов
-        function populateFilterOptions() {
+        // Заполнение выпадающих меню фильтров с уникальными значениями столбцов
+        function populateFilterDropdowns() {
             const filterBody = document.getElementById('filterBody');
             filterBody.innerHTML = '';
 
-            headers.forEach((headerName, index) => {
-                const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${index + 1}`;
-                
-                const item = document.createElement('label');
-                item.className = 'filter-item';
-                item.innerHTML = `
-                    <input type="checkbox" value="${index}">
-                    <span class="filter-item-label">${escapeHtml(labelText)}</span>
-                `;
-
-                const checkbox = item.querySelector('input');
-                checkbox.addEventListener('change', (e) => {
-                    const colIdx = parseInt(e.target.value, 10);
-                    if (e.target.checked) {
-                        selectedFilterCols.add(colIdx);
-                    } else {
-                        selectedFilterCols.delete(colIdx);
+            headers.forEach((headerName, colIndex) => {
+                // Извлекаем все непустые уникальные значения для текущего столбца
+                const uniqueValues = new Set();
+                rawData.forEach(row => {
+                    const val = row[colIndex];
+                    if (val && val.toString().trim() !== '') {
+                        uniqueValues.add(val.toString().trim());
                     }
-                    applyFilters();
                 });
 
-                filterBody.appendChild(item);
+                // Показываем фильтр только если в столбце есть значения
+                if (uniqueValues.size > 0) {
+                    const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
+
+                    const group = document.createElement('div');
+                    group.className = 'filter-group';
+
+                    const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
+
+                    let optionsHtml = `<option value="">Все значения</option>`;
+                    sortedValues.forEach(val => {
+                        optionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
+                    });
+
+                    group.innerHTML = `
+                        <label class="filter-label" for="filter-col-${colIndex}">${escapeHtml(labelText)}</label>
+                        <select class="filter-select" id="filter-col-${colIndex}" data-col="${colIndex}">
+                            ${optionsHtml}
+                        </select>
+                    `;
+
+                    const selectEl = group.querySelector('select');
+                    selectEl.addEventListener('change', applyFilters);
+
+                    filterBody.appendChild(group);
+                }
             });
         }
 
@@ -879,10 +904,23 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Применение всех фильтров (поиск + чекбоксы заполненности полей)
+        // Применение всех фильтров (поиск + выпадающие меню столбцов)
         function applyFilters() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
+
+            // Собираем активные значения выпадающих списков
+            const selects = document.querySelectorAll('.filter-select');
+            const activeFilters = [];
+
+            selects.forEach(select => {
+                if (select.value) {
+                    activeFilters.push({
+                        colIndex: parseInt(select.getAttribute('data-col'), 10),
+                        value: select.value.toLowerCase()
+                    });
+                }
+            });
 
             const filtered = rawData.filter(row => {
                 const name = (row[IDX.NAME] || '').toLowerCase();
@@ -891,17 +929,17 @@
                 const matchName = nameQuery === '' || name.includes(nameQuery);
                 const matchAll = allQuery === '' || rowText.includes(allQuery);
 
-                // Проверка фильтра по выбранным столбцам (должны быть не пустыми)
-                let matchColumns = true;
-                for (let colIdx of selectedFilterCols) {
-                    const cellVal = row[colIdx];
-                    if (!cellVal || cellVal.toString().trim() === '') {
-                        matchColumns = false;
+                // Проверка совпадения со всеми выбранными выпадающими списками
+                let matchDropdowns = true;
+                for (let filter of activeFilters) {
+                    const cellVal = (row[filter.colIndex] || '').toString().trim().toLowerCase();
+                    if (cellVal !== filter.value) {
+                        matchDropdowns = false;
                         break;
                     }
                 }
 
-                return matchName && matchAll && matchColumns;
+                return matchName && matchAll && matchDropdowns;
             });
 
             renderCards(filtered);
@@ -952,11 +990,10 @@
             filterSidebar.classList.remove('open');
         });
 
-        // Кнопка сброса всех выбранных чекбоксов фильтра
+        // Кнопка сброса всех выбранных выпадающих списков
         resetFiltersBtn.addEventListener('click', () => {
-            selectedFilterCols.clear();
-            const checkboxes = filterSidebar.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = false);
+            const selects = filterSidebar.querySelectorAll('.filter-select');
+            selects.forEach(select => select.value = '');
             applyFilters();
         });
 

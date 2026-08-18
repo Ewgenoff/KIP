@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог датчиков</title>
-    <!-- Подключаем PapaParse для удобного парсинга CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         :root {
@@ -74,7 +73,7 @@
             width: 100%;
             border: none;
             background: transparent;
-            padding: 0 35px 0 35px;
+            padding: 0 35px;
             font-size: 15px;
             outline: none;
             color: var(--ios-text);
@@ -115,7 +114,6 @@
             align-items: center;
         }
 
-        /* Счетчик количества карточек */
         .cards-count {
             background: var(--ios-card-bg);
             border-radius: 12px;
@@ -131,7 +129,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        /* Кнопки управления (Сорт / Фильтр) */
         .header-btn {
             background: var(--ios-card-bg);
             border: none;
@@ -154,13 +151,11 @@
             background: var(--ios-bg);
         }
 
-        /* Подсветка кнопки фильтра при активности */
         .header-btn.active {
             background: var(--ios-blue);
             color: #FFFFFF;
         }
 
-        /* Основной контейнер */
         .main-container {
             display: flex;
             max-width: 1400px;
@@ -168,7 +163,6 @@
             position: relative;
         }
 
-        /* Сетка карточек */
         .grid {
             flex: 1;
             display: grid;
@@ -177,7 +171,7 @@
             padding: 20px 15px;
         }
 
-        /* Оверлей боковых панелей (Общие стили для фильтра и сортировки) */
+        /* Боковые панели */
         .side-modal-overlay {
             display: none;
             position: fixed;
@@ -200,8 +194,6 @@
             width: 340px;
             max-width: 85%;
             height: 100%;
-            max-height: 100%;
-            border-radius: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -238,7 +230,6 @@
             justify-content: space-between;
         }
 
-        /* Кнопка Сбросить в стиле iOS (Уменьшен шрифт) */
         .reset-btn-styled {
             background: rgba(118, 118, 128, 0.12);
             border: none;
@@ -256,7 +247,6 @@
             color: #FFFFFF;
         }
 
-        /* Закрытие панелей */
         .close-filter-btn {
             background: rgba(118, 118, 128, 0.12);
             border: none;
@@ -270,10 +260,6 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-        }
-
-        .close-filter-btn:active {
-            background: rgba(118, 118, 128, 0.24);
         }
 
         .filter-body {
@@ -299,7 +285,6 @@
             border-bottom: none;
         }
 
-        /* Уменьшен шрифт заголовков в окнах на 1 ступень */
         .filter-label {
             font-size: 10px;
             font-weight: 600;
@@ -309,10 +294,10 @@
             letter-spacing: -0.2px;
         }
 
-        /* Выпадающие меню (Select) в стиле iOS с белым фоном и уменьшенным шрифтом */
-        .filter-select {
+        /* Кастомные кнопки вместо системного select */
+        .custom-select-trigger {
             width: 100%;
-            padding: 10px 36px 10px 12px;
+            padding: 10px 30px 10px 12px;
             border-radius: 10px;
             border: 1px solid var(--ios-light-gray);
             background-color: #FFFFFF;
@@ -320,22 +305,34 @@
             color: var(--ios-text);
             outline: none;
             cursor: pointer;
+            text-align: left;
+            position: relative;
+            white-space: nowrap;
+            overflow: hidden;
             text-overflow: ellipsis;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             transition: all 0.2s ease;
         }
 
-        .filter-select:focus {
-            border-color: var(--ios-blue);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        .custom-select-trigger::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 6px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
         }
 
-        /* Опции сортировки (Без стрелок, шрифт уменьшен) */
+        .custom-select-trigger.selected {
+            border-color: var(--ios-blue);
+            color: var(--ios-blue);
+            font-weight: 500;
+        }
+
         .sort-option-btn {
             display: block;
             width: 100%;
@@ -359,6 +356,114 @@
             background-color: rgba(0, 122, 255, 0.05);
         }
 
+        /* iOS-Style Bottom Sheet для выбора значения фильтра */
+        .ios-sheet-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: flex-end;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .ios-sheet-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .ios-sheet {
+            background: #FFFFFF;
+            border-radius: 20px 20px 0 0;
+            max-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+        }
+
+        .ios-sheet-overlay.visible .ios-sheet {
+            transform: translateY(0);
+        }
+
+        .ios-sheet-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--ios-separator);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FFFFFF;
+        }
+
+        .ios-sheet-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ios-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 10px;
+        }
+
+        .ios-sheet-close {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 13px;
+            color: var(--ios-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ios-sheet-body {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0;
+        }
+
+        .ios-sheet-item {
+            padding: 14px 16px;
+            font-size: 15px;
+            color: var(--ios-text);
+            border-bottom: 1px solid var(--ios-separator);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s ease;
+        }
+
+        .ios-sheet-item:last-child {
+            border-bottom: none;
+        }
+
+        .ios-sheet-item:active {
+            background-color: var(--ios-bg);
+        }
+
+        .ios-sheet-item.selected {
+            color: var(--ios-blue);
+            font-weight: 600;
+        }
+
+        .ios-sheet-item.selected::after {
+            content: '✓';
+            color: var(--ios-blue);
+            font-weight: bold;
+        }
+
         /* Карточка iOS */
         .card {
             background: var(--ios-card-bg);
@@ -377,7 +482,6 @@
 
         .card:active {
             transform: scale(0.98);
-            box-shadow: 0 0 0 rgba(0,0,0,0);
         }
 
         .card-body {
@@ -385,7 +489,6 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding: 0;
             gap: 6px;
             min-width: 0;
         }
@@ -423,7 +526,6 @@
             font-weight: 600;
             line-height: 1.25;
             word-break: break-word;
-            overflow-wrap: break-word;
         }
 
         .card-divider {
@@ -438,7 +540,6 @@
             color: var(--ios-gray);
             line-height: 1.35;
             word-break: break-word;
-            overflow-wrap: break-word;
         }
 
         .card-img-container {
@@ -478,7 +579,6 @@
         .status-true { background-color: #34C759; }
         .status-false { background-color: #FF3B30; }
 
-        /* Полноэкранный просмотрщик картинок */
         .image-viewer-overlay {
             display: none;
             position: fixed;
@@ -514,7 +614,6 @@
             transform: scale(1);
         }
 
-        /* Модальные окна характеристик */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -609,7 +708,6 @@
         .specs-table td:first-child {
             color: var(--ios-gray);
             width: 40%;
-            white-space: normal;
         }
 
         .specs-table td:last-child {
@@ -642,7 +740,6 @@
             font-size: 16px;
         }
 
-        /* Мобильные стили */
         @media (max-width: 768px) {
             .search-container {
                 flex-direction: column;
@@ -655,7 +752,6 @@
                 gap: 8px;
             }
 
-            /* Исправлены узкие строки поиска в мобильной версии */
             .search-input-wrapper {
                 width: 100%;
                 height: 44px;
@@ -664,20 +760,7 @@
 
             .search-input-wrapper input {
                 font-size: 15px;
-                padding: 0 35px 0 35px;
-            }
-
-            .search-icon {
-                left: 10px;
-                width: 18px;
-                height: 18px;
-            }
-
-            .clear-btn {
-                right: 8px;
-                width: 20px;
-                height: 20px;
-                font-size: 12px;
+                padding: 0 35px;
             }
 
             .controls-group {
@@ -721,7 +804,6 @@
                 </div>
             </div>
 
-            <!-- Группа управления -->
             <div class="controls-group">
                 <button class="header-btn" id="sortBtn">Сорт.</button>
                 <button class="header-btn" id="filterBtn">Фильтр</button>
@@ -745,9 +827,7 @@
                     <button class="close-filter-btn" id="closeFilterBtn">✕</button>
                 </div>
             </div>
-            <div class="filter-body" id="filterBody">
-                <!-- Выпадающие списки фильтрации -->
-            </div>
+            <div class="filter-body" id="filterBody"></div>
         </div>
     </div>
 
@@ -760,9 +840,18 @@
                     <button class="close-filter-btn" id="closeSortModal">✕</button>
                 </div>
             </div>
-            <div class="filter-body" id="sortList">
-                <!-- Опции сортировки -->
+            <div class="filter-body" id="sortList"></div>
+        </div>
+    </div>
+
+    <!-- iOS Bottom Sheet для выбора фильтра -->
+    <div class="ios-sheet-overlay" id="iosSheetOverlay">
+        <div class="ios-sheet">
+            <div class="ios-sheet-header">
+                <span class="ios-sheet-title" id="iosSheetTitle">Выберите значение</span>
+                <button class="ios-sheet-close" id="iosSheetClose">✕</button>
             </div>
+            <div class="ios-sheet-body" id="iosSheetBody"></div>
         </div>
     </div>
 
@@ -780,7 +869,7 @@
         </div>
     </div>
 
-    <!-- Полноразмерный просмотр изображений -->
+    <!-- Просмотрщик картинок -->
     <div class="image-viewer-overlay" id="imageViewerOverlay">
         <img id="imageViewerImg" src="" alt="Увеличенное изображение">
     </div>
@@ -790,15 +879,16 @@
         
         let rawData = [];
         let headers = [];
+        let filterState = {}; // Хранение выбранных фильтров
 
         const IDX = {
-            TAG: 0,       // A
-            NAME: 1,      // B
-            N_INFO: 13,   // N
-            O_DATA: 14,   // O
-            STATUS: 32,   // AG
-            IMAGE: 65,    // BN
-            BO_LINK: 66   // BO
+            TAG: 0,
+            NAME: 1,
+            N_INFO: 13,
+            O_DATA: 14,
+            STATUS: 32,
+            IMAGE: 65,
+            BO_LINK: 66
         };
 
         const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
@@ -823,7 +913,6 @@
             error: function(err) {
                 document.getElementById('cardsGrid').innerHTML = '<div class="loader">Ошибка загрузки. Проверьте доступность таблицы.</div>';
                 document.getElementById('cardsCount').innerText = '0 из 0';
-                console.error(err);
             }
         });
 
@@ -869,9 +958,7 @@
                     try {
                         new URL(imgUrl);
                         imgHtml = `<img src="${imgUrl}" alt="${escapeHtml(name)}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
-                    } catch (_) {
-                        imgHtml = '';
-                    }
+                    } catch (_) { imgHtml = ''; }
                 }
 
                 let oTagHtml = '';
@@ -928,24 +1015,75 @@
 
                     const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
 
-                    let optionsHtml = `<option value="">Все значения</option>`;
-                    sortedValues.forEach(val => {
-                        optionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
-                    });
-
                     group.innerHTML = `
-                        <label class="filter-label" for="filter-col-${colIndex}">${escapeHtml(labelText)}</label>
-                        <select class="filter-select" id="filter-col-${colIndex}" data-col="${colIndex}">
-                            ${optionsHtml}
-                        </select>
+                        <label class="filter-label">${escapeHtml(labelText)}</label>
+                        <button class="custom-select-trigger" id="filter-btn-${colIndex}" data-col="${colIndex}">
+                            Все значения
+                        </button>
                     `;
 
-                    const selectEl = group.querySelector('select');
-                    selectEl.addEventListener('change', applyFilters);
+                    const triggerBtn = group.querySelector('.custom-select-trigger');
+                    triggerBtn.addEventListener('click', () => {
+                        openIosSheet(labelText, colIndex, sortedValues);
+                    });
 
                     filterBody.appendChild(group);
                 }
             });
+        }
+
+        /* Вызов кастомного шторки в стиле iOS */
+        function openIosSheet(title, colIndex, values) {
+            const sheetOverlay = document.getElementById('iosSheetOverlay');
+            const sheetTitle = document.getElementById('iosSheetTitle');
+            const sheetBody = document.getElementById('iosSheetBody');
+
+            sheetTitle.innerText = title;
+            sheetBody.innerHTML = '';
+
+            const currentValue = filterState[colIndex] || '';
+
+            // Опция "Все значения"
+            const allItem = document.createElement('div');
+            allItem.className = `ios-sheet-item ${currentValue === '' ? 'selected' : ''}`;
+            allItem.innerText = 'Все значения';
+            allItem.onclick = () => selectFilterOption(colIndex, '', 'Все значения');
+            sheetBody.appendChild(allItem);
+
+            // Значения
+            values.forEach(val => {
+                const item = document.createElement('div');
+                item.className = `ios-sheet-item ${currentValue === val ? 'selected' : ''}`;
+                item.innerText = val;
+                item.onclick = () => selectFilterOption(colIndex, val, val);
+                sheetBody.appendChild(item);
+            });
+
+            sheetOverlay.classList.add('visible');
+        }
+
+        function closeIosSheet() {
+            document.getElementById('iosSheetOverlay').classList.remove('visible');
+        }
+
+        document.getElementById('iosSheetClose').addEventListener('click', closeIosSheet);
+        document.getElementById('iosSheetOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'iosSheetOverlay') closeIosSheet();
+        });
+
+        function selectFilterOption(colIndex, value, displayLabel) {
+            const btn = document.getElementById(`filter-btn-${colIndex}`);
+            if (value === '') {
+                delete filterState[colIndex];
+                btn.innerText = 'Все значения';
+                btn.classList.remove('selected');
+            } else {
+                filterState[colIndex] = value;
+                btn.innerText = displayLabel;
+                btn.classList.add('selected');
+            }
+            closeIosSheet();
+            applyFilters();
         }
 
         function populateSortOptions() {
@@ -977,33 +1115,16 @@
 
         function escapeHtml(text) {
             if(text === null || text === undefined) return '';
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return String(text).replace(/[&<>"']/g, m => map[m]);
+            return String(text).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+            })[m]);
         }
 
         function applyFilters() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
 
-            const selects = document.querySelectorAll('.filter-select');
-            const activeFilters = [];
-
-            selects.forEach(select => {
-                if (select.value) {
-                    activeFilters.push({
-                        colIndex: parseInt(select.getAttribute('data-col'), 10),
-                        value: select.value.toLowerCase()
-                    });
-                }
-            });
-
-            const isFiltered = nameQuery !== '' || allQuery !== '' || activeFilters.length > 0;
+            const isFiltered = nameQuery !== '' || allQuery !== '' || Object.keys(filterState).length > 0;
             
             const filterBtn = document.getElementById('filterBtn');
             const resetBtn = document.getElementById('resetFiltersBtn');
@@ -1024,9 +1145,9 @@
                 const matchAll = allQuery === '' || rowText.includes(allQuery);
 
                 let matchDropdowns = true;
-                for (let filter of activeFilters) {
-                    const cellVal = (row[filter.colIndex] || '').toString().trim().toLowerCase();
-                    if (cellVal !== filter.value) {
+                for (let colIndex in filterState) {
+                    const cellVal = (row[colIndex] || '').toString().trim();
+                    if (cellVal !== filterState[colIndex]) {
                         matchDropdowns = false;
                         break;
                     }
@@ -1038,7 +1159,6 @@
             renderCards(filtered);
         }
 
-        // Слушатели поиска
         document.getElementById('searchName').addEventListener('input', function(e) {
             toggleClearButton(e.target);
             applyFilters();
@@ -1069,7 +1189,6 @@
             });
         });
 
-        // Элементы панелей
         const filterBtn = document.getElementById('filterBtn');
         const filterModalOverlay = document.getElementById('filterModalOverlay');
         const closeFilterBtn = document.getElementById('closeFilterBtn');
@@ -1079,7 +1198,6 @@
         const sortModalOverlay = document.getElementById('sortModalOverlay');
         const closeSortModalBtn = document.getElementById('closeSortModal');
 
-        // Открытие фильтров (автоматически закрывает сортировку)
         filterBtn.addEventListener('click', () => {
             closeSortModal();
             filterModalOverlay.classList.add('visible');
@@ -1091,21 +1209,21 @@
 
         closeFilterBtn.addEventListener('click', closeFilterModal);
         filterModalOverlay.addEventListener('click', function(e) {
-            if (e.target === filterModalOverlay) {
-                closeFilterModal();
-            }
+            if (e.target === filterModalOverlay) closeFilterModal();
         });
 
         resetFiltersBtn.addEventListener('click', () => {
-            const selects = filterModalOverlay.querySelectorAll('.filter-select');
-            selects.forEach(select => select.value = '');
+            filterState = {};
+            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
+                btn.innerText = 'Все значения';
+                btn.classList.remove('selected');
+            });
             document.getElementById('searchName').value = '';
             document.getElementById('searchAll').value = '';
             document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
             applyFilters();
         });
 
-        // Открытие сортировки (автоматически закрывает фильтры)
         sortBtn.addEventListener('click', () => {
             closeFilterModal();
             sortModalOverlay.classList.add('visible');
@@ -1117,12 +1235,9 @@
 
         closeSortModalBtn.addEventListener('click', closeSortModal);
         sortModalOverlay.addEventListener('click', function(e) {
-            if (e.target === sortModalOverlay) {
-                closeSortModal();
-            }
+            if (e.target === sortModalOverlay) closeSortModal();
         });
 
-        // Модальное окно характеристик
         const modalOverlay = document.getElementById('modalOverlay');
         const modalContent = document.getElementById('modalContent');
         const modalTitle = document.getElementById('modalTitle');
@@ -1160,12 +1275,9 @@
         document.getElementById('modalCloseTop').addEventListener('click', closeModal);
         document.getElementById('modalCloseBottom').addEventListener('click', closeModal);
         modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
+            if (e.target === modalOverlay) closeModal();
         });
 
-        // Просмотр изображений
         const imageViewerOverlay = document.getElementById('imageViewerOverlay');
         const imageViewerImg = document.getElementById('imageViewerImg');
 
@@ -1187,7 +1299,6 @@
         }
 
         imageViewerOverlay.addEventListener('click', closeImageViewer);
-
     </script>
 </body>
 </html>

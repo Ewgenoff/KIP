@@ -108,9 +108,10 @@
             display: flex;
         }
 
+        /* Группа управления в 4 элемента */
         .controls-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
@@ -118,7 +119,7 @@
             background: var(--ios-card-bg);
             border-radius: 12px;
             height: 40px;
-            padding: 0 12px;
+            padding: 0 10px;
             font-size: 13px;
             font-weight: 600;
             color: var(--ios-gray);
@@ -127,6 +128,7 @@
             justify-content: center;
             white-space: nowrap;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            flex: 1 1 auto;
         }
 
         .header-btn {
@@ -134,9 +136,8 @@
             border: none;
             border-radius: 12px;
             height: 40px;
-            min-width: 40px;
-            padding: 0 15px;
-            font-size: 15px;
+            padding: 0 10px;
+            font-size: 14px;
             color: var(--ios-blue);
             cursor: pointer;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -145,6 +146,8 @@
             justify-content: center;
             font-weight: 500;
             transition: all 0.2s ease;
+            white-space: nowrap;
+            flex: 1 1 auto;
         }
 
         .header-btn:active {
@@ -152,6 +155,31 @@
         }
 
         .header-btn.active {
+            background: var(--ios-blue);
+            color: #FFFFFF;
+        }
+
+        /* Компактная кнопка крестика */
+        .reset-header-btn {
+            background: var(--ios-card-bg);
+            border: none;
+            border-radius: 12px;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex: 0 0 40px;
+        }
+
+        .reset-header-btn.active {
             background: var(--ios-blue);
             color: #FFFFFF;
         }
@@ -362,8 +390,8 @@
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             z-index: 2000;
-            justify-content: flex-end; /* Выравнивание по правому краю */
-            align-items: flex-end;   /* Выравнивание по нижнему краю */
+            justify-content: flex-end;
+            align-items: flex-end;
             opacity: 0;
             transition: opacity 0.25s ease;
         }
@@ -377,7 +405,7 @@
             background: #FFFFFF;
             border-radius: 20px 20px 0 0;
             max-height: 75vh;
-            width: 340px;      /* Точное соответствие ширине боковой панели */
+            width: 340px;
             max-width: 85%;
             display: flex;
             flex-direction: column;
@@ -796,10 +824,12 @@
             .controls-group {
                 width: 100%;
                 justify-content: space-between;
+                gap: 4px;
             }
 
-            .header-btn, .cards-count {
-                flex: 1;
+            .cards-count, .header-btn {
+                font-size: 12px;
+                padding: 0 6px;
             }
 
             .side-modal {
@@ -839,10 +869,12 @@
                 </div>
             </div>
 
+            <!-- Обновлённый блок кнопок: Счётчик -> Сорт. -> Фильтр -> Крестик -->
             <div class="controls-group">
+                <div class="cards-count" id="cardsCount">0 из 0</div>
                 <button class="header-btn" id="sortBtn">Сорт.</button>
                 <button class="header-btn" id="filterBtn">Фильтр</button>
-                <div class="cards-count" id="cardsCount">0 из 0</div>
+                <button class="reset-header-btn" id="globalResetBtn" title="Сбросить все фильтры">✕</button>
             </div>
         </div>
     </div>
@@ -1056,23 +1088,19 @@
 
                     group.innerHTML = `
                         <label class="filter-label">${escapeHtml(labelText)}</label>
-                        <!-- Десктоп версия: стандартный select -->
                         <select class="desktop-select" id="desktop-select-${colIndex}">
                             ${selectOptionsHtml}
                         </select>
-                        <!-- Мобильная версия: кастомная кнопка вызова окна -->
                         <button class="custom-select-trigger" id="filter-btn-${colIndex}">
                             Все значения
                         </button>
                     `;
 
-                    // Десктопное событие
                     const selectEl = group.querySelector('.desktop-select');
                     selectEl.addEventListener('change', (e) => {
                         selectFilterOption(colIndex, e.target.value, e.target.options[e.target.selectedIndex].text);
                     });
 
-                    // Мобильное событие
                     const triggerBtn = group.querySelector('.custom-select-trigger');
                     triggerBtn.addEventListener('click', () => {
                         openIosSheet(labelText, colIndex, sortedValues);
@@ -1083,7 +1111,6 @@
             });
         }
 
-        /* Вызов шторки на мобильных */
         function openIosSheet(title, colIndex, values) {
             const sheetOverlay = document.getElementById('iosSheetOverlay');
             const sheetTitle = document.getElementById('iosSheetTitle');
@@ -1120,7 +1147,6 @@
             if (e.target.id === 'iosSheetOverlay') closeIosSheet();
         });
 
-        /* Синхронное обновление состояния для обеих версий */
         function selectFilterOption(colIndex, value, displayLabel) {
             const btn = document.getElementById(`filter-btn-${colIndex}`);
             const select = document.getElementById(`desktop-select-${colIndex}`);
@@ -1178,6 +1204,22 @@
             })[m]);
         }
 
+        /* Функция полной очистки всех фильтров */
+        function resetAllFilters() {
+            filterState = {};
+            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
+                btn.innerText = 'Все значения';
+                btn.classList.remove('selected');
+            });
+            document.querySelectorAll('.desktop-select').forEach(select => {
+                select.value = '';
+            });
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchAll').value = '';
+            document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
+            applyFilters();
+        }
+
         function applyFilters() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
@@ -1186,13 +1228,16 @@
             
             const filterBtn = document.getElementById('filterBtn');
             const resetBtn = document.getElementById('resetFiltersBtn');
+            const globalResetBtn = document.getElementById('globalResetBtn');
 
             if (isFiltered) {
                 filterBtn.classList.add('active');
                 resetBtn.classList.add('active');
+                globalResetBtn.classList.add('active');
             } else {
                 filterBtn.classList.remove('active');
                 resetBtn.classList.remove('active');
+                globalResetBtn.classList.remove('active');
             }
 
             const filtered = rawData.filter(row => {
@@ -1251,6 +1296,7 @@
         const filterModalOverlay = document.getElementById('filterModalOverlay');
         const closeFilterBtn = document.getElementById('closeFilterBtn');
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const globalResetBtn = document.getElementById('globalResetBtn');
 
         const sortBtn = document.getElementById('sortBtn');
         const sortModalOverlay = document.getElementById('sortModalOverlay');
@@ -1270,20 +1316,9 @@
             if (e.target === filterModalOverlay) closeFilterModal();
         });
 
-        resetFiltersBtn.addEventListener('click', () => {
-            filterState = {};
-            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
-                btn.innerText = 'Все значения';
-                btn.classList.remove('selected');
-            });
-            document.querySelectorAll('.desktop-select').forEach(select => {
-                select.value = '';
-            });
-            document.getElementById('searchName').value = '';
-            document.getElementById('searchAll').value = '';
-            document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
-            applyFilters();
-        });
+        /* Привязка действий сброса */
+        resetFiltersBtn.addEventListener('click', resetAllFilters);
+        globalResetBtn.addEventListener('click', resetAllFilters);
 
         sortBtn.addEventListener('click', () => {
             closeFilterModal();

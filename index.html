@@ -492,6 +492,43 @@
                 border-radius: 0;
             }
         }
+        /* Полноэкранный просмотрщик картинок */
+.image-viewer-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.image-viewer-overlay.visible {
+    display: flex;
+    opacity: 1;
+}
+
+.image-viewer-overlay img {
+    max-width: 95%;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.25s ease;
+    transform: scale(0.9);
+}
+
+.image-viewer-overlay.visible img {
+    transform: scale(1);
+}
     </style>
 </head>
 <body>
@@ -620,16 +657,17 @@
                     statusHtml = '<div class="status-circle status-false"></div>';
                 }
 
-                let imgHtml = '';
-                if (imgUrl) {
-                    try {
-                        new URL(imgUrl);
-                        imgHtml = `<img src="${imgUrl}" alt="${name}" onerror="this.style.display='none'">`;
-                    } catch (_) {
-                        imgHtml = '';
-                    }
-                }
-
+               let imgHtml = '';
+if (imgUrl) {
+    try {
+        new URL(imgUrl);
+        // onclick с event.stopPropagation() перехватывает клик,
+        // чтобы не открывалось модальное окно характеристик карточки
+        imgHtml = `<img src="${imgUrl}" alt="${name}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
+    } catch (_) {
+        imgHtml = '';
+    }
+}
                 // Блок производителя (O) с поддержкой ссылки BO
                 let oTagHtml = '';
                 if (oData) {
@@ -813,7 +851,34 @@
                 closeModal();
             }
         });
+// Полноэкранный просмотр изображений
+const imageViewerOverlay = document.getElementById('imageViewerOverlay');
+const imageViewerImg = document.getElementById('imageViewerImg');
 
+function openImageViewer(url) {
+    if (!url) return;
+    imageViewerImg.src = url;
+    imageViewerOverlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageViewer() {
+    imageViewerOverlay.classList.remove('visible');
+    // Очищаем src после завершения анимации
+    setTimeout(() => {
+        if (!imageViewerOverlay.classList.contains('visible')) {
+            imageViewerImg.src = '';
+        }
+    }, 250);
+    document.body.style.overflow = '';
+}
+
+// Закрытие по клику в любом месте оверлея или на само изображение
+imageViewerOverlay.addEventListener('click', closeImageViewer);
     </script>
+    <!-- Полноразмерный просмотр изображений -->
+<div class="image-viewer-overlay" id="imageViewerOverlay">
+    <img id="imageViewerImg" src="" alt="Увеличенное изображение">
+</div>
 </body>
 </html>

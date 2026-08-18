@@ -148,6 +148,7 @@
         }
 
         .card-img-container {
+            position: relative; /* Для позиционирования кружка статуса */
             width: 100%;
             height: 180px;
             background: var(--ios-bg);
@@ -161,6 +162,25 @@
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
+        }
+
+        /* Кружок статуса (Столбец AG) */
+        .status-circle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.9);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .status-true {
+            background-color: #34C759; /* Зеленый */
+        }
+        .status-false {
+            background-color: #FF3B30; /* Красный */
         }
 
         .card-body {
@@ -200,9 +220,24 @@
         }
 
         .card-title {
-            font-size: 17px;
+            /* Уменьшено в 1.5 раза от 17px */
+            font-size: calc(17px / 1.5); 
             font-weight: 600;
             line-height: 1.3;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Доп информация под названием (Столбец N) */
+        .card-subtitle {
+            font-size: 10px;
+            color: var(--ios-gray);
+            padding-top: 6px;
+            border-top: 1px solid var(--ios-separator);
+            margin-top: 2px;
+            line-height: 1.3;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Модальное окно характеристик */
@@ -502,7 +537,9 @@
         const IDX = {
             TAG: 0,       // A
             NAME: 1,      // B
+            N_INFO: 13,   // N
             O_DATA: 14,   // O
+            STATUS: 32,   // AG
             IMAGE: 65,    // BN
             BO_LINK: 66   // BO
         };
@@ -553,6 +590,16 @@
                 const imgUrl = row[IDX.IMAGE] || '';
                 const oData = row[IDX.O_DATA] || '';
                 const boLink = row[IDX.BO_LINK] || '';
+                const nInfo = row[IDX.N_INFO] || '';
+                
+                // Обработка статуса из столбца AG
+                const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
+                let statusHtml = '';
+                if (statusValue === 'true') {
+                    statusHtml = '<div class="status-circle status-true"></div>';
+                } else if (statusValue === 'false') {
+                    statusHtml = '<div class="status-circle status-false"></div>';
+                }
 
                 let imgHtml = '';
                 if (imgUrl) {
@@ -582,6 +629,7 @@
                 card.innerHTML = `
                     <div class="card-img-container">
                         ${imgHtml}
+                        ${statusHtml}
                     </div>
                     <div class="card-body">
                         <div class="badges-container">
@@ -589,6 +637,7 @@
                             ${oTagHtml}
                         </div>
                         <div class="card-title">${escapeHtml(name)}</div>
+                        ${nInfo ? `<div class="card-subtitle">${escapeHtml(nInfo)}</div>` : ''}
                     </div>
                 `;
                 grid.appendChild(card);

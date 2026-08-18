@@ -175,25 +175,43 @@
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 15px;
             padding: 20px 15px;
-            transition: margin-right 0.3s ease;
         }
 
-        /* Панель фильтрации справа */
-        .filter-sidebar {
-            width: 340px;
-            background: var(--ios-card-bg);
-            border-left: 1px solid var(--ios-separator);
+        /* Оверлей боковых панелей (Общие стили для фильтра и сортировки) */
+        .side-modal-overlay {
             display: none;
-            flex-direction: column;
-            position: sticky;
-            top: 65px;
-            height: calc(100vh - 65px);
-            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
-            z-index: 90;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .side-modal-overlay.visible {
+            display: flex;
+            opacity: 1;
         }
 
-        .filter-sidebar.open {
+        .side-modal {
+            background: var(--ios-card-bg);
+            width: 340px;
+            max-width: 85%;
+            height: 100%;
+            max-height: 100%;
+            border-radius: 0;
             display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .side-modal-overlay.visible .side-modal {
+            transform: translateX(0);
         }
 
         .filter-header {
@@ -208,7 +226,7 @@
 
         .filter-title {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             white-space: nowrap;
         }
 
@@ -220,12 +238,12 @@
             justify-content: space-between;
         }
 
-        /* Стильная кнопка Сбросить в стиле iOS */
+        /* Кнопка Сбросить в стиле iOS (Уменьшен шрифт) */
         .reset-btn-styled {
             background: rgba(118, 118, 128, 0.12);
             border: none;
             color: var(--ios-gray);
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             font-weight: 600;
             padding: 6px 12px;
@@ -238,7 +256,7 @@
             color: #FFFFFF;
         }
 
-        /* Квадратная кнопка закрытия с закругленными углами */
+        /* Закрытие панелей */
         .close-filter-btn {
             background: rgba(118, 118, 128, 0.12);
             border: none;
@@ -272,7 +290,7 @@
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
             border-bottom: 1px solid var(--ios-separator);
             padding-bottom: 8px;
         }
@@ -281,8 +299,9 @@
             border-bottom: none;
         }
 
+        /* Уменьшен шрифт заголовков в окнах на 1 ступень */
         .filter-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: var(--ios-gray);
             word-break: break-word;
@@ -290,14 +309,14 @@
             letter-spacing: -0.2px;
         }
 
-        /* Выпадающие меню (Select) в стиле iOS */
+        /* Выпадающие меню (Select) в стиле iOS с белым фоном и уменьшенным шрифтом */
         .filter-select {
             width: 100%;
-            padding: 12px 36px 12px 15px;
+            padding: 10px 36px 10px 12px;
             border-radius: 10px;
             border: 1px solid var(--ios-light-gray);
-            background-color: var(--ios-card-bg);
-            font-size: 15px;
+            background-color: #FFFFFF;
+            font-size: 13px;
             color: var(--ios-text);
             outline: none;
             cursor: pointer;
@@ -307,13 +326,37 @@
             background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 12px center;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             transition: all 0.2s ease;
         }
 
         .filter-select:focus {
             border-color: var(--ios-blue);
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        /* Опции сортировки (Без стрелок, шрифт уменьшен) */
+        .sort-option-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            text-align: left;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .sort-option-btn:active {
+            border-color: var(--ios-blue);
+            background-color: rgba(0, 122, 255, 0.05);
         }
 
         /* Карточка iOS */
@@ -471,7 +514,7 @@
             transform: scale(1);
         }
 
-        /* Модальные окна */
+        /* Модальные окна характеристик */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -599,72 +642,6 @@
             font-size: 16px;
         }
 
-        /* Боковая панель сортировки (Слайдер справа как у фильтров) */
-        .sort-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            justify-content: flex-end;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .sort-modal-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .sort-modal {
-            background: var(--ios-card-bg);
-            width: 340px;
-            max-width: 85%;
-            height: 100%;
-            max-height: 100%;
-            border-radius: 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        .sort-modal-overlay.visible .sort-modal {
-            transform: translateX(0);
-        }
-
-        /* Опции сортировки оформлены идентично выпадающим меню фильтров */
-        .sort-option-btn {
-            display: block;
-            width: 100%;
-            padding: 12px 36px 12px 15px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: var(--ios-card-bg);
-            font-size: 15px;
-            color: var(--ios-text);
-            text-align: left;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .sort-option-btn:active {
-            border-color: var(--ios-blue);
-            background-color: rgba(0, 122, 255, 0.05);
-        }
-
         /* Мобильные стили */
         @media (max-width: 768px) {
             .search-container {
@@ -678,28 +655,29 @@
                 gap: 8px;
             }
 
-            /* Увеличиваем строки поиска в 1.5 раза (с 40px до 60px) */
+            /* Исправлены узкие строки поиска в мобильной версии */
             .search-input-wrapper {
-                height: 60px;
-                border-radius: 14px;
+                width: 100%;
+                height: 44px;
+                border-radius: 12px;
             }
 
             .search-input-wrapper input {
-                font-size: 16px; /* Увеличен чтобы предотвратить зум на iOS */
-                padding: 0 40px 0 40px;
+                font-size: 15px;
+                padding: 0 35px 0 35px;
             }
 
             .search-icon {
-                left: 12px;
-                width: 20px;
-                height: 20px;
+                left: 10px;
+                width: 18px;
+                height: 18px;
             }
 
             .clear-btn {
-                right: 10px;
-                width: 24px;
-                height: 24px;
-                font-size: 14px;
+                right: 8px;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
             }
 
             .controls-group {
@@ -711,21 +689,9 @@
                 flex: 1;
             }
 
-            /* Панель фильтров на мобильных: уже и компактнее */
-            .filter-sidebar {
-                position: fixed;
-                top: 0; 
-                right: 0;
-                width: 70%;
-                max-width: 260px;
-                height: 100vh;
-                z-index: 1500;
-            }
-
-            /* Панель сортировки на мобильных */
-            .sort-modal {
-                width: 70%;
-                max-width: 260px;
+            .side-modal {
+                width: 75%;
+                max-width: 280px;
             }
 
             .modal {
@@ -755,7 +721,7 @@
                 </div>
             </div>
 
-            <!-- Группа управления (переносится вниз на мобильных) -->
+            <!-- Группа управления -->
             <div class="controls-group">
                 <button class="header-btn" id="sortBtn">Сорт.</button>
                 <button class="header-btn" id="filterBtn">Фильтр</button>
@@ -768,9 +734,11 @@
         <div class="grid" id="cardsGrid">
             <div class="loader">Загрузка данных...</div>
         </div>
+    </div>
 
-        <!-- Боковая панель фильтрации -->
-        <aside class="filter-sidebar" id="filterSidebar">
+    <!-- Боковая панель фильтрации -->
+    <div class="side-modal-overlay" id="filterModalOverlay">
+        <div class="side-modal">
             <div class="filter-header">
                 <div class="filter-actions">
                     <button class="reset-btn-styled" id="resetFiltersBtn">Сбросить</button>
@@ -778,9 +746,24 @@
                 </div>
             </div>
             <div class="filter-body" id="filterBody">
-                <!-- Выпадающие списки уникальных значений -->
+                <!-- Выпадающие списки фильтрации -->
             </div>
-        </aside>
+        </div>
+    </div>
+
+    <!-- Боковая панель сортировки -->
+    <div class="side-modal-overlay" id="sortModalOverlay">
+        <div class="side-modal">
+            <div class="filter-header">
+                <div class="filter-actions">
+                    <span class="filter-title">Сортировка</span>
+                    <button class="close-filter-btn" id="closeSortModal">✕</button>
+                </div>
+            </div>
+            <div class="filter-body" id="sortList">
+                <!-- Опции сортировки -->
+            </div>
+        </div>
     </div>
 
     <!-- Модальное окно характеристик -->
@@ -793,21 +776,6 @@
             <div class="modal-content" id="modalContent"></div>
             <div class="modal-footer">
                 <button class="modal-close-btn" id="modalCloseBottom">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Боковая панель сортировки -->
-    <div class="sort-modal-overlay" id="sortModalOverlay">
-        <div class="sort-modal">
-            <div class="filter-header">
-                <div class="filter-actions">
-                    <span class="filter-title">Сортировка</span>
-                    <button class="close-filter-btn" id="closeSortModal">✕</button>
-                </div>
-            </div>
-            <div class="filter-body" id="sortList">
-                <!-- Опции сортировки -->
             </div>
         </div>
     </div>
@@ -1035,7 +1003,6 @@
                 }
             });
 
-            // Индикация синим цветом для кнопки фильтра и кнопки Сбросить
             const isFiltered = nameQuery !== '' || allQuery !== '' || activeFilters.length > 0;
             
             const filterBtn = document.getElementById('filterBtn');
@@ -1102,22 +1069,35 @@
             });
         });
 
-        // Боковая панель фильтров
+        // Элементы панелей
         const filterBtn = document.getElementById('filterBtn');
-        const filterSidebar = document.getElementById('filterSidebar');
+        const filterModalOverlay = document.getElementById('filterModalOverlay');
         const closeFilterBtn = document.getElementById('closeFilterBtn');
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
+        const sortBtn = document.getElementById('sortBtn');
+        const sortModalOverlay = document.getElementById('sortModalOverlay');
+        const closeSortModalBtn = document.getElementById('closeSortModal');
+
+        // Открытие фильтров (автоматически закрывает сортировку)
         filterBtn.addEventListener('click', () => {
-            filterSidebar.classList.toggle('open');
+            closeSortModal();
+            filterModalOverlay.classList.add('visible');
         });
 
-        closeFilterBtn.addEventListener('click', () => {
-            filterSidebar.classList.remove('open');
+        function closeFilterModal() {
+            filterModalOverlay.classList.remove('visible');
+        }
+
+        closeFilterBtn.addEventListener('click', closeFilterModal);
+        filterModalOverlay.addEventListener('click', function(e) {
+            if (e.target === filterModalOverlay) {
+                closeFilterModal();
+            }
         });
 
         resetFiltersBtn.addEventListener('click', () => {
-            const selects = filterSidebar.querySelectorAll('.filter-select');
+            const selects = filterModalOverlay.querySelectorAll('.filter-select');
             selects.forEach(select => select.value = '');
             document.getElementById('searchName').value = '';
             document.getElementById('searchAll').value = '';
@@ -1125,12 +1105,9 @@
             applyFilters();
         });
 
-        // Боковая панель сортировки
-        const sortBtn = document.getElementById('sortBtn');
-        const sortModalOverlay = document.getElementById('sortModalOverlay');
-        const closeSortModalBtn = document.getElementById('closeSortModal');
-
+        // Открытие сортировки (автоматически закрывает фильтры)
         sortBtn.addEventListener('click', () => {
+            closeFilterModal();
             sortModalOverlay.classList.add('visible');
         });
 

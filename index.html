@@ -123,14 +123,14 @@
         /* Сетка карточек */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 15px;
             padding: 20px 15px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Карточка iOS */
+        /* Перевод карточки на горизонтальный Flexbox по эскизу */
         .card {
             background: var(--ios-card-bg);
             border-radius: 16px;
@@ -139,7 +139,11 @@
             cursor: pointer;
             transition: transform 0.1s ease, box-shadow 0.2s ease;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 12px;
+            gap: 12px;
+            align-items: stretch;
         }
 
         .card:active {
@@ -147,32 +151,103 @@
             box-shadow: 0 0 0 rgba(0,0,0,0);
         }
 
-        .card-img-container {
-            position: relative; /* Для позиционирования кружка статуса */
+        /* Левая часть: бэджи, название, разделитель, назначение */
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0;
+            gap: 6px;
+            min-width: 0; /* Для корректного переноса длинных слов */
+        }
+
+        /* Верхняя строка бэджей (ТЭГ + Фирма) */
+        .badges-container {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .card-tag {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--ios-blue);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card-link-tag {
+            background: rgba(255, 149, 0, 0.1);
+            color: var(--ios-orange);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Наименование */
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.25;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Горизонтальная линия-разделитель (как на фото) */
+        .card-divider {
+            height: 1px;
+            background-color: var(--ios-separator);
+            margin: 2px 0;
             width: 100%;
-            height: 180px;
+        }
+
+        /* Назначение (Столбец N) */
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--ios-gray);
+            line-height: 1.25;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Правая часть: Блок Picture */
+        .card-img-container {
+            position: relative;
+            width: 110px;
+            min-width: 110px;
+            height: 100%;
+            min-height: 90px;
             background: var(--ios-bg);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .card-img-container img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Кружок статуса (Столбец AG) */
         .status-circle {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 14px;
-            height: 14px;
+            top: 6px;
+            right: 6px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.9);
+            border: 2px solid #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             z-index: 10;
         }
@@ -181,63 +256,6 @@
         }
         .status-false {
             background-color: #FF3B30; /* Красный */
-        }
-
-        .card-body {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .badges-container {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .card-tag {
-            align-self: flex-start;
-            background: rgba(0, 122, 255, 0.1);
-            color: var(--ios-blue);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .card-link-tag {
-            align-self: flex-start;
-            background: rgba(255, 149, 0, 0.1);
-            color: var(--ios-orange);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none; /* Убираем подчеркивание */
-        }
-
-        .card-title {
-            /* Уменьшено в 1.5 раза от 17px */
-            font-size: calc(17px / 1.5); 
-            font-weight: 600;
-            line-height: 1.3;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-
-        /* Доп информация под названием (Столбец N) */
-        .card-subtitle {
-            font-size: 10px;
-            color: var(--ios-gray);
-            padding-top: 6px;
-            border-top: 1px solid var(--ios-separator);
-            margin-top: 2px;
-            line-height: 1.3;
-            word-break: break-word;
-            overflow-wrap: break-word;
         }
 
         /* Модальное окно характеристик */
@@ -331,7 +349,7 @@
             padding: 12px 16px;
             font-size: 15px;
             vertical-align: top;
-            word-break: break-word; /* Перенос слов */
+            word-break: break-word;
         }
 
         .specs-table td:first-child {
@@ -383,7 +401,7 @@
             background: rgba(0,0,0,0.4);
             z-index: 1000;
             justify-content: center;
-            align-items: flex-end; /* Прижимаем к низу */
+            align-items: flex-end;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -579,7 +597,7 @@
                 return;
             }
 
-            data.forEach((row, index) => {
+            data.forEach((row) => {
                 const originalIndex = rawData.indexOf(row);
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -611,7 +629,7 @@
                     }
                 }
 
-                // Создаем плашку O. Если есть ссылка из BO, делаем её кликабельной, но без стилизации ссылки.
+                // Блок производителя (O) с поддержкой ссылки BO
                 let oTagHtml = '';
                 if (oData) {
                     if (boLink) {
@@ -619,25 +637,27 @@
                             new URL(boLink);
                             oTagHtml = `<span class="card-link-tag" onclick="event.stopPropagation(); window.open('${escapeHtml(boLink)}', '_blank')">${escapeHtml(oData)}</span>`;
                         } catch (_) {
-                            oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`; // Если ссылка невалидная, просто текст
+                            oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
                         }
                     } else {
                         oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
                     }
                 }
 
+                // Структура строго по эскизу
                 card.innerHTML = `
-                    <div class="card-img-container">
-                        ${imgHtml}
-                        ${statusHtml}
-                    </div>
                     <div class="card-body">
                         <div class="badges-container">
                             ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
                             ${oTagHtml}
                         </div>
                         <div class="card-title">${escapeHtml(name)}</div>
+                        <div class="card-divider"></div>
                         ${nInfo ? `<div class="card-subtitle">${escapeHtml(nInfo)}</div>` : ''}
+                    </div>
+                    <div class="card-img-container">
+                        ${imgHtml}
+                        ${statusHtml}
                     </div>
                 `;
                 grid.appendChild(card);
@@ -649,7 +669,6 @@
             const sortList = document.getElementById('sortList');
             sortList.innerHTML = '';
             SORT_COLUMNS.forEach(colIndex => {
-                // Берем название из заголовков, если нет — название столбца Excel (A, B, C...)
                 const colName = headers[colIndex] ? headers[colIndex] : `Столбец ${colIndex + 1}`;
                 const btn = document.createElement('button');
                 btn.className = 'sort-option-btn';

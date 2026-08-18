@@ -102,6 +102,22 @@
             display: flex;
         }
 
+        /* Счетчик количества карточек */
+        .cards-count {
+            background: var(--ios-card-bg);
+            border-radius: 12px;
+            height: 40px;
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
         /* Кнопки управления (Сорт / Фильтр) */
         .header-btn {
             background: var(--ios-card-bg);
@@ -622,7 +638,7 @@
             .search-container {
                 flex-wrap: wrap;
             }
-            .header-btn {
+            .header-btn, .cards-count {
                 flex: 1;
             }
             .filter-sidebar {
@@ -657,6 +673,9 @@
                 <input type="text" id="searchAll" placeholder="Поиск по всей таблице">
                 <button class="clear-btn" data-target="searchAll">✕</button>
             </div>
+
+            <!-- Интегрированный счётчик -->
+            <div class="cards-count" id="cardsCount">0 из 0</div>
 
             <button class="header-btn" id="sortBtn">Сорт.</button>
             <button class="header-btn" id="filterBtn">Фильтр</button>
@@ -743,10 +762,12 @@
                     renderCards(rawData);
                 } else {
                     document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
+                    document.getElementById('cardsCount').innerText = '0 из 0';
                 }
             },
             error: function(err) {
                 document.getElementById('cardsGrid').innerHTML = '<div class="loader">Ошибка загрузки. Проверьте доступность таблицы.</div>';
+                document.getElementById('cardsCount').innerText = '0 из 0';
                 console.error(err);
             }
         });
@@ -754,6 +775,12 @@
         function renderCards(data) {
             const grid = document.getElementById('cardsGrid');
             grid.innerHTML = '';
+
+            // Обновляем счётчик: "Найдено из Всего"
+            const countEl = document.getElementById('cardsCount');
+            if (countEl) {
+                countEl.innerText = `${data.length} из ${rawData.length}`;
+            }
 
             if (data.length === 0) {
                 grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
@@ -832,7 +859,6 @@
             filterBody.innerHTML = '';
 
             headers.forEach((headerName, colIndex) => {
-                // Извлекаем все непустые уникальные значения для текущего столбца
                 const uniqueValues = new Set();
                 rawData.forEach(row => {
                     const val = row[colIndex];
@@ -841,7 +867,6 @@
                     }
                 });
 
-                // Показываем фильтр только если в столбце есть значения
                 if (uniqueValues.size > 0) {
                     const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
 
@@ -904,12 +929,11 @@
             return String(text).replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Применение всех фильтров (поиск + выпадающие меню столбцов)
+        // Применение всех фильтров
         function applyFilters() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
 
-            // Собираем активные значения выпадающих списков
             const selects = document.querySelectorAll('.filter-select');
             const activeFilters = [];
 
@@ -929,7 +953,6 @@
                 const matchName = nameQuery === '' || name.includes(nameQuery);
                 const matchAll = allQuery === '' || rowText.includes(allQuery);
 
-                // Проверка совпадения со всеми выбранными выпадающими списками
                 let matchDropdowns = true;
                 for (let filter of activeFilters) {
                     const cellVal = (row[filter.colIndex] || '').toString().trim().toLowerCase();
@@ -976,7 +999,7 @@
             });
         });
 
-        // Открытие/закрытие боковой панели фильтров
+        // Боковая панель фильтров
         const filterBtn = document.getElementById('filterBtn');
         const filterSidebar = document.getElementById('filterSidebar');
         const closeFilterBtn = document.getElementById('closeFilterBtn');
@@ -990,14 +1013,13 @@
             filterSidebar.classList.remove('open');
         });
 
-        // Кнопка сброса всех выбранных выпадающих списков
         resetFiltersBtn.addEventListener('click', () => {
             const selects = filterSidebar.querySelectorAll('.filter-select');
             selects.forEach(select => select.value = '');
             applyFilters();
         });
 
-        // Логика окна сортировки
+        // Модальное окно сортировки
         const sortBtn = document.getElementById('sortBtn');
         const sortModalOverlay = document.getElementById('sortModalOverlay');
         const closeSortModalBtn = document.getElementById('closeSortModal');
@@ -1060,7 +1082,7 @@
             }
         });
 
-        // Полноэкранный просмотр изображений
+        // Просмотр изображений
         const imageViewerOverlay = document.getElementById('imageViewerOverlay');
         const imageViewerImg = document.getElementById('imageViewerImg');
 

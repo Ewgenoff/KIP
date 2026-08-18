@@ -130,7 +130,7 @@
             margin: 0 auto;
         }
 
-        /* Перевод карточки на горизонтальный Flexbox по эскизу */
+        /* Карточка iOS — горизонтальная раскладка */
         .card {
             background: var(--ios-card-bg);
             border-radius: 16px;
@@ -159,7 +159,7 @@
             justify-content: flex-start;
             padding: 0;
             gap: 6px;
-            min-width: 0; /* Для корректного переноса длинных слов */
+            min-width: 0;
         }
 
         /* Верхняя строка бэджей (ТЭГ + Фирма) */
@@ -200,7 +200,7 @@
             overflow-wrap: break-word;
         }
 
-        /* Горизонтальная линия-разделитель (как на фото) */
+        /* Горизонтальная линия-разделитель */
         .card-divider {
             height: 1px;
             background-color: var(--ios-separator);
@@ -212,7 +212,7 @@
         .card-subtitle {
             font-size: 11px;
             color: var(--ios-gray);
-            line-height: 1.25;
+            line-height: 1.35;
             word-break: break-word;
             overflow-wrap: break-word;
         }
@@ -233,12 +233,14 @@
             flex-shrink: 0;
         }
 
+        /* Вписанное изображение */
         .card-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 4px; /* опционально: небольшой отступ от краев контейнера */
-}
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+            cursor: zoom-in;
+        }
 
         /* Кружок статуса (Столбец AG) */
         .status-circle {
@@ -257,6 +259,44 @@
         }
         .status-false {
             background-color: #FF3B30; /* Красный */
+        }
+
+        /* Полноэкранный просмотрщик картинок */
+        .image-viewer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .image-viewer-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .image-viewer-overlay img {
+            max-width: 95%;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.25s ease;
+            transform: scale(0.9);
+        }
+
+        .image-viewer-overlay.visible img {
+            transform: scale(1);
         }
 
         /* Модальное окно характеристик */
@@ -492,43 +532,6 @@
                 border-radius: 0;
             }
         }
-        /* Полноэкранный просмотрщик картинок */
-.image-viewer-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-
-.image-viewer-overlay.visible {
-    display: flex;
-    opacity: 1;
-}
-
-.image-viewer-overlay img {
-    max-width: 95%;
-    max-height: 95vh;
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    transition: transform 0.25s ease;
-    transform: scale(0.9);
-}
-
-.image-viewer-overlay.visible img {
-    transform: scale(1);
-}
     </style>
 </head>
 <body>
@@ -580,6 +583,11 @@
             </div>
             <button class="cancel-btn" id="closeSortModal">Отмена</button>
         </div>
+    </div>
+
+    <!-- Полноразмерный просмотр изображений -->
+    <div class="image-viewer-overlay" id="imageViewerOverlay">
+        <img id="imageViewerImg" src="" alt="Увеличенное изображение">
     </div>
 
     <script>
@@ -646,7 +654,10 @@
                 const imgUrl = row[IDX.IMAGE] || '';
                 const oData = row[IDX.O_DATA] || '';
                 const boLink = row[IDX.BO_LINK] || '';
-                const nInfo = row[IDX.N_INFO] || '';
+                
+                // Экранируем и добавляем переносы строк после ';'
+                const nInfoRaw = row[IDX.N_INFO] || '';
+                const nInfo = escapeHtml(nInfoRaw).replace(/;/g, ';<br>');
                 
                 // Обработка статуса из столбца AG
                 const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
@@ -657,17 +668,17 @@
                     statusHtml = '<div class="status-circle status-false"></div>';
                 }
 
-               let imgHtml = '';
-if (imgUrl) {
-    try {
-        new URL(imgUrl);
-        // onclick с event.stopPropagation() перехватывает клик,
-        // чтобы не открывалось модальное окно характеристик карточки
-        imgHtml = `<img src="${imgUrl}" alt="${name}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
-    } catch (_) {
-        imgHtml = '';
-    }
-}
+                // Картинка с кликом для просмотра в полном размере
+                let imgHtml = '';
+                if (imgUrl) {
+                    try {
+                        new URL(imgUrl);
+                        imgHtml = `<img src="${imgUrl}" alt="${escapeHtml(name)}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
+                    } catch (_) {
+                        imgHtml = '';
+                    }
+                }
+
                 // Блок производителя (O) с поддержкой ссылки BO
                 let oTagHtml = '';
                 if (oData) {
@@ -683,7 +694,7 @@ if (imgUrl) {
                     }
                 }
 
-                // Структура строго по эскизу
+                // Внутренняя структура карточки
                 card.innerHTML = `
                     <div class="card-body">
                         <div class="badges-container">
@@ -692,7 +703,7 @@ if (imgUrl) {
                         </div>
                         <div class="card-title">${escapeHtml(name)}</div>
                         <div class="card-divider"></div>
-                        ${nInfo ? `<div class="card-subtitle">${escapeHtml(nInfo)}</div>` : ''}
+                        ${nInfo ? `<div class="card-subtitle">${nInfo}</div>` : ''}
                     </div>
                     <div class="card-img-container">
                         ${imgHtml}
@@ -821,7 +832,7 @@ if (imgUrl) {
             // Перебор от C (индекс 2) до BM (индекс 64)
             for (let i = 2; i <= 64; i++) {
                 const headerText = headers[i] ? escapeHtml(headers[i]) : '';
-                const valueText = row[i] ? escapeHtml(row[i]) : '—';
+                const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';
                 
                 if (headerText || valueText !== '—') {
                     tableHtml += `
@@ -851,34 +862,30 @@ if (imgUrl) {
                 closeModal();
             }
         });
-// Полноэкранный просмотр изображений
-const imageViewerOverlay = document.getElementById('imageViewerOverlay');
-const imageViewerImg = document.getElementById('imageViewerImg');
 
-function openImageViewer(url) {
-    if (!url) return;
-    imageViewerImg.src = url;
-    imageViewerOverlay.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-}
+        // Полноэкранный просмотр изображений
+        const imageViewerOverlay = document.getElementById('imageViewerOverlay');
+        const imageViewerImg = document.getElementById('imageViewerImg');
 
-function closeImageViewer() {
-    imageViewerOverlay.classList.remove('visible');
-    // Очищаем src после завершения анимации
-    setTimeout(() => {
-        if (!imageViewerOverlay.classList.contains('visible')) {
-            imageViewerImg.src = '';
+        function openImageViewer(url) {
+            if (!url) return;
+            imageViewerImg.src = url;
+            imageViewerOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
         }
-    }, 250);
-    document.body.style.overflow = '';
-}
 
-// Закрытие по клику в любом месте оверлея или на само изображение
-imageViewerOverlay.addEventListener('click', closeImageViewer);
+        function closeImageViewer() {
+            imageViewerOverlay.classList.remove('visible');
+            setTimeout(() => {
+                if (!imageViewerOverlay.classList.contains('visible')) {
+                    imageViewerImg.src = '';
+                }
+            }, 250);
+            document.body.style.overflow = '';
+        }
+
+        imageViewerOverlay.addEventListener('click', closeImageViewer);
+
     </script>
-    <!-- Полноразмерный просмотр изображений -->
-<div class="image-viewer-overlay" id="imageViewerOverlay">
-    <img id="imageViewerImg" src="" alt="Увеличенное изображение">
-</div>
 </body>
 </html>

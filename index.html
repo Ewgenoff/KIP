@@ -294,8 +294,27 @@
             letter-spacing: -0.2px;
         }
 
-        /* Кастомные кнопки вместо системного select */
+        /* --- Элементы выбора для Десктопа и Мобилок --- */
+        .desktop-select {
+            display: block;
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .desktop-select:focus {
+            border-color: var(--ios-blue);
+        }
+
         .custom-select-trigger {
+            display: none;
             width: 100%;
             padding: 10px 30px 10px 12px;
             border-radius: 10px;
@@ -333,30 +352,7 @@
             font-weight: 500;
         }
 
-        .sort-option-btn {
-            display: block;
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            text-align: left;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .sort-option-btn:active {
-            border-color: var(--ios-blue);
-            background-color: rgba(0, 122, 255, 0.05);
-        }
-
-        /* iOS-Style Bottom Sheet для выбора значения фильтра */
+        /* --- iOS-Style Bottom Sheet для Мобилок --- */
         .ios-sheet-overlay {
             display: none;
             position: fixed;
@@ -366,8 +362,8 @@
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             z-index: 2000;
-            justify-content: flex-end;
-            flex-direction: column;
+            justify-content: flex-end; /* Выравнивание по правому краю */
+            align-items: flex-end;   /* Выравнивание по нижнему краю */
             opacity: 0;
             transition: opacity 0.25s ease;
         }
@@ -381,6 +377,8 @@
             background: #FFFFFF;
             border-radius: 20px 20px 0 0;
             max-height: 75vh;
+            width: 340px;      /* Точное соответствие ширине боковой панели */
+            max-width: 85%;
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
@@ -462,6 +460,29 @@
             content: '✓';
             color: var(--ios-blue);
             font-weight: bold;
+        }
+
+        .sort-option-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            text-align: left;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .sort-option-btn:active {
+            border-color: var(--ios-blue);
+            background-color: rgba(0, 122, 255, 0.05);
         }
 
         /* Карточка iOS */
@@ -740,7 +761,16 @@
             font-size: 16px;
         }
 
+        /* --- Адаптивные переключения Мобильный / Десктоп --- */
         @media (max-width: 768px) {
+            .desktop-select {
+                display: none;
+            }
+
+            .custom-select-trigger {
+                display: block;
+            }
+
             .search-container {
                 flex-direction: column;
                 gap: 8px;
@@ -773,6 +803,11 @@
             }
 
             .side-modal {
+                width: 75%;
+                max-width: 280px;
+            }
+
+            .ios-sheet {
                 width: 75%;
                 max-width: 280px;
             }
@@ -844,7 +879,7 @@
         </div>
     </div>
 
-    <!-- iOS Bottom Sheet для выбора фильтра -->
+    <!-- iOS Bottom Sheet для мобильного выбора -->
     <div class="ios-sheet-overlay" id="iosSheetOverlay">
         <div class="ios-sheet">
             <div class="ios-sheet-header">
@@ -879,7 +914,7 @@
         
         let rawData = [];
         let headers = [];
-        let filterState = {}; // Хранение выбранных фильтров
+        let filterState = {};
 
         const IDX = {
             TAG: 0,
@@ -1009,19 +1044,35 @@
 
                 if (uniqueValues.size > 0) {
                     const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
-
                     const group = document.createElement('div');
                     group.className = 'filter-group';
 
                     const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
 
+                    let selectOptionsHtml = '<option value="">Все значения</option>';
+                    sortedValues.forEach(val => {
+                        selectOptionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
+                    });
+
                     group.innerHTML = `
                         <label class="filter-label">${escapeHtml(labelText)}</label>
-                        <button class="custom-select-trigger" id="filter-btn-${colIndex}" data-col="${colIndex}">
+                        <!-- Десктоп версия: стандартный select -->
+                        <select class="desktop-select" id="desktop-select-${colIndex}">
+                            ${selectOptionsHtml}
+                        </select>
+                        <!-- Мобильная версия: кастомная кнопка вызова окна -->
+                        <button class="custom-select-trigger" id="filter-btn-${colIndex}">
                             Все значения
                         </button>
                     `;
 
+                    // Десктопное событие
+                    const selectEl = group.querySelector('.desktop-select');
+                    selectEl.addEventListener('change', (e) => {
+                        selectFilterOption(colIndex, e.target.value, e.target.options[e.target.selectedIndex].text);
+                    });
+
+                    // Мобильное событие
                     const triggerBtn = group.querySelector('.custom-select-trigger');
                     triggerBtn.addEventListener('click', () => {
                         openIosSheet(labelText, colIndex, sortedValues);
@@ -1032,7 +1083,7 @@
             });
         }
 
-        /* Вызов кастомного шторки в стиле iOS */
+        /* Вызов шторки на мобильных */
         function openIosSheet(title, colIndex, values) {
             const sheetOverlay = document.getElementById('iosSheetOverlay');
             const sheetTitle = document.getElementById('iosSheetTitle');
@@ -1043,14 +1094,12 @@
 
             const currentValue = filterState[colIndex] || '';
 
-            // Опция "Все значения"
             const allItem = document.createElement('div');
             allItem.className = `ios-sheet-item ${currentValue === '' ? 'selected' : ''}`;
             allItem.innerText = 'Все значения';
             allItem.onclick = () => selectFilterOption(colIndex, '', 'Все значения');
             sheetBody.appendChild(allItem);
 
-            // Значения
             values.forEach(val => {
                 const item = document.createElement('div');
                 item.className = `ios-sheet-item ${currentValue === val ? 'selected' : ''}`;
@@ -1071,16 +1120,25 @@
             if (e.target.id === 'iosSheetOverlay') closeIosSheet();
         });
 
+        /* Синхронное обновление состояния для обеих версий */
         function selectFilterOption(colIndex, value, displayLabel) {
             const btn = document.getElementById(`filter-btn-${colIndex}`);
+            const select = document.getElementById(`desktop-select-${colIndex}`);
+
             if (value === '') {
                 delete filterState[colIndex];
-                btn.innerText = 'Все значения';
-                btn.classList.remove('selected');
+                if (btn) {
+                    btn.innerText = 'Все значения';
+                    btn.classList.remove('selected');
+                }
+                if (select) select.value = '';
             } else {
                 filterState[colIndex] = value;
-                btn.innerText = displayLabel;
-                btn.classList.add('selected');
+                if (btn) {
+                    btn.innerText = displayLabel;
+                    btn.classList.add('selected');
+                }
+                if (select) select.value = value;
             }
             closeIosSheet();
             applyFilters();
@@ -1217,6 +1275,9 @@
             document.querySelectorAll('.custom-select-trigger').forEach(btn => {
                 btn.innerText = 'Все значения';
                 btn.classList.remove('selected');
+            });
+            document.querySelectorAll('.desktop-select').forEach(select => {
+                select.value = '';
             });
             document.getElementById('searchName').value = '';
             document.getElementById('searchAll').value = '';

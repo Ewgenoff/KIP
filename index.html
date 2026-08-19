@@ -405,7 +405,8 @@
             background: #FFFFFF;
             border-radius: 20px 20px 0 0;
             max-height: 75vh;
-            width: 100%;
+            width: 340px;
+            max-width: 85%;
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
@@ -837,8 +838,8 @@
             }
 
             .ios-sheet {
-                width: 100%;
-                max-width: 100%;
+                width: 75%;
+                max-width: 280px;
             }
 
             .modal {
@@ -857,577 +858,543 @@
             <div class="search-inputs-group">
                 <div class="search-input-wrapper">
                     <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchName" placeholder="Поиск по наименованию">
-                    <button class="clear-btn" id="clearSearchName" data-target="searchName">✕</button>
+                    <input type="text" id="searchName" placeholder="Поиск по названию (Столбец B)">
+                    <button class="clear-btn" data-target="searchName">✕</button>
                 </div>
                 
                 <div class="search-input-wrapper">
                     <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchTag" placeholder="Поиск по ТЭГу / Модели">
-                    <button class="clear-btn" id="clearSearchTag" data-target="searchTag">✕</button>
+                    <input type="text" id="searchAll" placeholder="Поиск по всей таблице">
+                    <button class="clear-btn" data-target="searchAll">✕</button>
                 </div>
             </div>
 
+            <!-- Обновлённый блок кнопок: Счётчик -> Сорт. -> Фильтр -> Крестик -->
             <div class="controls-group">
-                <div class="cards-count" id="cardsCount">0 шт.</div>
-                <button class="header-btn" id="openFilterBtn">Фильтры</button>
-                <button class="header-btn" id="openSortBtn">Сортировка</button>
-                <button class="reset-header-btn" id="resetHeaderBtn" title="Сбросить всё">✕</button>
+                <div class="cards-count" id="cardsCount">0 из 0</div>
+                <button class="header-btn" id="sortBtn">Сорт.</button>
+                <button class="header-btn" id="filterBtn">Фильтр</button>
+                <button class="reset-header-btn" id="globalResetBtn" title="Сбросить все фильтры">✕</button>
             </div>
         </div>
     </div>
 
     <div class="main-container">
         <div class="grid" id="cardsGrid">
-            <div class="loader" id="loader">Загрузка данных...</div>
+            <div class="loader">Загрузка данных...</div>
         </div>
     </div>
 
-    <!-- Боковая панель фильтров -->
-    <div class="side-modal-overlay" id="filterOverlay">
+    <!-- Боковая панель фильтрации -->
+    <div class="side-modal-overlay" id="filterModalOverlay">
         <div class="side-modal">
             <div class="filter-header">
                 <div class="filter-actions">
-                    <span class="filter-title">Фильтры</span>
                     <button class="reset-btn-styled" id="resetFiltersBtn">Сбросить</button>
                     <button class="close-filter-btn" id="closeFilterBtn">✕</button>
                 </div>
             </div>
-            <div class="filter-body" id="filterContainer">
-                <!-- Динамические группы фильтров заполняются из JS -->
-            </div>
+            <div class="filter-body" id="filterBody"></div>
         </div>
     </div>
 
-    <!-- iOS Bottom Sheet для мобильного выбора / сортировки -->
-    <div class="ios-sheet-overlay" id="sheetOverlay">
+    <!-- Боковая панель сортировки -->
+    <div class="side-modal-overlay" id="sortModalOverlay">
+        <div class="side-modal">
+            <div class="filter-header">
+                <div class="filter-actions">
+                    <span class="filter-title">Сортировка</span>
+                    <button class="close-filter-btn" id="closeSortModal">✕</button>
+                </div>
+            </div>
+            <div class="filter-body" id="sortList"></div>
+        </div>
+    </div>
+
+    <!-- iOS Bottom Sheet для мобильного выбора -->
+    <div class="ios-sheet-overlay" id="iosSheetOverlay">
         <div class="ios-sheet">
             <div class="ios-sheet-header">
-                <div class="ios-sheet-title" id="sheetTitle">Выберите вариант</div>
-                <button class="ios-sheet-close" id="closeSheetBtn">✕</button>
+                <span class="ios-sheet-title" id="iosSheetTitle">Выберите значение</span>
+                <button class="ios-sheet-close" id="iosSheetClose">✕</button>
             </div>
-            <div class="ios-sheet-body" id="sheetBody">
-                <!-- Пункты списка -->
-            </div>
+            <div class="ios-sheet-body" id="iosSheetBody"></div>
         </div>
     </div>
 
-    <!-- Модальное окно деталей карточки -->
-    <div class="modal-overlay" id="detailModalOverlay">
+    <!-- Модальное окно характеристик -->
+    <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
                 <h3 class="modal-title" id="modalTitle">Характеристики</h3>
-                <button class="close-btn" id="closeModalBtn">✕</button>
+                <button class="close-btn" id="modalCloseTop">✕</button>
             </div>
-            <div class="modal-content">
-                <table class="specs-table" id="specsTable">
-                    <!-- Заполняется JS -->
-                </table>
-            </div>
+            <div class="modal-content" id="modalContent"></div>
             <div class="modal-footer">
-                <button class="modal-close-btn" id="modalCloseFooterBtn">Закрыть</button>
+                <button class="modal-close-btn" id="modalCloseBottom">Закрыть</button>
             </div>
         </div>
     </div>
 
-    <!-- Просмотрщик изображений -->
+    <!-- Просмотрщик картинок -->
     <div class="image-viewer-overlay" id="imageViewerOverlay">
-        <img src="" id="viewerImage" alt="Изображение">
+        <img id="imageViewerImg" src="" alt="Увеличенное изображение">
     </div>
 
     <script>
-        // Глобальное состояние приложения
-        let allData = [];
-        let filteredData = [];
-        let filterColumns = [];
-        let activeFilters = {};
-        let currentSort = 'default';
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4JrZveD8CqGu7WYz9aME8TMtZ-Zxu3Hrw7r1PTp8KsIXbk_VmAJLJwYHvv716aefg-MzYM9CrIyiY/pub?gid=0&single=true&output=csv";
+        
+        let rawData = [];
+        let headers = [];
+        let filterState = {};
 
-        // URL CSV файла (может переопределяться через URL-параметр ?csv=...)
-        const urlParams = new URLSearchParams(window.location.search);
-        const csvUrl = urlParams.get('csv') || 'data.csv';
+        const IDX = {
+            TAG: 0,
+            NAME: 1,
+            N_INFO: 13,
+            O_DATA: 14,
+            STATUS: 32,
+            IMAGE: 65,
+            BO_LINK: 66
+        };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initSearchInputs();
-            initControlButtons();
-            initModals();
-            loadCSVData(csvUrl);
+        const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+
+        Papa.parse(CSV_URL, {
+            download: true,
+            header: false,
+            skipEmptyLines: true,
+            complete: function(results) {
+                rawData = results.data;
+                if(rawData.length > 0) {
+                    headers = rawData[0];
+                    rawData.shift();
+                    populateSortOptions();
+                    populateFilterDropdowns();
+                    renderCards(rawData);
+                } else {
+                    document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
+                    document.getElementById('cardsCount').innerText = '0 из 0';
+                }
+            },
+            error: function(err) {
+                document.getElementById('cardsGrid').innerHTML = '<div class="loader">Ошибка загрузки. Проверьте доступность таблицы.</div>';
+                document.getElementById('cardsCount').innerText = '0 из 0';
+            }
         });
 
-        // Загрузка и парсинг CSV
-        function loadCSVData(path) {
-            Papa.parse(path, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    if (results.data && results.data.length > 0) {
-                        allData = results.data;
-                        setupFiltersConfig();
-                        applyFiltersAndRender();
-                    } else {
-                        showError('Файл пуст или содержит неверный формат.');
-                    }
-                },
-                error: function(err) {
-                    // Резервный запуск демонстрационных данных, если файл не найден локально
-                    console.warn('Не удалось загрузить CSV по пути:', path, err);
-                    loadDemoData();
-                }
-            });
-        }
-
-        // Демонстрационные данные при отсутствии внешнего файла CSV
-        function loadDemoData() {
-            allData = [
-                {
-                    "Наименование": "Датчик избыточного давления OWEN PD100",
-                    "ТЭГ": "3150-PDSH-800A",
-                    "Здание": "3150",
-                    "БЗ": "ВЦК.22550",
-                    "Оборудование": "Differential pressure switch",
-                    "Производитель": "OWEN",
-                    "Вес, кг": "0.25",
-                    "Статус": "true",
-                    "Картинка": "https://via.placeholder.com/150/007AFF/FFFFFF?text=OWEN"
-                },
-                {
-                    "Наименование": "Привод воздушной заслонки Hoocon DW-002A",
-                    "ТЭГ": "3150-B01-DW-002A",
-                    "Здание": "3150",
-                    "БЗ": "ВЦК.22550",
-                    "Оборудование": "Actuator",
-                    "Производитель": "Hoocon",
-                    "Вес, кг": "2.6",
-                    "Статус": "true",
-                    "Картинка": "https://via.placeholder.com/150/FF9500/FFFFFF?text=Hoocon"
-                },
-                {
-                    "Наименование": "Защитный термостат RGP THS-800A",
-                    "ТЭГ": "3150-THS-800A",
-                    "Здание": "3150",
-                    "БЗ": "ВЦК.22550",
-                    "Оборудование": "Thermostat",
-                    "Производитель": "RGP",
-                    "Вес, кг": "0.2",
-                    "Статус": "false",
-                    "Картинка": "https://via.placeholder.com/150/8E8E93/FFFFFF?text=RGP"
-                }
-            ];
-            setupFiltersConfig();
-            applyFiltersAndRender();
-        }
-
-        function showError(msg) {
+        function renderCards(data) {
             const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = `<div class="loader">${msg}</div>`;
-        }
-
-        // Инициализация конфигурации фильтров на основе колонок CSV
-        function setupFiltersConfig() {
-            if (allData.length === 0) return;
-            
-            const keys = Object.keys(allData[0]);
-            // Автоматически определяем подходящие колонки для фильтров
-            filterColumns = keys.filter(k => 
-                !['Наименование', 'Картинка', 'Ссылка на PID', 'Ссылка на чертеж'].includes(k)
-            );
-
-            renderFilterControls();
-        }
-
-        // Отрисовка элементов фильтрации в боковой панели
-        function renderFilterControls() {
-            const container = document.getElementById('filterContainer');
-            container.innerHTML = '';
-
-            filterColumns.forEach(col => {
-                const values = Array.from(new Set(allData.map(item => item[col] ? item[col].trim() : '').filter(Boolean))).sort();
-                if (values.length === 0) return;
-
-                const group = document.createElement('div');
-                group.className = 'filter-group';
-
-                const label = document.createElement('div');
-                label.className = 'filter-label';
-                label.textContent = col;
-
-                // Десктопный селект
-                const select = document.createElement('select');
-                select.className = 'desktop-select';
-                select.dataset.column = col;
-                select.innerHTML = `<option value="">Все (${col})</option>` + 
-                    values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
-
-                select.addEventListener('change', (e) => {
-                    setFilterValue(col, e.target.value);
-                });
-
-                // Мобильный триггер Bottom Sheet
-                const trigger = document.createElement('button');
-                trigger.className = 'custom-select-trigger';
-                trigger.id = `trigger_${col}`;
-                trigger.textContent = `Все (${col})`;
-                trigger.addEventListener('click', () => {
-                    openBottomSheetForColumn(col, values);
-                });
-
-                group.appendChild(label);
-                group.appendChild(select);
-                group.appendChild(trigger);
-                container.appendChild(group);
-            });
-        }
-
-        // Установка значения фильтра
-        function setFilterValue(col, val) {
-            if (!val) {
-                delete activeFilters[col];
-            } else {
-                activeFilters[col] = val;
-            }
-
-            // Синхронизация контролов
-            const select = document.querySelector(`.desktop-select[data-column="${col}"]`);
-            if (select) select.value = val || '';
-
-            const trigger = document.getElementById(`trigger_${col}`);
-            if (trigger) {
-                if (val) {
-                    trigger.textContent = val;
-                    trigger.classList.add('selected');
-                } else {
-                    trigger.textContent = `Все (${col})`;
-                    trigger.classList.remove('selected');
-                }
-            }
-
-            updateActiveButtonsState();
-            applyFiltersAndRender();
-        }
-
-        // Логика фильтрации и отрисовки карточек
-        function applyFiltersAndRender() {
-            const searchNameVal = document.getElementById('searchName').value.toLowerCase().trim();
-            const searchTagVal = document.getElementById('searchTag').value.toLowerCase().trim();
-
-            filteredData = allData.filter(item => {
-                // Поиск по названию
-                if (searchNameVal) {
-                    const name = (item['Наименование'] || item['Название'] || '').toLowerCase();
-                    if (!name.includes(searchNameVal)) return false;
-                }
-
-                // Поиск по ТЭГу / Модели
-                if (searchTagVal) {
-                    const tag = (item['ТЭГ'] || item['Модель'] || item['Оборудование'] || '').toLowerCase();
-                    if (!tag.includes(searchTagVal)) return false;
-                }
-
-                // Боковые фильтры
-                for (let col in activeFilters) {
-                    const itemVal = item[col] ? item[col].trim() : '';
-                    if (itemVal !== activeFilters[col]) return false;
-                }
-
-                return true;
-            });
-
-            // Сортировка
-            sortData();
-
-            // Рендер
-            renderGrid();
-        }
-
-        function sortData() {
-            if (currentSort === 'name_asc') {
-                filteredData.sort((a, b) => (a['Наименование'] || '').localeCompare(b['Наименование'] || ''));
-            } else if (currentSort === 'name_desc') {
-                filteredData.sort((a, b) => (b['Наименование'] || '').localeCompare(a['Наименование'] || ''));
-            } else if (currentSort === 'tag_asc') {
-                filteredData.sort((a, b) => (a['ТЭГ'] || '').localeCompare(b['ТЭГ'] || ''));
-            }
-        }
-
-        // Отрисовка сетки карточек
-        function renderGrid() {
-            const grid = document.getElementById('cardsGrid');
-            const countElem = document.getElementById('cardsCount');
-
-            countElem.textContent = `${filteredData.length} шт.`;
             grid.innerHTML = '';
 
-            if (filteredData.length === 0) {
+            const countEl = document.getElementById('cardsCount');
+            if (countEl) {
+                countEl.innerText = `${data.length} из ${rawData.length}`;
+            }
+
+            if (data.length === 0) {
                 grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
                 return;
             }
 
-            filteredData.forEach((item, index) => {
+            data.forEach((row) => {
+                const originalIndex = rawData.indexOf(row);
                 const card = document.createElement('div');
                 card.className = 'card';
+                card.onclick = () => openModal(originalIndex);
 
-                const title = item['Наименование'] || item['Название'] || 'Без названия';
-                const tag = item['ТЭГ'] || item['Модель'] || '';
-                const vendor = item['Производитель'] || item['БЗ'] || '';
-                const status = item['Статус'] === 'true' || item['Статус'] === '1';
-                const imgSrc = item['Картинка'] || item['Изображение'] || 'https://via.placeholder.com/110x90/F2F2F7/8E8E93?text=No+Photo';
+                const tag = row[IDX.TAG] || '';
+                const name = row[IDX.NAME] || 'Без названия';
+                const imgUrl = row[IDX.IMAGE] || '';
+                const oData = row[IDX.O_DATA] || '';
+                const boLink = row[IDX.BO_LINK] || '';
+                
+                const nInfoRaw = row[IDX.N_INFO] || '';
+                const nInfo = escapeHtml(nInfoRaw).replace(/;/g, ';<br>');
+                
+                const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
+                let statusHtml = '';
+                if (statusValue === 'true') {
+                    statusHtml = '<div class="status-circle status-true"></div>';
+                } else if (statusValue === 'false') {
+                    statusHtml = '<div class="status-circle status-false"></div>';
+                }
+
+                let imgHtml = '';
+                if (imgUrl) {
+                    try {
+                        new URL(imgUrl);
+                        imgHtml = `<img src="${imgUrl}" alt="${escapeHtml(name)}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
+                    } catch (_) { imgHtml = ''; }
+                }
+
+                let oTagHtml = '';
+                if (oData) {
+                    if (boLink) {
+                        try {
+                            new URL(boLink);
+                            oTagHtml = `<span class="card-link-tag" onclick="event.stopPropagation(); window.open('${escapeHtml(boLink)}', '_blank')">${escapeHtml(oData)}</span>`;
+                        } catch (_) {
+                            oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
+                        }
+                    } else {
+                        oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
+                    }
+                }
 
                 card.innerHTML = `
                     <div class="card-body">
                         <div class="badges-container">
                             ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
-                            ${vendor ? `<span class="card-link-tag">${escapeHtml(vendor)}</span>` : ''}
+                            ${oTagHtml}
                         </div>
-                        <div class="card-title">${escapeHtml(title)}</div>
+                        <div class="card-title">${escapeHtml(name)}</div>
                         <div class="card-divider"></div>
-                        <div class="card-subtitle">
-                            ${item['Оборудование'] ? `Обор.: ${escapeHtml(item['Оборудование'])}<br>` : ''}
-                            ${item['Здание'] ? `Здание: ${escapeHtml(item['Здание'])}` : ''}
-                        </div>
+                        ${nInfo ? `<div class="card-subtitle">${nInfo}</div>` : ''}
                     </div>
                     <div class="card-img-container">
-                        <div class="status-circle ${status ? 'status-true' : 'status-false'}"></div>
-                        <img src="${escapeHtml(imgSrc)}" alt="Фото" class="card-img-preview" data-src="${escapeHtml(imgSrc)}">
+                        ${imgHtml}
+                        ${statusHtml}
                     </div>
                 `;
-
-                // Открытие модального окна подробностей
-                card.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('card-img-preview')) {
-                        openImageViewer(e.target.dataset.src);
-                    } else {
-                        openDetailModal(item);
-                    }
-                });
-
                 grid.appendChild(card);
             });
         }
 
-        // Инициализация полей поиска и их кнопок очистки
-        function initSearchInputs() {
-            ['searchName', 'searchTag'].forEach(id => {
-                const input = document.getElementById(id);
-                const clearBtn = document.querySelector(`.clear-btn[data-target="${id}"]`);
+        function populateFilterDropdowns() {
+            const filterBody = document.getElementById('filterBody');
+            filterBody.innerHTML = '';
 
-                input.addEventListener('input', () => {
-                    if (input.value) {
-                        clearBtn.classList.add('visible');
-                    } else {
-                        clearBtn.classList.remove('visible');
+            headers.forEach((headerName, colIndex) => {
+                const uniqueValues = new Set();
+                rawData.forEach(row => {
+                    const val = row[colIndex];
+                    if (val && val.toString().trim() !== '') {
+                        uniqueValues.add(val.toString().trim());
                     }
-                    updateActiveButtonsState();
-                    applyFiltersAndRender();
                 });
 
-                clearBtn.addEventListener('click', () => {
-                    input.value = '';
-                    clearBtn.classList.remove('visible');
-                    updateActiveButtonsState();
-                    applyFiltersAndRender();
-                });
+                if (uniqueValues.size > 0) {
+                    const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
+                    const group = document.createElement('div');
+                    group.className = 'filter-group';
+
+                    const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
+
+                    let selectOptionsHtml = '<option value="">Все значения</option>';
+                    sortedValues.forEach(val => {
+                        selectOptionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
+                    });
+
+                    group.innerHTML = `
+                        <label class="filter-label">${escapeHtml(labelText)}</label>
+                        <select class="desktop-select" id="desktop-select-${colIndex}">
+                            ${selectOptionsHtml}
+                        </select>
+                        <button class="custom-select-trigger" id="filter-btn-${colIndex}">
+                            Все значения
+                        </button>
+                    `;
+
+                    const selectEl = group.querySelector('.desktop-select');
+                    selectEl.addEventListener('change', (e) => {
+                        selectFilterOption(colIndex, e.target.value, e.target.options[e.target.selectedIndex].text);
+                    });
+
+                    const triggerBtn = group.querySelector('.custom-select-trigger');
+                    triggerBtn.addEventListener('click', () => {
+                        openIosSheet(labelText, colIndex, sortedValues);
+                    });
+
+                    filterBody.appendChild(group);
+                }
             });
         }
 
-        // Кнопки управления шапкой
-        function initControlButtons() {
-            const openFilterBtn = document.getElementById('openFilterBtn');
-            const openSortBtn = document.getElementById('openSortBtn');
-            const resetHeaderBtn = document.getElementById('resetHeaderBtn');
-            const filterOverlay = document.getElementById('filterOverlay');
-            const closeFilterBtn = document.getElementById('closeFilterBtn');
-            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        function openIosSheet(title, colIndex, values) {
+            const sheetOverlay = document.getElementById('iosSheetOverlay');
+            const sheetTitle = document.getElementById('iosSheetTitle');
+            const sheetBody = document.getElementById('iosSheetBody');
 
-            openFilterBtn.addEventListener('click', () => {
-                filterOverlay.classList.add('visible');
-            });
+            sheetTitle.innerText = title;
+            sheetBody.innerHTML = '';
 
-            closeFilterBtn.addEventListener('click', () => {
-                filterOverlay.classList.remove('visible');
-            });
+            const currentValue = filterState[colIndex] || '';
 
-            filterOverlay.addEventListener('click', (e) => {
-                if (e.target === filterOverlay) filterOverlay.classList.remove('visible');
-            });
-
-            resetFiltersBtn.addEventListener('click', resetAllFilters);
-            resetHeaderBtn.addEventListener('click', resetAllFilters);
-
-            openSortBtn.addEventListener('click', openSortBottomSheet);
-        }
-
-        function resetAllFilters() {
-            activeFilters = {};
-            currentSort = 'default';
-
-            document.getElementById('searchName').value = '';
-            document.getElementById('searchTag').value = '';
-            document.querySelectorAll('.clear-btn').forEach(b => b.classList.remove('visible'));
-
-            document.querySelectorAll('.desktop-select').forEach(s => s.value = '');
-            document.querySelectorAll('.custom-select-trigger').forEach(t => {
-                const col = t.id.replace('trigger_', '');
-                t.textContent = `Все (${col})`;
-                t.classList.remove('selected');
-            });
-
-            updateActiveButtonsState();
-            applyFiltersAndRender();
-        }
-
-        function updateActiveButtonsState() {
-            const hasFilters = Object.keys(activeFilters).length > 0;
-            const hasSearch = document.getElementById('searchName').value || document.getElementById('searchTag').value;
-            
-            const openFilterBtn = document.getElementById('openFilterBtn');
-            const resetHeaderBtn = document.getElementById('resetHeaderBtn');
-            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-
-            if (hasFilters) {
-                openFilterBtn.classList.add('active');
-                resetFiltersBtn.classList.add('active');
-            } else {
-                openFilterBtn.classList.remove('active');
-                resetFiltersBtn.classList.remove('active');
-            }
-
-            if (hasFilters || hasSearch) {
-                resetHeaderBtn.classList.add('active');
-            } else {
-                resetHeaderBtn.classList.remove('active');
-            }
-        }
-
-        // Работа с Bottom Sheet (iOS стилевой выпадающий список)
-        function openBottomSheetForColumn(col, values) {
-            const overlay = document.getElementById('sheetOverlay');
-            const title = document.getElementById('sheetTitle');
-            const body = document.getElementById('sheetBody');
-
-            title.textContent = col;
-            body.innerHTML = '';
-
-            // Вариант "Все"
             const allItem = document.createElement('div');
-            allItem.className = `ios-sheet-item ${!activeFilters[col] ? 'selected' : ''}`;
-            allItem.textContent = `Все (${col})`;
-            allItem.addEventListener('click', () => {
-                setFilterValue(col, '');
-                closeBottomSheet();
-            });
-            body.appendChild(allItem);
+            allItem.className = `ios-sheet-item ${currentValue === '' ? 'selected' : ''}`;
+            allItem.innerText = 'Все значения';
+            allItem.onclick = () => selectFilterOption(colIndex, '', 'Все значения');
+            sheetBody.appendChild(allItem);
 
-            values.forEach(v => {
+            values.forEach(val => {
                 const item = document.createElement('div');
-                item.className = `ios-sheet-item ${activeFilters[col] === v ? 'selected' : ''}`;
-                item.textContent = v;
-                item.addEventListener('click', () => {
-                    setFilterValue(col, v);
-                    closeBottomSheet();
-                });
-                body.appendChild(item);
+                item.className = `ios-sheet-item ${currentValue === val ? 'selected' : ''}`;
+                item.innerText = val;
+                item.onclick = () => selectFilterOption(colIndex, val, val);
+                sheetBody.appendChild(item);
             });
 
-            overlay.classList.add('visible');
+            sheetOverlay.classList.add('visible');
         }
 
-        function openSortBottomSheet() {
-            const overlay = document.getElementById('sheetOverlay');
-            const title = document.getElementById('sheetTitle');
-            const body = document.getElementById('sheetBody');
-
-            title.textContent = 'Сортировка';
-            body.innerHTML = '';
-
-            const options = [
-                { id: 'default', label: 'По умолчанию' },
-                { id: 'name_asc', label: 'По наименованию (А-Я)' },
-                { id: 'name_desc', label: 'По наименованию (Я-А)' },
-                { id: 'tag_asc', label: 'По ТЭГу' }
-            ];
-
-            options.forEach(opt => {
-                const item = document.createElement('div');
-                item.className = `ios-sheet-item ${currentSort === opt.id ? 'selected' : ''}`;
-                item.textContent = opt.label;
-                item.addEventListener('click', () => {
-                    currentSort = opt.id;
-                    document.getElementById('openSortBtn').classList.toggle('active', currentSort !== 'default');
-                    applyFiltersAndRender();
-                    closeBottomSheet();
-                });
-                body.appendChild(item);
-            });
-
-            overlay.classList.add('visible');
+        function closeIosSheet() {
+            document.getElementById('iosSheetOverlay').classList.remove('visible');
         }
 
-        function closeBottomSheet() {
-            document.getElementById('sheetOverlay').classList.remove('visible');
+        document.getElementById('iosSheetClose').addEventListener('click', closeIosSheet);
+        document.getElementById('iosSheetOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'iosSheetOverlay') closeIosSheet();
+        });
+
+        function selectFilterOption(colIndex, value, displayLabel) {
+            const btn = document.getElementById(`filter-btn-${colIndex}`);
+            const select = document.getElementById(`desktop-select-${colIndex}`);
+
+            if (value === '') {
+                delete filterState[colIndex];
+                if (btn) {
+                    btn.innerText = 'Все значения';
+                    btn.classList.remove('selected');
+                }
+                if (select) select.value = '';
+            } else {
+                filterState[colIndex] = value;
+                if (btn) {
+                    btn.innerText = displayLabel;
+                    btn.classList.add('selected');
+                }
+                if (select) select.value = value;
+            }
+            closeIosSheet();
+            applyFilters();
         }
 
-        // Модальные окна детального просмотра и зума фото
-        function initModals() {
-            const sheetOverlay = document.getElementById('sheetOverlay');
-            const closeSheetBtn = document.getElementById('closeSheetBtn');
-            const detailModalOverlay = document.getElementById('detailModalOverlay');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const modalCloseFooterBtn = document.getElementById('modalCloseFooterBtn');
-            const imageViewerOverlay = document.getElementById('imageViewerOverlay');
+        function populateSortOptions() {
+            const sortList = document.getElementById('sortList');
+            sortList.innerHTML = '';
+            SORT_COLUMNS.forEach(colIndex => {
+                const colName = headers[colIndex] ? headers[colIndex] : `Столбец ${colIndex + 1}`;
+                
+                const group = document.createElement('div');
+                group.className = 'filter-group';
 
-            closeSheetBtn.addEventListener('click', closeBottomSheet);
-            sheetOverlay.addEventListener('click', (e) => {
-                if (e.target === sheetOverlay) closeBottomSheet();
-            });
-
-            const closeDetail = () => detailModalOverlay.classList.remove('visible');
-            closeModalBtn.addEventListener('click', closeDetail);
-            modalCloseFooterBtn.addEventListener('click', closeDetail);
-            detailModalOverlay.addEventListener('click', (e) => {
-                if (e.target === detailModalOverlay) closeDetail();
-            });
-
-            imageViewerOverlay.addEventListener('click', () => {
-                imageViewerOverlay.classList.remove('visible');
+                const btn = document.createElement('button');
+                btn.className = 'sort-option-btn';
+                btn.innerText = colName;
+                btn.onclick = () => {
+                    rawData.sort((a, b) => {
+                        const valA = (a[colIndex] || '').toString().toLowerCase();
+                        const valB = (b[colIndex] || '').toString().toLowerCase();
+                        return valA.localeCompare(valB, 'ru');
+                    });
+                    closeSortModal();
+                    applyFilters();
+                };
+                
+                group.appendChild(btn);
+                sortList.appendChild(group);
             });
         }
 
-        function openDetailModal(item) {
-            const overlay = document.getElementById('detailModalOverlay');
-            const title = document.getElementById('modalTitle');
-            const table = document.getElementById('specsTable');
+        function escapeHtml(text) {
+            if(text === null || text === undefined) return '';
+            return String(text).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+            })[m]);
+        }
 
-            title.textContent = item['Наименование'] || item['Название'] || 'Детализация';
-            table.innerHTML = '';
+        /* Функция полной очистки всех фильтров */
+        function resetAllFilters() {
+            filterState = {};
+            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
+                btn.innerText = 'Все значения';
+                btn.classList.remove('selected');
+            });
+            document.querySelectorAll('.desktop-select').forEach(select => {
+                select.value = '';
+            });
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchAll').value = '';
+            document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
+            applyFilters();
+        }
 
-            for (let key in item) {
-                if (!item[key] || key === 'Картинка') continue;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${escapeHtml(key)}</td><td>${escapeHtml(item[key])}</td>`;
-                table.appendChild(tr);
+        function applyFilters() {
+            const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
+            const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
+
+            const isFiltered = nameQuery !== '' || allQuery !== '' || Object.keys(filterState).length > 0;
+            
+            const filterBtn = document.getElementById('filterBtn');
+            const resetBtn = document.getElementById('resetFiltersBtn');
+            const globalResetBtn = document.getElementById('globalResetBtn');
+
+            if (isFiltered) {
+                filterBtn.classList.add('active');
+                resetBtn.classList.add('active');
+                globalResetBtn.classList.add('active');
+            } else {
+                filterBtn.classList.remove('active');
+                resetBtn.classList.remove('active');
+                globalResetBtn.classList.remove('active');
             }
 
-            overlay.classList.add('visible');
+            const filtered = rawData.filter(row => {
+                const name = (row[IDX.NAME] || '').toLowerCase();
+                const rowText = row.join(' ').toLowerCase();
+
+                const matchName = nameQuery === '' || name.includes(nameQuery);
+                const matchAll = allQuery === '' || rowText.includes(allQuery);
+
+                let matchDropdowns = true;
+                for (let colIndex in filterState) {
+                    const cellVal = (row[colIndex] || '').toString().trim();
+                    if (cellVal !== filterState[colIndex]) {
+                        matchDropdowns = false;
+                        break;
+                    }
+                }
+
+                return matchName && matchAll && matchDropdowns;
+            });
+
+            renderCards(filtered);
         }
 
-        function openImageViewer(src) {
-            const overlay = document.getElementById('imageViewerOverlay');
-            const img = document.getElementById('viewerImage');
-            img.src = src;
-            overlay.classList.add('visible');
+        document.getElementById('searchName').addEventListener('input', function(e) {
+            toggleClearButton(e.target);
+            applyFilters();
+        });
+
+        document.getElementById('searchAll').addEventListener('input', function(e) {
+            toggleClearButton(e.target);
+            applyFilters();
+        });
+
+        function toggleClearButton(input) {
+            const clearBtn = input.parentElement.querySelector('.clear-btn');
+            if (input.value.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
         }
 
-        // Вспомогательная функция защиты от XSS
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+        document.querySelectorAll('.clear-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                input.value = '';
+                toggleClearButton(input);
+                applyFilters();
+                input.focus();
+            });
+        });
+
+        const filterBtn = document.getElementById('filterBtn');
+        const filterModalOverlay = document.getElementById('filterModalOverlay');
+        const closeFilterBtn = document.getElementById('closeFilterBtn');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const globalResetBtn = document.getElementById('globalResetBtn');
+
+        const sortBtn = document.getElementById('sortBtn');
+        const sortModalOverlay = document.getElementById('sortModalOverlay');
+        const closeSortModalBtn = document.getElementById('closeSortModal');
+
+        filterBtn.addEventListener('click', () => {
+            closeSortModal();
+            filterModalOverlay.classList.add('visible');
+        });
+
+        function closeFilterModal() {
+            filterModalOverlay.classList.remove('visible');
         }
+
+        closeFilterBtn.addEventListener('click', closeFilterModal);
+        filterModalOverlay.addEventListener('click', function(e) {
+            if (e.target === filterModalOverlay) closeFilterModal();
+        });
+
+        /* Привязка действий сброса */
+        resetFiltersBtn.addEventListener('click', resetAllFilters);
+        globalResetBtn.addEventListener('click', resetAllFilters);
+
+        sortBtn.addEventListener('click', () => {
+            closeFilterModal();
+            sortModalOverlay.classList.add('visible');
+        });
+
+        function closeSortModal() {
+            sortModalOverlay.classList.remove('visible');
+        }
+
+        closeSortModalBtn.addEventListener('click', closeSortModal);
+        sortModalOverlay.addEventListener('click', function(e) {
+            if (e.target === sortModalOverlay) closeSortModal();
+        });
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function openModal(rowIndex) {
+            const row = rawData[rowIndex];
+            modalTitle.innerText = row[IDX.NAME] || 'Характеристики';
+            
+            let tableHtml = '<table class="specs-table">';
+            for (let i = 2; i <= 64; i++) {
+                const headerText = headers[i] ? escapeHtml(headers[i]) : '';
+                const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';
+                
+                if (headerText || valueText !== '—') {
+                    tableHtml += `
+                        <tr>
+                            <td>${headerText}</td>
+                            <td>${valueText}</td>
+                        </tr>
+                    `;
+                }
+            }
+            tableHtml += '</table>';
+            
+            modalContent.innerHTML = tableHtml;
+            modalOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modalCloseTop').addEventListener('click', closeModal);
+        document.getElementById('modalCloseBottom').addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        const imageViewerOverlay = document.getElementById('imageViewerOverlay');
+        const imageViewerImg = document.getElementById('imageViewerImg');
+
+        function openImageViewer(url) {
+            if (!url) return;
+            imageViewerImg.src = url;
+            imageViewerOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageViewer() {
+            imageViewerOverlay.classList.remove('visible');
+            setTimeout(() => {
+                if (!imageViewerOverlay.classList.contains('visible')) {
+                    imageViewerImg.src = '';
+                }
+            }, 250);
+            document.body.style.overflow = '';
+        }
+
+        imageViewerOverlay.addEventListener('click', closeImageViewer);
     </script>
 </body>
 </html>

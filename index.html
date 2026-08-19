@@ -3,1398 +3,426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Каталог датчиков</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <title>Расшифровка датчиков ТСПТ</title>
     <style>
-        :root {
-            --ios-bg: #F2F2F7;
-            --ios-card-bg: #FFFFFF;
-            --ios-blue: #007AFF;
-            --ios-orange: #FF9500;
-            --ios-gray: #8E8E93;
-            --ios-light-gray: #E5E5EA;
-            --ios-border: #C6C6C8;
-            --ios-text: #1C1C1E;
-            --ios-separator: rgba(60, 60, 67, 0.12);
-        }
-
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            min-height: 100vh;
-            padding-bottom: 40px;
+            background-color: #f4f6f9;
+            padding: 40px 20px;
+            color: #333;
         }
 
-        /* Шапка с поиском */
-        .header {
-            position: sticky;
-            top: 0;
-            background: rgba(249, 249, 249, 0.85);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--ios-separator);
-            z-index: 100;
-            padding: 12px 15px;
-        }
-
-        .search-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            max-width: 1400px;
+        .container {
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .search-inputs-group {
-            display: flex;
-            gap: 10px;
-            flex: 1;
+        h1 {
+            margin-bottom: 24px;
+            font-size: 24px;
+            color: #1e293b;
         }
 
-        .search-input-wrapper {
-            flex: 1;
-            position: relative;
-            background: rgba(118, 118, 128, 0.12);
-            border-radius: 12px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-input-wrapper input {
-            width: 100%;
-            border: none;
-            background: transparent;
-            padding: 0 35px;
-            font-size: 15px;
-            outline: none;
-            color: var(--ios-text);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 10px;
-            width: 18px;
-            height: 18px;
-            fill: var(--ios-gray);
-        }
-
-        .clear-btn {
-            display: none;
-            position: absolute;
-            right: 8px;
-            width: 20px;
-            height: 20px;
-            background: var(--ios-gray);
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 12px;
-            line-height: 1;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .clear-btn.visible {
-            display: flex;
-        }
-
-        /* Группа управления в 4 элемента */
-        .controls-group {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .cards-count {
-            background: var(--ios-card-bg);
-            border-radius: 12px;
-            height: 40px;
-            padding: 0 10px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            flex: 1 1 auto;
-        }
-
-        .header-btn {
-            background: var(--ios-card-bg);
-            border: none;
-            border-radius: 12px;
-            height: 40px;
-            padding: 0 10px;
-            font-size: 14px;
-            color: var(--ios-blue);
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            flex: 1 1 auto;
-        }
-
-        .header-btn:active {
-            background: var(--ios-bg);
-        }
-
-        .header-btn.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        /* Компактная кнопка крестика */
-        .reset-header-btn {
-            background: var(--ios-card-bg);
-            border: none;
-            border-radius: 12px;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex: 0 0 40px;
-        }
-
-        .reset-header-btn.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        .main-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .grid {
-            flex: 1;
+        /* Грид для карточек */
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 15px;
-            padding: 20px 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
 
-        /* Боковые панели */
-        .side-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            justify-content: flex-end;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .side-modal-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .side-modal {
-            background: var(--ios-card-bg);
-            width: 340px;
-            max-width: 85%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        .side-modal-overlay.visible .side-modal {
-            transform: translateX(0);
-        }
-
-        .filter-header {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--ios-separator);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--ios-card-bg);
-            gap: 15px;
-        }
-
-        .filter-title {
-            font-weight: 600;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .filter-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
-        }
-
-        .reset-btn-styled {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            color: var(--ios-gray);
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .reset-btn-styled.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        .close-filter-btn {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            border-radius: 8px;
-            width: 30px;
-            height: 30px;
-            font-size: 14px;
-            color: var(--ios-text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .filter-body {
-            padding: 10px 12px;
-            overflow-y: auto;
-            flex: 1;
-            -webkit-overflow-scrolling: touch;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: var(--ios-card-bg);
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            border-bottom: 1px solid var(--ios-separator);
-            padding-bottom: 8px;
-        }
-
-        .filter-group:last-child {
-            border-bottom: none;
-        }
-
-        .filter-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            word-break: break-word;
-            text-transform: uppercase;
-            letter-spacing: -0.2px;
-        }
-
-        /* --- Элементы выбора для Десктопа и Мобилок --- */
-        .desktop-select {
-            display: block;
-            width: 100%;
-            padding: 8px 10px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            outline: none;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-
-        .desktop-select:focus {
-            border-color: var(--ios-blue);
-        }
-
-        .custom-select-trigger {
-            display: none;
-            width: 100%;
-            padding: 10px 30px 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            outline: none;
-            cursor: pointer;
-            text-align: left;
-            position: relative;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
-        }
-
-        .custom-select-trigger::after {
-            content: '';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 10px;
-            height: 6px;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-
-        .custom-select-trigger.selected {
-            border-color: var(--ios-blue);
-            color: var(--ios-blue);
-            font-weight: 500;
-        }
-
-        /* --- iOS-Style Bottom Sheet для Мобилок --- */
-        .ios-sheet-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 2000;
-            justify-content: flex-end;
-            align-items: flex-end;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .ios-sheet-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .ios-sheet {
-            background: #FFFFFF;
-            border-radius: 20px 20px 0 0;
-            max-height: 75vh;
-            width: 340px;
-            max-width: 85%;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
-            overflow: hidden;
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
-        }
-
-        .ios-sheet-overlay.visible .ios-sheet {
-            transform: translateY(0);
-        }
-
-        .ios-sheet-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--ios-separator);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #FFFFFF;
-        }
-
-        .ios-sheet-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--ios-text);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            padding-right: 10px;
-        }
-
-        .ios-sheet-close {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 13px;
-            color: var(--ios-gray);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .ios-sheet-body {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 0;
-        }
-
-        .ios-sheet-item {
-            padding: 14px 16px;
-            font-size: 15px;
-            color: var(--ios-text);
-            border-bottom: 1px solid var(--ios-separator);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.15s ease;
-        }
-
-        .ios-sheet-item:last-child {
-            border-bottom: none;
-        }
-
-        .ios-sheet-item:active {
-            background-color: var(--ios-bg);
-        }
-
-        .ios-sheet-item.selected {
-            color: var(--ios-blue);
-            font-weight: 600;
-        }
-
-        .ios-sheet-item.selected::after {
-            content: '✓';
-            color: var(--ios-blue);
-            font-weight: bold;
-        }
-
-        .sort-option-btn {
-            display: block;
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            text-align: left;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .sort-option-btn:active {
-            border-color: var(--ios-blue);
-            background-color: rgba(0, 122, 255, 0.05);
-        }
-
-        /* Карточка iOS */
+        /* Карточка товара */
         .card {
-            background: var(--ios-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 12px;
-            gap: 12px;
-            align-items: stretch;
-        }
-
-        .card:active {
-            transform: scale(0.98);
-        }
-
-        .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 6px;
-            min-width: 0;
-        }
-
-        .badges-container {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .card-tag {
-            background: rgba(0, 122, 255, 0.1);
-            color: var(--ios-blue);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .card-link-tag {
-            background: rgba(255, 149, 0, 0.1);
-            color: var(--ios-orange);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .card-title {
-            font-size: 13px;
-            font-weight: 600;
-            line-height: 1.25;
-            word-break: break-word;
-        }
-
-        .card-divider {
-            height: 1px;
-            background-color: var(--ios-separator);
-            margin: 2px 0;
-            width: 100%;
-        }
-
-        .card-subtitle {
-            font-size: 11px;
-            color: var(--ios-gray);
-            line-height: 1.35;
-            word-break: break-word;
-        }
-
-        .card-img-container {
-            position: relative;
-            width: 110px;
-            min-width: 110px;
-            height: 100%;
-            min-height: 90px;
-            background: var(--ios-bg);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 4px;
-            cursor: zoom-in;
-        }
-
-        .status-circle {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-        .status-true { background-color: #34C759; }
-        .status-false { background-color: #FF3B30; }
-
-        .image-viewer-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .image-viewer-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .image-viewer-overlay img {
-            max-width: 95%;
-            max-height: 95vh;
-            object-fit: contain;
+            background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.25s ease;
-            transform: scale(0.9);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .image-viewer-overlay.visible img {
-            transform: scale(1);
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
 
-        .modal-overlay {
+        .card-category {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Название с подсказкой */
+        .tspt-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2563eb;
+            cursor: pointer;
+            text-decoration: underline dotted #2563eb;
+            text-underline-offset: 4px;
+            line-height: 1.4;
+            display: inline-block;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .tspt-title:hover {
+            color: #1d4ed8;
+            background-color: #eff6ff;
+            border-radius: 4px;
+        }
+
+        .card-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-top: 10px;
+        }
+
+        /* Всплывающее окно (Tooltip) */
+        #tspt-tooltip {
+            position: absolute;
             display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            z-index: 9999;
+            width: 420px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            pointer-events: none; /* Чтобы не мешать движению мыши */
+            font-size: 13px;
         }
 
-        .modal-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal {
-            background: var(--ios-bg);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.visible .modal {
-            transform: scale(1);
-        }
-
-        .modal-header {
+        .tooltip-header {
+            font-weight: 700;
+            font-size: 14px;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background: var(--ios-card-bg);
-            border-bottom: 1px solid var(--ios-separator);
         }
 
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .close-btn {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            color: var(--ios-text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            padding: 0;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .specs-table {
+        .tooltip-table {
             width: 100%;
             border-collapse: collapse;
-            background: var(--ios-card-bg);
         }
 
-        .specs-table tr {
-            border-bottom: 1px solid var(--ios-separator);
+        .tooltip-table tr {
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .specs-table tr:last-child {
+        .tooltip-table tr:last-child {
             border-bottom: none;
         }
 
-        .specs-table td {
-            padding: 12px 16px;
-            font-size: 15px;
+        .tooltip-table td {
+            padding: 6px 4px;
             vertical-align: top;
-            word-break: break-word;
         }
 
-        .specs-table td:first-child {
-            color: var(--ios-gray);
-            width: 40%;
-        }
-
-        .specs-table td:last-child {
-            color: var(--ios-text);
-            font-weight: 500;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            background: var(--ios-card-bg);
-            border-top: 1px solid var(--ios-separator);
-        }
-
-        .modal-close-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--ios-blue);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 17px;
+        .tt-block {
+            color: #64748b;
+            font-size: 11px;
             font-weight: 600;
-            cursor: pointer;
+            width: 32%;
         }
 
-        .loader {
+        .tt-val {
+            font-weight: 700;
+            color: #2563eb;
+            width: 18%;
             text-align: center;
-            padding: 40px;
-            color: var(--ios-gray);
-            font-size: 16px;
+            background: #eff6ff;
+            border-radius: 4px;
+            padding: 2px 4px !important;
         }
 
-        /* --- Адаптивные переключения Мобильный / Десктоп --- */
-        @media (max-width: 768px) {
-            .desktop-select {
-                display: none;
-            }
-
-            .custom-select-trigger {
-                display: block;
-            }
-
-            .search-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .search-inputs-group {
-                width: 100%;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .search-input-wrapper {
-                width: 100%;
-                height: 44px;
-                border-radius: 12px;
-            }
-
-            .search-input-wrapper input {
-                font-size: 15px;
-                padding: 0 35px;
-            }
-
-            .controls-group {
-                width: 100%;
-                justify-content: space-between;
-                gap: 4px;
-            }
-
-            .cards-count, .header-btn {
-                font-size: 12px;
-                padding: 0 6px;
-            }
-
-            .side-modal {
-                width: 75%;
-                max-width: 280px;
-            }
-
-            .ios-sheet {
-                width: 75%;
-                max-width: 280px;
-            }
-
-            .modal {
-                width: 100%;
-                height: 100%;
-                max-height: 100%;
-                border-radius: 0;
-            }
+        .tt-desc {
+            color: #334155;
+            width: 50%;
+            padding-left: 8px !important;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="search-container">
-            <div class="search-inputs-group">
-                <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchName" placeholder="Поиск по названию (Столбец B)">
-                    <button class="clear-btn" data-target="searchName">✕</button>
-                </div>
-                
-                <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchAll" placeholder="Поиск по всей таблице">
-                    <button class="clear-btn" data-target="searchAll">✕</button>
-                </div>
-            </div>
-
-            <!-- Обновлённый блок кнопок: Счётчик -> Сорт. -> Фильтр -> Крестик -->
-            <div class="controls-group">
-                <div class="cards-count" id="cardsCount">0 из 0</div>
-                <button class="header-btn" id="sortBtn">Сорт.</button>
-                <button class="header-btn" id="filterBtn">Фильтр</button>
-                <button class="reset-header-btn" id="globalResetBtn" title="Сбросить все фильтры">✕</button>
-            </div>
+<div class="container">
+    <h1>Каталог датчиков температуры ТСПТ</h1>
+    
+    <div class="cards-grid">
+        <!-- Карточка 1 -->
+        <div class="card">
+            <div class="card-category">Датчик температуры</div>
+            <div class="tspt-title">ТСПТ 101-D23-Pt100-A4H10-C10-6-80, УПИ-420</div>
+            <div class="card-price">По запросу</div>
         </div>
-    </div>
 
-    <div class="main-container">
-        <div class="grid" id="cardsGrid">
-            <div class="loader">Загрузка данных...</div>
+        <!-- Карточка 2 -->
+        <div class="card">
+            <div class="card-category">Датчик температуры</div>
+            <div class="tspt-title">ТСПТ 101-D21-Pt100-B3-C10-6-80 (0…+120)</div>
+            <div class="card-price">По запросу</div>
         </div>
-    </div>
 
-    <!-- Боковая панель фильтрации -->
-    <div class="side-modal-overlay" id="filterModalOverlay">
-        <div class="side-modal">
-            <div class="filter-header">
-                <div class="filter-actions">
-                    <button class="reset-btn-styled" id="resetFiltersBtn">Сбросить</button>
-                    <button class="close-filter-btn" id="closeFilterBtn">✕</button>
-                </div>
-            </div>
-            <div class="filter-body" id="filterBody"></div>
+        <!-- Карточка 3 -->
+        <div class="card">
+            <div class="card-category">Датчик температуры</div>
+            <div class="tspt-title">ТСПТ 101-D28-Pt1000-A4H10-C10-6-80 (0…+120)</div>
+            <div class="card-price">По запросу</div>
         </div>
-    </div>
 
-    <!-- Боковая панель сортировки -->
-    <div class="side-modal-overlay" id="sortModalOverlay">
-        <div class="side-modal">
-            <div class="filter-header">
-                <div class="filter-actions">
-                    <span class="filter-title">Сортировка</span>
-                    <button class="close-filter-btn" id="closeSortModal">✕</button>
-                </div>
-            </div>
-            <div class="filter-body" id="sortList"></div>
+        <!-- Карточка 4 -->
+        <div class="card">
+            <div class="card-category">Датчик температуры с HART</div>
+            <div class="tspt-title">ТСПТ 101-D23-Pt100-A4H10-C10-6-80, УПИ-420+HARTv7 (0…+150 C)</div>
+            <div class="card-price">По запросу</div>
         </div>
-    </div>
-
-    <!-- iOS Bottom Sheet для мобильного выбора -->
-    <div class="ios-sheet-overlay" id="iosSheetOverlay">
-        <div class="ios-sheet">
-            <div class="ios-sheet-header">
-                <span class="ios-sheet-title" id="iosSheetTitle">Выберите значение</span>
-                <button class="ios-sheet-close" id="iosSheetClose">✕</button>
-            </div>
-            <div class="ios-sheet-body" id="iosSheetBody"></div>
-        </div>
-    </div>
-
-    <!-- Модальное окно характеристик -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Характеристики</h3>
-                <button class="close-btn" id="modalCloseTop">✕</button>
-            </div>
-            <div class="modal-content" id="modalContent"></div>
-            <div class="modal-footer">
-                <button class="modal-close-btn" id="modalCloseBottom">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Просмотрщик картинок -->
-    <div class="image-viewer-overlay" id="imageViewerOverlay">
-        <img id="imageViewerImg" src="" alt="Увеличенное изображение">
-    </div>
-
-    <script>
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4JrZveD8CqGu7WYz9aME8TMtZ-Zxu3Hrw7r1PTp8KsIXbk_VmAJLJwYHvv716aefg-MzYM9CrIyiY/pub?gid=0&single=true&output=csv";
         
-        let rawData = [];
-        let headers = [];
-        let filterState = {};
+        <!-- Карточка 5 (с резьбой и удлинением) -->
+        <div class="card">
+            <div class="card-category">Датчик взрывозащищенный</div>
+            <div class="tspt-title">ТСПТ Exi 101-A15-Pt500-AA3T25-C13-8-120/200-G1/2</div>
+            <div class="card-price">По запросу</div>
+        </div>
+    </div>
+</div>
 
-        const IDX = {
-            TAG: 0,
-            NAME: 1,
-            N_INFO: 13,
-            O_DATA: 14,
-            STATUS: 32,
-            IMAGE: 65,
-            BO_LINK: 66
-        };
+<!-- Единый элемент всплывающей подсказки -->
+<div id="tspt-tooltip">
+    <div class="tooltip-header">
+        <span>Расшифровка маркировки</span>
+    </div>
+    <table class="tooltip-table">
+        <tbody id="tspt-tooltip-body"></tbody>
+    </table>
+</div>
 
-        const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+<script>
+    // Словари для расшифровки парметров
+    const CABLE_GLANDS = {
+        '0': 'Штатный кабельный ввод клеммной головки',
+        'A': 'Под небронированный кабель в металлорукаве Р3ЦX-15',
+        'B': 'Под небронированный кабель в металлорукаве МРПИ-15',
+        'C': 'Под небронированный кабель в металлорукаве DN18',
+        'D': 'Под небронированный кабель в металлорукаве DN20',
+        'E': 'Под небронированный кабель в металлорукаве DN12',
+        'F': 'Под трубный монтаж с внутр. резьбой М20х1,5',
+        'G': 'Под трубный монтаж с выходом нар. резьбой G1/2',
+        'H': 'Под небронированный кабель Ø 6,5÷14 мм',
+        'I': 'Под небронированный кабель Ø 3,2÷8,7 мм',
+        'J': 'Под кабель Ø 6,1-11,7/9,5-15,9 (однорядная броня)',
+        'K': 'Под кабель Ø 3,1-8,7/6,1-11,5 (все типы брони)',
+        'L': 'Под кабель Ø 6,5-14/12,5-20,9 (все типы брони)'
+    };
 
-        Papa.parse(CSV_URL, {
-            download: true,
-            header: false,
-            skipEmptyLines: true,
-            complete: function(results) {
-                rawData = results.data;
-                if(rawData.length > 0) {
-                    headers = rawData[0];
-                    rawData.shift();
-                    populateSortOptions();
-                    populateFilterDropdowns();
-                    renderCards(rawData);
-                } else {
-                    document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
-                    document.getElementById('cardsCount').innerText = '0 из 0';
-                }
-            },
-            error: function(err) {
-                document.getElementById('cardsGrid').innerHTML = '<div class="loader">Ошибка загрузки. Проверьте доступность таблицы.</div>';
-                document.getElementById('cardsCount').innerText = '0 из 0';
-            }
-        });
+    const HEAD_TYPES = {
+        '10': 'Пластиковая головка (IP55)',
+        '27': 'Нержавеющая сталь (IP66)'
+    };
 
-        function renderCards(data) {
-            const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = '';
+    const SIGNALS = {
+        'T25': '4-20 мА',
+        'T40': '4-20 мА',
+        'T70': '4-20 мА',
+        'H10': '4-20 мА + HART (индивид. градуировка)',
+        'H25': '4-20 мА',
+        'H70': '4-20 мА'
+    };
 
-            const countEl = document.getElementById('cardsCount');
-            if (countEl) {
-                countEl.innerText = `${data.length} из ${rawData.length}`;
-            }
+    const MATERIALS = {
+        'C10': 'Сталь 12Х18Н10Т',
+        'C13': 'Сталь 10Х17Н13М2Т'
+    };
 
-            if (data.length === 0) {
-                grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
-                return;
-            }
+    // Функция полного анализа строки ТСПТ
+    function parseTSPT(str) {
+        const rows = [];
+        let raw = str.trim();
 
-            data.forEach((row) => {
-                const originalIndex = rawData.indexOf(row);
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => openModal(originalIndex);
+        // 1. Извлечение диапазона температур, если есть в скобках
+        let rangeMatch = raw.match(/\((.*?)\)/);
+        let rangeStr = rangeMatch ? rangeMatch[1] : null;
+        if (rangeMatch) {
+            raw = raw.replace(/\(.*\)/, '').trim();
+        }
 
-                const tag = row[IDX.TAG] || '';
-                const name = row[IDX.NAME] || 'Без названия';
-                const imgUrl = row[IDX.IMAGE] || '';
-                const oData = row[IDX.O_DATA] || '';
-                const boLink = row[IDX.BO_LINK] || '';
-                
-                const nInfoRaw = row[IDX.N_INFO] || '';
-                const nInfo = escapeHtml(nInfoRaw).replace(/;/g, ';<br>');
-                
-                const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
-                let statusHtml = '';
-                if (statusValue === 'true') {
-                    statusHtml = '<div class="status-circle status-true"></div>';
-                } else if (statusValue === 'false') {
-                    statusHtml = '<div class="status-circle status-false"></div>';
-                }
+        // 2. Отделение дополнительных модулей после запятой
+        let partsComma = raw.split(',');
+        let mainCode = partsComma[0].trim();
+        let extraText = partsComma.slice(1).join(',').trim();
 
-                let imgHtml = '';
-                if (imgUrl) {
-                    try {
-                        new URL(imgUrl);
-                        imgHtml = `<img src="${imgUrl}" alt="${escapeHtml(name)}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
-                    } catch (_) { imgHtml = ''; }
-                }
+        // 3. Разбор основного кода по дефисам
+        let blocks = mainCode.split('-');
 
-                let oTagHtml = '';
-                if (oData) {
-                    if (boLink) {
-                        try {
-                            new URL(boLink);
-                            oTagHtml = `<span class="card-link-tag" onclick="event.stopPropagation(); window.open('${escapeHtml(boLink)}', '_blank')">${escapeHtml(oData)}</span>`;
-                        } catch (_) {
-                            oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
-                        }
+        // Блок 1, 2, 3: Первый фрагмент (например, "ТСПТ 101" или "ТСПТ Exi 101")
+        let b123 = blocks[0] || '';
+        if (b123.includes('ТСПТ')) {
+            rows.push({ name: 'Тип датчика', val: 'ТСПТ', desc: 'Термометр сопротивления платиновый' });
+        }
+
+        if (/Exi/i.test(b123)) {
+            rows.push({ name: 'Взрывозащита', val: 'Exi', desc: '0ExiaIICT6 X, искробезопасная цепь' });
+        } else if (/Exd/i.test(b123)) {
+            rows.push({ name: 'Взрывозащита', val: 'Exd', desc: '1ExdIICT6, взрывонепроницаемая оболочка' });
+        } else {
+            rows.push({ name: 'Взрывозащита', val: '—', desc: 'Без взрывозащиты' });
+        }
+
+        let modMatch = b123.match(/\d{3}/);
+        if (modMatch) {
+            let mod = modMatch[0];
+            rows.push({ name: 'Модификация', val: mod, desc: mod === '101' ? 'С подвижным штуцером и упорным кольцом' : `Модификация ${mod}` });
+        }
+
+        // Блок 4 и 5: Кабельный ввод + Узел коммутации (например, "D23" или "A15")
+        let b45 = blocks[1] || '';
+        if (b45) {
+            let cableKey = b45.charAt(0);
+            let headKey = b45.slice(1);
+
+            rows.push({ name: 'Кабельный ввод', val: cableKey, desc: CABLE_GLANDS[cableKey] || cableKey });
+
+            let headDesc = HEAD_TYPES[headKey] || 'Алюминиевая головка (IP66)';
+            rows.push({ name: 'Узел коммутации', val: headKey, desc: headDesc });
+        }
+
+        // Блок 6: НСХ (например, "Pt100", "Pt1000")
+        let b6 = blocks[2] || '';
+        if (b6) {
+            let resistance = b6.replace(/[^\d]/g, '');
+            rows.push({ name: 'НСХ', val: b6, desc: `Платиновый, R₀ = ${resistance} Ом при 0 °C` });
+        }
+
+        // Блок 7, 8, 9: Класс + Схема + Выходной сигнал (например, "A4H10" или "B3")
+        let b789 = blocks[3] || '';
+        if (b789) {
+            let classMatch = b789.match(/^(AA|A|B|C)/);
+            if (classMatch) {
+                let cls = classMatch[0];
+                rows.push({ name: 'Класс допуска', val: cls, desc: `По ГОСТ 6651-2009 (${cls})` });
+
+                let rest = b789.slice(cls.length);
+                let wire = rest.charAt(0);
+                if (/\d/.test(wire)) {
+                    rows.push({ name: 'Схема подкл.', val: `${wire}-пров.`, desc: `${wire}-х проводная схема` });
+
+                    let signal = rest.slice(1);
+                    if (signal) {
+                        rows.push({ name: 'Выходной сигнал', val: signal, desc: SIGNALS[signal] || signal });
                     } else {
-                        oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
+                        rows.push({ name: 'Выходной сигнал', val: '—', desc: 'Аналоговый сигнал (Ом)' });
                     }
                 }
-
-                card.innerHTML = `
-                    <div class="card-body">
-                        <div class="badges-container">
-                            ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
-                            ${oTagHtml}
-                        </div>
-                        <div class="card-title">${escapeHtml(name)}</div>
-                        <div class="card-divider"></div>
-                        ${nInfo ? `<div class="card-subtitle">${nInfo}</div>` : ''}
-                    </div>
-                    <div class="card-img-container">
-                        ${imgHtml}
-                        ${statusHtml}
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+            }
         }
 
-        function populateFilterDropdowns() {
-            const filterBody = document.getElementById('filterBody');
-            filterBody.innerHTML = '';
-
-            headers.forEach((headerName, colIndex) => {
-                const uniqueValues = new Set();
-                rawData.forEach(row => {
-                    const val = row[colIndex];
-                    if (val && val.toString().trim() !== '') {
-                        uniqueValues.add(val.toString().trim());
-                    }
-                });
-
-                if (uniqueValues.size > 0) {
-                    const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
-                    const group = document.createElement('div');
-                    group.className = 'filter-group';
-
-                    const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
-
-                    let selectOptionsHtml = '<option value="">Все значения</option>';
-                    sortedValues.forEach(val => {
-                        selectOptionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
-                    });
-
-                    group.innerHTML = `
-                        <label class="filter-label">${escapeHtml(labelText)}</label>
-                        <select class="desktop-select" id="desktop-select-${colIndex}">
-                            ${selectOptionsHtml}
-                        </select>
-                        <button class="custom-select-trigger" id="filter-btn-${colIndex}">
-                            Все значения
-                        </button>
-                    `;
-
-                    const selectEl = group.querySelector('.desktop-select');
-                    selectEl.addEventListener('change', (e) => {
-                        selectFilterOption(colIndex, e.target.value, e.target.options[e.target.selectedIndex].text);
-                    });
-
-                    const triggerBtn = group.querySelector('.custom-select-trigger');
-                    triggerBtn.addEventListener('click', () => {
-                        openIosSheet(labelText, colIndex, sortedValues);
-                    });
-
-                    filterBody.appendChild(group);
-                }
-            });
+        // Блок 10: Материал оболочки (например, "C10")
+        let b10 = blocks[4] || '';
+        if (b10) {
+            rows.push({ name: 'Материал', val: b10, desc: MATERIALS[b10] || b10 });
         }
 
-        function openIosSheet(title, colIndex, values) {
-            const sheetOverlay = document.getElementById('iosSheetOverlay');
-            const sheetTitle = document.getElementById('iosSheetTitle');
-            const sheetBody = document.getElementById('iosSheetBody');
-
-            sheetTitle.innerText = title;
-            sheetBody.innerHTML = '';
-
-            const currentValue = filterState[colIndex] || '';
-
-            const allItem = document.createElement('div');
-            allItem.className = `ios-sheet-item ${currentValue === '' ? 'selected' : ''}`;
-            allItem.innerText = 'Все значения';
-            allItem.onclick = () => selectFilterOption(colIndex, '', 'Все значения');
-            sheetBody.appendChild(allItem);
-
-            values.forEach(val => {
-                const item = document.createElement('div');
-                item.className = `ios-sheet-item ${currentValue === val ? 'selected' : ''}`;
-                item.innerText = val;
-                item.onclick = () => selectFilterOption(colIndex, val, val);
-                sheetBody.appendChild(item);
-            });
-
-            sheetOverlay.classList.add('visible');
+        // Блок 11: Диаметр штока (например, "6")
+        let b11 = blocks[5] || '';
+        if (b11) {
+            rows.push({ name: 'Диаметр штока', val: `${b11} мм`, desc: `Наружный диаметр штока` });
         }
 
-        function closeIosSheet() {
-            document.getElementById('iosSheetOverlay').classList.remove('visible');
+        // Блок 12 и 13: Длина L и удлинение e (например, "80" или "120/200")
+        let b1213 = blocks[6] || '';
+        if (b1213) {
+            let [lengthL, lengthE] = b1213.split('/');
+            rows.push({ name: 'Монт. длина (L)', val: `${lengthL} мм`, desc: 'Длина погружной части' });
+            rows.push({ name: 'Удлинение (e)', val: lengthE ? `${lengthE} мм` : '120 мм', desc: lengthE ? 'Размер от уплотнения до головки' : 'Размер по умолчанию (120 мм)' });
         }
 
-        document.getElementById('iosSheetClose').addEventListener('click', closeIosSheet);
-        document.getElementById('iosSheetOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'iosSheetOverlay') closeIosSheet();
+        // Блок 14: Штуцер (например, "G1/2" или по умолчанию М20х1,5)
+        let b14 = blocks[7] || '';
+        rows.push({ 
+            name: 'Штуцер', 
+            val: b14 || 'М20х1,5', 
+            desc: b14 ? `Резьба ${b14}` : 'Стандартная резьба М20х1,5' 
         });
 
-        function selectFilterOption(colIndex, value, displayLabel) {
-            const btn = document.getElementById(`filter-btn-${colIndex}`);
-            const select = document.getElementById(`desktop-select-${colIndex}`);
-
-            if (value === '') {
-                delete filterState[colIndex];
-                if (btn) {
-                    btn.innerText = 'Все значения';
-                    btn.classList.remove('selected');
-                }
-                if (select) select.value = '';
-            } else {
-                filterState[colIndex] = value;
-                if (btn) {
-                    btn.innerText = displayLabel;
-                    btn.classList.add('selected');
-                }
-                if (select) select.value = value;
+        // Дополнительные параметры
+        if (extraText) {
+            if (extraText.includes('УПИ-420')) {
+                rows.push({ name: 'Преобразователь', val: 'УПИ-420', desc: 'Электронный модуль 4...20 mA' });
             }
-            closeIosSheet();
-            applyFilters();
+            if (/HART/i.test(extraText)) {
+                let hartMatch = extraText.match(/HARTv?\d*/i);
+                rows.push({ name: 'Протокол', val: hartMatch ? hartMatch[0] : 'HART', desc: 'Цифровой протокол поверх 4–20 мА' });
+            }
         }
 
-        function populateSortOptions() {
-            const sortList = document.getElementById('sortList');
-            sortList.innerHTML = '';
-            SORT_COLUMNS.forEach(colIndex => {
-                const colName = headers[colIndex] ? headers[colIndex] : `Столбец ${colIndex + 1}`;
+        if (rangeStr) {
+            rows.push({ name: 'Диапазон темп.', val: rangeStr, desc: 'Измеряемая температура' });
+        }
+
+        return rows;
+    }
+
+    // Обработка событий мыши
+    document.addEventListener('DOMContentLoaded', () => {
+        const tooltip = document.getElementById('tspt-tooltip');
+        const tooltipBody = document.getElementById('tspt-tooltip-body');
+        const elements = document.querySelectorAll('.tspt-title');
+
+        elements.forEach(el => {
+            el.addEventListener('mouseenter', (e) => {
+                const text = el.innerText;
+                const parsedData = parseTSPT(text);
+
+                // Заполнение таблицы
+                tooltipBody.innerHTML = parsedData.map(item => `
+                    <tr>
+                        <td class="tt-block">${item.name}</td>
+                        <td class="tt-val">${item.val}</td>
+                        <td class="tt-desc">${item.desc}</td>
+                    </tr>
+                `).join('');
+
+                tooltip.style.display = 'block';
+            });
+
+            el.addEventListener('mousemove', (e) => {
+                // Позиционирование подсказки с учетом границ экрана
+                const tooltipWidth = 420;
+                const tooltipHeight = tooltip.offsetHeight;
                 
-                const group = document.createElement('div');
-                group.className = 'filter-group';
+                let left = e.pageX + 15;
+                let top = e.pageY + 15;
 
-                const btn = document.createElement('button');
-                btn.className = 'sort-option-btn';
-                btn.innerText = colName;
-                btn.onclick = () => {
-                    rawData.sort((a, b) => {
-                        const valA = (a[colIndex] || '').toString().toLowerCase();
-                        const valB = (b[colIndex] || '').toString().toLowerCase();
-                        return valA.localeCompare(valB, 'ru');
-                    });
-                    closeSortModal();
-                    applyFilters();
-                };
-                
-                group.appendChild(btn);
-                sortList.appendChild(group);
-            });
-        }
-
-        function escapeHtml(text) {
-            if(text === null || text === undefined) return '';
-            return String(text).replace(/[&<>"']/g, m => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-            })[m]);
-        }
-
-        /* Функция полной очистки всех фильтров */
-        function resetAllFilters() {
-            filterState = {};
-            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
-                btn.innerText = 'Все значения';
-                btn.classList.remove('selected');
-            });
-            document.querySelectorAll('.desktop-select').forEach(select => {
-                select.value = '';
-            });
-            document.getElementById('searchName').value = '';
-            document.getElementById('searchAll').value = '';
-            document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
-            applyFilters();
-        }
-
-        function applyFilters() {
-            const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
-            const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
-
-            const isFiltered = nameQuery !== '' || allQuery !== '' || Object.keys(filterState).length > 0;
-            
-            const filterBtn = document.getElementById('filterBtn');
-            const resetBtn = document.getElementById('resetFiltersBtn');
-            const globalResetBtn = document.getElementById('globalResetBtn');
-
-            if (isFiltered) {
-                filterBtn.classList.add('active');
-                resetBtn.classList.add('active');
-                globalResetBtn.classList.add('active');
-            } else {
-                filterBtn.classList.remove('active');
-                resetBtn.classList.remove('active');
-                globalResetBtn.classList.remove('active');
-            }
-
-            const filtered = rawData.filter(row => {
-                const name = (row[IDX.NAME] || '').toLowerCase();
-                const rowText = row.join(' ').toLowerCase();
-
-                const matchName = nameQuery === '' || name.includes(nameQuery);
-                const matchAll = allQuery === '' || rowText.includes(allQuery);
-
-                let matchDropdowns = true;
-                for (let colIndex in filterState) {
-                    const cellVal = (row[colIndex] || '').toString().trim();
-                    if (cellVal !== filterState[colIndex]) {
-                        matchDropdowns = false;
-                        break;
-                    }
+                if (left + tooltipWidth > window.innerWidth) {
+                    left = e.pageX - tooltipWidth - 15;
                 }
 
-                return matchName && matchAll && matchDropdowns;
+                if (top + tooltipHeight > window.innerHeight + window.scrollY) {
+                    top = e.pageY - tooltipHeight - 15;
+                }
+
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
             });
 
-            renderCards(filtered);
-        }
-
-        document.getElementById('searchName').addEventListener('input', function(e) {
-            toggleClearButton(e.target);
-            applyFilters();
-        });
-
-        document.getElementById('searchAll').addEventListener('input', function(e) {
-            toggleClearButton(e.target);
-            applyFilters();
-        });
-
-        function toggleClearButton(input) {
-            const clearBtn = input.parentElement.querySelector('.clear-btn');
-            if (input.value.length > 0) {
-                clearBtn.classList.add('visible');
-            } else {
-                clearBtn.classList.remove('visible');
-            }
-        }
-
-        document.querySelectorAll('.clear-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const input = document.getElementById(targetId);
-                input.value = '';
-                toggleClearButton(input);
-                applyFilters();
-                input.focus();
+            el.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
             });
         });
+    });
+</script>
 
-        const filterBtn = document.getElementById('filterBtn');
-        const filterModalOverlay = document.getElementById('filterModalOverlay');
-        const closeFilterBtn = document.getElementById('closeFilterBtn');
-        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-        const globalResetBtn = document.getElementById('globalResetBtn');
-
-        const sortBtn = document.getElementById('sortBtn');
-        const sortModalOverlay = document.getElementById('sortModalOverlay');
-        const closeSortModalBtn = document.getElementById('closeSortModal');
-
-        filterBtn.addEventListener('click', () => {
-            closeSortModal();
-            filterModalOverlay.classList.add('visible');
-        });
-
-        function closeFilterModal() {
-            filterModalOverlay.classList.remove('visible');
-        }
-
-        closeFilterBtn.addEventListener('click', closeFilterModal);
-        filterModalOverlay.addEventListener('click', function(e) {
-            if (e.target === filterModalOverlay) closeFilterModal();
-        });
-
-        /* Привязка действий сброса */
-        resetFiltersBtn.addEventListener('click', resetAllFilters);
-        globalResetBtn.addEventListener('click', resetAllFilters);
-
-        sortBtn.addEventListener('click', () => {
-            closeFilterModal();
-            sortModalOverlay.classList.add('visible');
-        });
-
-        function closeSortModal() {
-            sortModalOverlay.classList.remove('visible');
-        }
-
-        closeSortModalBtn.addEventListener('click', closeSortModal);
-        sortModalOverlay.addEventListener('click', function(e) {
-            if (e.target === sortModalOverlay) closeSortModal();
-        });
-
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalContent = document.getElementById('modalContent');
-        const modalTitle = document.getElementById('modalTitle');
-
-        function openModal(rowIndex) {
-            const row = rawData[rowIndex];
-            modalTitle.innerText = row[IDX.NAME] || 'Характеристики';
-            
-            let tableHtml = '<table class="specs-table">';
-            for (let i = 2; i <= 64; i++) {
-                const headerText = headers[i] ? escapeHtml(headers[i]) : '';
-                const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';
-                
-                if (headerText || valueText !== '—') {
-                    tableHtml += `
-                        <tr>
-                            <td>${headerText}</td>
-                            <td>${valueText}</td>
-                        </tr>
-                    `;
-                }
-            }
-            tableHtml += '</table>';
-            
-            modalContent.innerHTML = tableHtml;
-            modalOverlay.classList.add('visible');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('visible');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('modalCloseTop').addEventListener('click', closeModal);
-        document.getElementById('modalCloseBottom').addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) closeModal();
-        });
-
-        const imageViewerOverlay = document.getElementById('imageViewerOverlay');
-        const imageViewerImg = document.getElementById('imageViewerImg');
-
-        function openImageViewer(url) {
-            if (!url) return;
-            imageViewerImg.src = url;
-            imageViewerOverlay.classList.add('visible');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeImageViewer() {
-            imageViewerOverlay.classList.remove('visible');
-            setTimeout(() => {
-                if (!imageViewerOverlay.classList.contains('visible')) {
-                    imageViewerImg.src = '';
-                }
-            }, 250);
-            document.body.style.overflow = '';
-        }
-
-        imageViewerOverlay.addEventListener('click', closeImageViewer);
-    </script>
 </body>
 </html>

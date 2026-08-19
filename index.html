@@ -108,7 +108,7 @@
             display: flex;
         }
 
-        /* Группа управления в 4 элемента */
+        /* Группа управления */
         .controls-group {
             display: flex;
             gap: 6px;
@@ -159,7 +159,6 @@
             color: #FFFFFF;
         }
 
-        /* Компактная кнопка крестика */
         .reset-header-btn {
             background: var(--ios-card-bg);
             border: none;
@@ -322,7 +321,6 @@
             letter-spacing: -0.2px;
         }
 
-        /* --- Элементы выбора для Десктопа и Мобилок --- */
         .desktop-select {
             display: block;
             width: 100%;
@@ -380,7 +378,7 @@
             font-weight: 500;
         }
 
-        /* --- iOS-Style Bottom Sheet для Мобилок --- */
+        /* Bottom Sheet */
         .ios-sheet-overlay {
             display: none;
             position: fixed;
@@ -789,65 +787,124 @@
             font-size: 16px;
         }
 
-        /* --- Адаптивные переключения Мобильный / Десктоп --- */
+        /* --- СТИЛИ ДЛЯ РАСШИФРОВКИ ТСПТ --- */
+        .tspt-badge {
+            display: inline-block;
+            font-size: 10px;
+            background: rgba(0, 122, 255, 0.12);
+            color: var(--ios-blue);
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .tspt-tooltip {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--ios-light-gray);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 420px;
+            width: 92vw;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .tspt-tooltip.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .tspt-tooltip-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ios-blue);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--ios-separator);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tspt-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        .tspt-table th {
+            text-align: left;
+            padding: 4px 6px;
+            color: var(--ios-gray);
+            border-bottom: 1px solid var(--ios-separator);
+            font-weight: 600;
+        }
+
+        .tspt-table td {
+            padding: 5px 6px;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .tspt-col-block {
+            color: var(--ios-gray);
+            font-weight: 500;
+            width: 32%;
+        }
+
+        .tspt-col-code {
+            font-weight: 700;
+            color: var(--ios-blue);
+            width: 20%;
+            word-break: break-all;
+        }
+
+        .tspt-col-desc {
+            color: var(--ios-text);
+            width: 48%;
+        }
+
+        .tspt-modal-box {
+            margin: 15px;
+            background: #FFFFFF;
+            border: 1px solid rgba(0, 122, 255, 0.2);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 10px rgba(0, 122, 255, 0.05);
+        }
+
+        .tspt-modal-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ios-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         @media (max-width: 768px) {
-            .desktop-select {
-                display: none;
-            }
-
-            .custom-select-trigger {
-                display: block;
-            }
-
-            .search-container {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .search-inputs-group {
-                width: 100%;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .search-input-wrapper {
-                width: 100%;
-                height: 44px;
-                border-radius: 12px;
-            }
-
-            .search-input-wrapper input {
-                font-size: 15px;
-                padding: 0 35px;
-            }
-
-            .controls-group {
-                width: 100%;
-                justify-content: space-between;
-                gap: 4px;
-            }
-
-            .cards-count, .header-btn {
-                font-size: 12px;
-                padding: 0 6px;
-            }
-
-            .side-modal {
-                width: 75%;
-                max-width: 280px;
-            }
-
-            .ios-sheet {
-                width: 75%;
-                max-width: 280px;
-            }
-
-            .modal {
-                width: 100%;
-                height: 100%;
-                max-height: 100%;
-                border-radius: 0;
-            }
+            .desktop-select { display: none; }
+            .custom-select-trigger { display: block; }
+            .search-container { flex-direction: column; gap: 8px; }
+            .search-inputs-group { width: 100%; flex-direction: column; gap: 8px; }
+            .search-input-wrapper { width: 100%; height: 44px; border-radius: 12px; }
+            .search-input-wrapper input { font-size: 15px; padding: 0 35px; }
+            .controls-group { width: 100%; justify-content: space-between; gap: 4px; }
+            .cards-count, .header-btn { font-size: 12px; padding: 0 6px; }
+            .side-modal { width: 75%; max-width: 280px; }
+            .ios-sheet { width: 75%; max-width: 280px; }
+            .modal { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
         }
     </style>
 </head>
@@ -869,7 +926,6 @@
                 </div>
             </div>
 
-            <!-- Обновлённый блок кнопок: Счётчик -> Сорт. -> Фильтр -> Крестик -->
             <div class="controls-group">
                 <div class="cards-count" id="cardsCount">0 из 0</div>
                 <button class="header-btn" id="sortBtn">Сорт.</button>
@@ -911,7 +967,7 @@
         </div>
     </div>
 
-    <!-- iOS Bottom Sheet для мобильного выбора -->
+    <!-- iOS Bottom Sheet -->
     <div class="ios-sheet-overlay" id="iosSheetOverlay">
         <div class="ios-sheet">
             <div class="ios-sheet-header">
@@ -941,6 +997,9 @@
         <img id="imageViewerImg" src="" alt="Увеличенное изображение">
     </div>
 
+    <!-- Всплывающая подсказка при наведении на ТСПТ -->
+    <div id="tsptTooltip" class="tspt-tooltip"></div>
+
     <script>
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4JrZveD8CqGu7WYz9aME8TMtZ-Zxu3Hrw7r1PTp8KsIXbk_VmAJLJwYHvv716aefg-MzYM9CrIyiY/pub?gid=0&single=true&output=csv";
         
@@ -959,6 +1018,173 @@
         };
 
         const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+
+        // --- ЛОГИКА РАСШИФРОВКИ ТСПТ ---
+        const CABLE_GLANDS = {
+            '0': 'штатный кабельный ввод клеммной головки',
+            'A': 'под небронированный кабель в металлорукаве Р3ЦX-15',
+            'B': 'под небронированный кабель в металлорукаве МРПИ-15',
+            'C': 'под небронированный кабель в металлорукаве DN18',
+            'D': 'под небронированный кабель в металлорукаве DN20',
+            'E': 'под небронированный кабель в металлорукаве DN12',
+            'F': 'под трубный монтаж с внутренней резьбой М20х1,5',
+            'G': 'под трубный монтаж с выходом наружной резьбой G1/2',
+            'H': 'под небронированный кабель диаметром 6,5÷14 мм',
+            'I': 'под небронированный кабель диаметром 3,2÷8,7 мм',
+            'J': 'под кабель 6,1-11,7/9,5-15,9 мм, бронированный однорядной проволочной броней',
+            'K': 'под кабель 3,1-8,7/6,1-11,5 мм, бронированный всеми типами брони',
+            'L': 'под кабель 6,5-14/12,5-20,9 мм, бронированный всеми типами брони'
+        };
+
+        const HEADS = {
+            '10': 'пластиковая головка IP55',
+            '15': 'алюминиевая головка IP66', '16': 'алюминиевая головка IP66', '17': 'алюминиевая головка IP66', '18': 'алюминиевая головка IP66', '19': 'алюминиевая головка IP66',
+            '20': 'алюминиевая головка IP66', '22': 'алюминиевая головка IP66',
+            '14': 'алюминиевая головка IP66', '21': 'алюминиевая головка IP66', '23': 'алюминиевая головка IP66', '24': 'алюминиевая головка IP66', '25': 'алюминиевая головка IP66', '26': 'алюминиевая головка IP66', '28': 'алюминиевая головка IP66', '29': 'алюминиевая головка IP66',
+            '27': 'нержавеющая сталь IP66'
+        };
+
+        const MATERIALS = {
+            'C10': 'сталь 12Х18Н10Т',
+            'C13': 'сталь 10Х17Н13М2Т'
+        };
+
+        const SIGNALS = {
+            'T25': '4-20 мА для АА3 и А3',
+            'T40': '4-20 мА для А3',
+            'T70': '4-20 мА для B3',
+            'H10': '4-20 мА + HART для Ах, Вх Индивидуальная градуировка',
+            'H25': '4-20 мА для B3 для ААх, Ах',
+            'H70': '4-20 мА для B3 для Вх'
+        };
+
+        function parseTSPT(name) {
+            if (!name || !name.includes('ТСПТ')) return null;
+
+            let result = [];
+            
+            // 1. Блок: Тип
+            result.push({ block: '1. Тип датчика', code: 'ТСПТ', desc: 'Термометр сопротивления платиновый' });
+
+            // 2. Блок: Взрывозащита
+            if (name.includes('Exi') || name.includes('0ExiaIICT6')) {
+                result.push({ block: '2. Вид взрывозащиты', code: 'Exi', desc: '0ExiaIICT6 X, искробезопасная цепь по ГОСТ 30852.10-2002' });
+            } else if (name.includes('Exd') || name.includes('1ExdIICT6')) {
+                result.push({ block: '2. Вид взрывозащиты', code: 'Exd', desc: '1ExdIICT6, взрывонепроницаемая оболочка по ГОСТ 30852.1-2002' });
+            } else {
+                result.push({ block: '2. Вид взрывозащиты', code: '—', desc: 'Без взрывозащиты' });
+            }
+
+            // Ищем конструкцию маркировки через регулярное выражение
+            // Пример: 101-D23-Pt100-A4H10-C10-6-80
+            const mainRegex = /(10[12])-([0A-L])(\d{2})-(Pt\d{3,4})-([A-Z]{1,2})([234])([TH]\d{2})?-(C\d{2})-(\d+)-(\d+)(?:[\/-](\d+))?(?:\s*,?\s*(G\d\/\d|М\d+х[\d,]+|M\d+x[\d,]+))?/i;
+            const match = name.match(mainRegex);
+
+            if (match) {
+                const mod = match[1];
+                const gland = match[2];
+                const head = match[3];
+                const nsx = match[4];
+                const cls = match[5];
+                const scheme = match[6];
+                const signal = match[7];
+                const mat = match[8];
+                const diam = match[9];
+                const lenL = match[10];
+                const lenE = match[11];
+                const fitting = match[12];
+
+                // 3. Модификация
+                result.push({ block: '3. Модификация', code: mod, desc: mod === '101' ? 'С подвижным штуцером и упорным кольцом' : `Модификация ${mod}` });
+
+                // 4. Кабельный ввод
+                result.push({ block: '4. Кабельный ввод', code: gland, desc: CABLE_GLANDS[gland] || 'Кабельный ввод' });
+
+                // 5. Узел коммутации
+                result.push({ block: '5. Узел коммутации', code: head, desc: HEADS[head] || `Головка ${head}` });
+
+                // 6. НСХ
+                const ohm = nsx.replace('Pt', '');
+                result.push({ block: '6. НСХ', code: nsx, desc: `Платиновый датчик, R0 = ${ohm} Ом (при 0 °C)` });
+
+                // 7. Класс допуска
+                result.push({ block: '7. Класс допуска', code: cls, desc: `Класс допуска ${cls} по ГОСТ 6651-2009` });
+
+                // 8. Схема соединения
+                result.push({ block: '8. Схема соединения', code: scheme, desc: `${scheme}-х проводная схема подключения` });
+
+                // 9. Выходной сигнал
+                if (signal) {
+                    result.push({ block: '9. Выходной сигнал', code: signal, desc: SIGNALS[signal] || signal });
+                } else {
+                    result.push({ block: '9. Выходной сигнал', code: '—', desc: 'Аналоговый сигнал (Ом) в соответствии с НСХ' });
+                }
+
+                // 10. Материал оболочки
+                result.push({ block: '10. Материал оболочки', code: mat, desc: MATERIALS[mat] || mat });
+
+                // 11. Наружный диаметр
+                result.push({ block: '11. Диаметр штока', code: diam + ' мм', desc: `Наружный диаметр ${diam} мм` });
+
+                // 12. Монтажная длина L
+                result.push({ block: '12. Длина L', code: lenL + ' мм', desc: `Монтажная длина ${lenL} мм` });
+
+                // 13. Размер e
+                if (lenE) {
+                    result.push({ block: '13. Размер e', code: lenE + ' мм', desc: `От уплотнения до головки ${lenE} мм` });
+                } else {
+                    result.push({ block: '13. Размер e', code: '120 мм', desc: '120 мм (по умолчанию)' });
+                }
+
+                // 14. Штуцер
+                if (fitting) {
+                    result.push({ block: '14. Штуцер', code: fitting, desc: `Типоразмер ${fitting}` });
+                } else {
+                    result.push({ block: '14. Штуцер', code: 'М20х1,5', desc: 'М20х1,5 (по умолчанию)' });
+                }
+            }
+
+            // Дополнительные параметры
+            if (name.includes('УПИ-420')) {
+                result.push({ block: 'Преобразователь', code: 'УПИ-420', desc: 'Измерительный электронный модуль 4...20mA' });
+            }
+            if (name.includes('HARTv7') || name.includes('HART')) {
+                result.push({ block: 'Протокол', code: 'HARTv7', desc: 'Цифровой сигнал поверх тока 4–20 мА (7-я версия HART)' });
+            }
+
+            const rangeMatch = name.match(/\(([^)]+)\)/);
+            if (rangeMatch) {
+                result.push({ block: 'Диапазон', code: rangeMatch[1], desc: `Диапазон измерения температур: ${rangeMatch[1]}` });
+            }
+
+            return result;
+        }
+
+        function generateTSPTTableHtml(parsedData) {
+            if (!parsedData || parsedData.length === 0) return '';
+            let html = `
+                <table class="tspt-table">
+                    <thead>
+                        <tr>
+                            <th>Блок</th>
+                            <th>Код</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            parsedData.forEach(item => {
+                html += `
+                    <tr>
+                        <td class="tspt-col-block">${escapeHtml(item.block)}</td>
+                        <td class="tspt-col-code">${escapeHtml(item.code)}</td>
+                        <td class="tspt-col-desc">${escapeHtml(item.desc)}</td>
+                    </tr>
+                `;
+            });
+            html += `</tbody></table>`;
+            return html;
+        }
 
         Papa.parse(CSV_URL, {
             download: true,
@@ -1042,13 +1268,18 @@
                     }
                 }
 
+                const isTspt = name.includes('ТСПТ');
+                const titleHtml = isTspt 
+                    ? `<div class="card-title tspt-hover" data-tspt="${escapeHtml(name)}">${escapeHtml(name)} <span class="tspt-badge">ℹ️ ТСПТ</span></div>`
+                    : `<div class="card-title">${escapeHtml(name)}</div>`;
+
                 card.innerHTML = `
                     <div class="card-body">
                         <div class="badges-container">
                             ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
                             ${oTagHtml}
                         </div>
-                        <div class="card-title">${escapeHtml(name)}</div>
+                        ${titleHtml}
                         <div class="card-divider"></div>
                         ${nInfo ? `<div class="card-subtitle">${nInfo}</div>` : ''}
                     </div>
@@ -1204,7 +1435,6 @@
             })[m]);
         }
 
-        /* Функция полной очистки всех фильтров */
         function resetAllFilters() {
             filterState = {};
             document.querySelectorAll('.custom-select-trigger').forEach(btn => {
@@ -1316,7 +1546,6 @@
             if (e.target === filterModalOverlay) closeFilterModal();
         });
 
-        /* Привязка действий сброса */
         resetFiltersBtn.addEventListener('click', resetAllFilters);
         globalResetBtn.addEventListener('click', resetAllFilters);
 
@@ -1340,15 +1569,33 @@
 
         function openModal(rowIndex) {
             const row = rawData[rowIndex];
-            modalTitle.innerText = row[IDX.NAME] || 'Характеристики';
+            const name = row[IDX.NAME] || 'Характеристики';
+            modalTitle.innerText = name;
             
-            let tableHtml = '<table class="specs-table">';
+            let contentHtml = '';
+
+            // Добавляем блок расшифровки при открытии карточки с ТСПТ
+            if (name.includes('ТСПТ')) {
+                const parsed = parseTSPT(name);
+                if (parsed) {
+                    contentHtml += `
+                        <div class="tspt-modal-box">
+                            <div class="tspt-modal-header">
+                                🔍 Расшифровка маркировки ТСПТ
+                            </div>
+                            ${generateTSPTTableHtml(parsed)}
+                        </div>
+                    `;
+                }
+            }
+
+            contentHtml += '<table class="specs-table">';
             for (let i = 2; i <= 64; i++) {
                 const headerText = headers[i] ? escapeHtml(headers[i]) : '';
                 const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';
                 
                 if (headerText || valueText !== '—') {
-                    tableHtml += `
+                    contentHtml += `
                         <tr>
                             <td>${headerText}</td>
                             <td>${valueText}</td>
@@ -1356,9 +1603,9 @@
                     `;
                 }
             }
-            tableHtml += '</table>';
+            contentHtml += '</table>';
             
-            modalContent.innerHTML = tableHtml;
+            modalContent.innerHTML = contentHtml;
             modalOverlay.classList.add('visible');
             document.body.style.overflow = 'hidden';
         }
@@ -1395,6 +1642,50 @@
         }
 
         imageViewerOverlay.addEventListener('click', closeImageViewer);
+
+        // --- СОБЫТИЯ ВСПЛЫВАЮЩЕЙ ПОДСКАЗКИ ПРИ НАВЕДЕНИИ МЫШКОЙ ---
+        const tsptTooltip = document.getElementById('tsptTooltip');
+
+        document.addEventListener('mouseover', function(e) {
+            const target = e.target.closest('.tspt-hover');
+            if (target) {
+                const fullName = target.getAttribute('data-tspt');
+                const parsed = parseTSPT(fullName);
+                if (parsed) {
+                    tsptTooltip.innerHTML = `
+                        <div class="tspt-tooltip-title">🔍 Расшифровка маркировки ТСПТ</div>
+                        ${generateTSPTTableHtml(parsed)}
+                    `;
+                    tsptTooltip.classList.add('visible');
+                }
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (tsptTooltip.classList.contains('visible')) {
+                const padding = 15;
+                let x = e.clientX + padding;
+                let y = e.clientY + padding;
+
+                const rect = tsptTooltip.getBoundingClientRect();
+                if (x + rect.width > window.innerWidth) {
+                    x = e.clientX - rect.width - padding;
+                }
+                if (y + rect.height > window.innerHeight) {
+                    y = e.clientY - rect.height - padding;
+                }
+
+                tsptTooltip.style.left = Math.max(10, x) + 'px';
+                tsptTooltip.style.top = Math.max(10, y) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseout', function(e) {
+            const target = e.target.closest('.tspt-hover');
+            if (target) {
+                tsptTooltip.classList.remove('visible');
+            }
+        });
     </script>
 </body>
 </html>

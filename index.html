@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         :root {
-            --bg-color: #f2f2f7; /* iOS системный серый */
+            --bg-gradient: linear-gradient(135deg, #eef5fc 0%, #e3edfa 100%); /* Голубой градиент */
             --card-bg: #ffffff;
             --separator: #c6c6c8;
             --label-primary: #1c1c1e;
@@ -28,7 +28,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--label-primary);
             padding: 20px;
             min-height: 100vh;
@@ -58,8 +59,8 @@
         .input-wrapper input {
             width: 100%;
             padding: 11px 36px 11px 16px;
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0,0,0,0.05);
             border-radius: 12px;
             font-size: 16px;
             outline: none;
@@ -68,7 +69,7 @@
         }
 
         .input-wrapper input:focus {
-            background: rgba(118, 118, 128, 0.18);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .clear-btn {
@@ -97,10 +98,10 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.8);
             padding: 12px 16px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
         .counter {
@@ -171,23 +172,24 @@
             }
         }
 
+        /* Карточка уменьшена по высоте на 20% (132px вместо 165px) */
         .card {
             background: var(--card-bg);
             border-radius: 14px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
             cursor: pointer;
             overflow: hidden;
             transition: transform 0.15s, box-shadow 0.15s;
             display: flex;
             flex-direction: row;
-            height: 165px; /* Высота карточки слегка уменьшена */
+            height: 132px;
             user-select: none;
             -webkit-user-select: none;
         }
 
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
 
         .card:active {
@@ -195,8 +197,8 @@
         }
 
         .card-info {
-            flex: 1; /* Текстовая часть занимает больше места */
-            padding: 14px;
+            flex: 1;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -206,13 +208,13 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .badge {
-            font-size: 10px; /* Уменьшено на 1 пункт */
+            font-size: 10px;
             font-weight: 600;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border-radius: 6px;
             text-transform: uppercase;
             letter-spacing: 0.2px;
@@ -232,35 +234,35 @@
         .card-name {
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             border-bottom: 1px solid var(--separator);
-            padding-bottom: 6px;
+            padding-bottom: 4px;
             word-break: break-word;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
+        /* Текст Назначения на 30% темнее */
         .card-purpose {
             font-size: 12px;
-            color: var(--label-secondary);
-            line-height: 1.4;
+            color: #55555c; 
+            line-height: 1.3;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
         }
 
-        /* Уменьшенный раздел фотографии без серой линии */
         .card-image-container {
             position: relative;
-            width: 100px; /* Фото уменьшено */
+            width: 90px;
             flex-shrink: 0;
             background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-left: none; /* Серая линия убрана */
-            padding: 8px;
+            border-left: none;
+            padding: 6px;
             overflow: hidden;
         }
 
@@ -274,20 +276,20 @@
 
         .card-image.rotated {
             transform: rotate(90deg);
-            max-width: 85px;
-            max-height: 85px;
+            max-width: 75px;
+            max-height: 75px;
         }
 
         .no-image {
             color: #d1d5db;
-            font-size: 11px;
+            font-size: 10px;
             text-align: center;
         }
 
         .status-dot {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             width: 10px;
             height: 10px;
             border-radius: 50%;
@@ -304,17 +306,18 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.3);
             z-index: 1000;
             justify-content: center;
             align-items: flex-end;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: none; /* Убрано размытие */
+            -webkit-backdrop-filter: none;
         }
 
         .modal-overlay.active { display: flex; }
 
         .modal-content {
-            background: var(--bg-color);
+            background: var(--card-bg);
             border-radius: 16px 16px 0 0;
             width: 100%;
             max-width: 850px;
@@ -332,7 +335,7 @@
         }
 
         .modal-header {
-            padding: 16px 20px;
+            padding: 12px 20px;
             background: var(--card-bg);
             border-bottom: 1px solid var(--separator);
             position: relative;
@@ -346,24 +349,24 @@
             left: 50%;
             transform: translateX(-50%);
             width: 40px;
-            height: 5px;
+            height: 4px;
             background: var(--gray-bg);
-            border-radius: 3px;
+            border-radius: 2px;
         }
 
         .modal-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .modal-body {
-            padding: 20px 0;
+            padding: 8px 0;
             overflow-y: auto;
             background: var(--card-bg);
         }
 
-        /* Выравнивание по центру относительно разделительной линии */
+        /* Выравнивание и уплотнение на 40% */
         .modal-table {
             width: 100%;
             border-collapse: collapse;
@@ -375,28 +378,30 @@
         .modal-table tr:last-child {
             border-bottom: none;
         }
+        /* Межстрочное расстояние уменьшено на 40% (padding 4px вместо 12px) */
         .modal-table td {
-            padding: 12px 16px;
-            font-size: 14px;
+            padding: 4px 12px;
+            font-size: 13px;
             vertical-align: middle;
             word-break: break-word;
+            line-height: 1.25;
         }
         .modal-table td.label {
             font-weight: 500;
             color: var(--label-secondary);
             width: 50%;
-            text-align: right; /* Левая колонка выровнена вправо к линии */
-            border-right: 1px solid var(--separator); /* Центральная линия */
+            text-align: right;
+            border-right: 1px solid var(--separator);
         }
         .modal-table td.value {
             color: var(--label-primary);
             width: 50%;
-            text-align: left; /* Правая колонка выровнена влево от линии */
+            text-align: left;
             font-weight: 400;
         }
 
         .modal-footer {
-            padding: 14px 20px;
+            padding: 12px 20px;
             background: var(--card-bg);
             border-top: 0.5px solid var(--separator);
             display: flex;
@@ -406,10 +411,10 @@
 
         .btn-modal-action {
             flex: 1;
-            padding: 12px 0;
+            padding: 10px 0;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             border: none;
             text-align: center;
@@ -421,14 +426,15 @@
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
         .btn-close-modal-footer { background: var(--blue); color: white; }
 
-        /* Боковые панели (Sort & Filter) */
+        /* Боковые панели без размытия */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.25);
             z-index: 998;
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: none; /* Убрано размытие */
+            -webkit-backdrop-filter: none;
         }
         .side-panel-overlay.active { display: block; }
 
@@ -436,7 +442,7 @@
             position: fixed;
             top: 0; right: -100%; bottom: 0;
             width: 340px;
-            background: var(--bg-color);
+            background: #f9f9fb;
             box-shadow: -4px 0 20px rgba(0,0,0,0.1);
             z-index: 999;
             transition: right 0.3s ease-in-out;
@@ -447,7 +453,7 @@
 
         @media (max-width: 768px) {
             .side-panel {
-                width: 66vw;
+                width: 75vw;
             }
         }
 
@@ -462,7 +468,7 @@
         .panel-header h3 { font-size: 17px; font-weight: 600; }
         
         .panel-body {
-            padding: 16px;
+            padding: 12px;
             overflow-y: auto;
             flex: 1;
         }
@@ -471,13 +477,13 @@
             display: block;
             width: 100%;
             margin-bottom: 10px;
-            padding: 14px 16px;
+            padding: 12px 16px;
             text-align: left;
             background: var(--card-bg);
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             color: var(--label-primary);
             transition: background 0.2s;
@@ -485,53 +491,62 @@
         .sort-btn:active { background: var(--gray-bg); }
 
         /* Фильтры */
-        .filter-group { margin-bottom: 10px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        .filter-group { margin-bottom: 8px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        
+        /* Заголовки уменьшены по высоте на 30% (padding 6px), шрифт НЕ жирный (400) */
         .filter-group-title {
             width: 100%;
             text-align: left;
-            padding: 14px 16px;
+            padding: 6px 12px; 
             background: transparent;
             border: none;
-            font-weight: 600;
+            font-weight: 400; /* Не жирный */
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--blue); /* Текст заголовка фильтра синий */
-            font-size: 15px;
+            color: var(--label-primary); /* По умолчанию не синий */
+            font-size: 14px;
+            transition: color 0.2s;
         }
-        .filter-group-title:active { background: var(--bg-color); }
+        /* Если выбрана галочка — заголовок становится синим */
+        .filter-group-title.has-selected {
+            color: var(--blue);
+            font-weight: 500;
+        }
+
+        .filter-group-title:active { background: rgba(0,0,0,0.03); }
+
         .filter-dropdown {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
             border-top: 0.5px solid transparent;
         }
-        .filter-dropdown.open { max-height: 400px; overflow-y: auto; border-top: 0.5px solid var(--separator); }
+        .filter-dropdown.open { max-height: 350px; overflow-y: auto; border-top: 0.5px solid var(--separator); }
         
         .filter-item {
             display: flex;
             align-items: center;
-            padding: 10px 16px;
+            padding: 8px 12px;
             cursor: pointer;
             border-bottom: 0.5px solid var(--separator);
-            font-size: 14px; /* Шрифт уменьшен на 1 пункт */
+            font-size: 13px;
         }
         .filter-item:last-child { border-bottom: none; }
         
-        /* Чекбокс фиксированного размера */
         .filter-item input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            min-width: 22px;
-            min-height: 22px;
-            flex-shrink: 0; /* Фиксированный размер */
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            min-height: 20px;
+            flex-shrink: 0;
             background-color: var(--gray-bg);
             border: none;
-            border-radius: 6px;
-            margin-right: 12px;
+            border-radius: 5px;
+            margin-right: 10px;
             cursor: pointer;
             position: relative;
             transition: background 0.2s;
@@ -542,53 +557,27 @@
         .filter-item input[type="checkbox"]:checked::after {
             content: '✓';
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .filter-item:hover { background-color: var(--bg-color); }
+        .filter-item:hover { background-color: rgba(0,0,0,0.02); }
 
-        /* Полноэкранный просмотр фото */
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        }
-        .image-modal.active { display: flex; }
-        .image-modal img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 8px;
-            transition: transform 0.2s ease;
-        }
-        .image-modal img.rotated {
-            transform: rotate(90deg);
-        }
-
-        /* iOS Toast "Скопировано" */
+        /* iOS Toast */
         .ios-toast {
             position: fixed;
             top: 40px;
             left: 50%;
             transform: translateX(-50%) translateY(-20px);
-            background: rgba(50, 50, 50, 0.85);
+            background: rgba(40, 40, 40, 0.9);
             color: white;
             padding: 10px 20px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 500;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             z-index: 3000;
             opacity: 0;
             pointer-events: none;
@@ -603,7 +592,7 @@
         .loading {
             text-align: center;
             padding: 50px;
-            font-size: 17px;
+            font-size: 16px;
             color: var(--label-secondary);
             grid-column: 1 / -1;
         }
@@ -653,8 +642,8 @@
     </div>
 
     <!-- Модальное окно фото -->
-    <div class="image-modal" id="imageModal" onclick="closeImageModal()">
-        <img id="fullImage" src="" alt="Просмотр изображения">
+    <div class="image-modal" id="imageModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;" onclick="closeImageModal()">
+        <img id="fullImage" src="" alt="Просмотр" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:8px;">
     </div>
 
     <!-- Оверлей для панелей -->
@@ -679,14 +668,14 @@
             <h3>Фильтр</h3>
             <button class="btn" onclick="closePanels()">×</button>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="filterPanelBody">
             <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
             <div id="filterPanelContent"></div>
         </div>
     </div>
 
-    <!-- iOS Toast "Скопировано" -->
-    <div class="ios-toast" id="iosToast">Скопировано</div>
+    <!-- iOS Toast -->
+    <div class="ios-toast" id="iosToast">УПП скопирован</div>
 
     <script>
         const columnsMap = {
@@ -724,10 +713,12 @@
             "Группа": "Группа"
         };
 
-        // Из раздела фильтров удален "ProjectName"
+        // В фильтрах Назначение (Naznachenie) стоит ТРЕТЬИМ по счету. Добавлен ActualStatus.
         const filterColumns = [
             "Proizvodetel",
             "BlokVCK",
+            "Naznachenie", // 3-й по счёту
+            "ActualStatus",
             "ParamKontrol",
             "VzryvVybor",
             "Vzryvozaschita",
@@ -738,7 +729,6 @@
             "Displej",
             "Temperatura",
             "MPI",
-            "Naznachenie",
             "NaznachenieDlyaZip",
             "ModelBZ",
             "Characteristic",
@@ -752,8 +742,33 @@
             "Примечание"
         ];
 
-        // Из большой карточки убраны PartNumber и ProjectName, добавлен Комментарий
-        const excludedModalCols = ["IMG", "Группа", "Status", "ActualStatus", "PartNumber", "ProjectName", "Link"];
+        // Точный порядок отображения параметров в Большой Карточке
+        const modalOrderKeys = [
+            "Proizvodetel",
+            "Naznachenie",
+            "ParamKontrol",
+            "BlokVCK",
+            "VzryvVybor",
+            "Vzryvozaschita",
+            "TipSignala",
+            "DiapazonUstanovkiIzmer",
+            "Temperatura",
+            "Tochnost",
+            "IP",
+            "Displej",
+            "MPI",
+            "Characteristic",
+            "KabVvod",
+            "DiamKabelya",
+            "KabVvodMetalRukav",
+            "PowerVoltage",
+            "Manifold",
+            "Соединение к прибору",
+            "Класс",
+            "NaznachenieDlyaZip",
+            "ModelBZ",
+            "Комментарий"
+        ];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
         let allData = [];
@@ -832,7 +847,6 @@
                 return matchName && matchGlobal;
             });
 
-            // Формат записи "12 из 854" без слова "Отображено:"
             counter.innerText = `${finalData.length} из ${allData.length}`;
 
             if (finalData.length === 0) {
@@ -887,7 +901,6 @@
 
                 const producerStyle = getProducerColor(producer);
 
-                // Подсказка при наведении на круглешок
                 const statusRaw = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
                 if (statusRaw === 'А' || statusRaw === 'A') {
@@ -929,11 +942,11 @@
             });
         }
 
-        // Скопировать PartNumber с плашки и показать подсказку
+        // Заменено на "УПП скопирован"
         function copyPartNumber(e, text) {
             e.stopPropagation();
             navigator.clipboard.writeText(text).then(() => {
-                showToast("Скопировано");
+                showToast("УПП скопирован");
             });
         }
 
@@ -943,10 +956,9 @@
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 1000); // Подсказка на 1 секунду
+            }, 1000);
         }
 
-        // Открытие фильтра производителей по клику на плашку
         function openProducerFilter(e, producerName) {
             e.stopPropagation();
             openPanel('filterPanel');
@@ -955,6 +967,7 @@
                 const dropdown = groupTitleBtn.nextElementSibling;
                 if (dropdown && !dropdown.classList.contains('open')) {
                     dropdown.classList.add('open');
+                    dropdown.scrollTop = 0; // Скролл списка на первую строку
                 }
             }
         }
@@ -973,6 +986,7 @@
             handleSearch();
         }
 
+        // Большая карточка со строгим порядком и плотным расстоянием
         function openModal(item) {
             const modalTable = document.getElementById('modalTable');
             const modalTitle = document.getElementById('modalTitle');
@@ -982,20 +996,18 @@
             modalTitle.innerText = item["ProjectName"] || "Карточка оборудования";
             modalTable.innerHTML = '';
 
-            for (const key in columnsMap) {
-                if (excludedModalCols.includes(key)) continue;
-                if (item[key] !== undefined && item[key] !== '') {
+            modalOrderKeys.forEach(key => {
+                if (item[key] !== undefined && item[key] !== null && item[key].toString().trim() !== '') {
                     const row = modalTable.insertRow();
                     const cell1 = row.insertCell(0);
                     const cell2 = row.insertCell(1);
                     cell1.className = 'label';
                     cell2.className = 'value';
-                    cell1.innerText = columnsMap[key];
+                    cell1.innerText = columnsMap[key] || key;
                     cell2.innerText = item[key];
                 }
-            }
+            });
 
-            // Настройка кнопки "Сайт" внизу
             if (item["Link"] && item["Link"].trim() !== '') {
                 btnSite.href = item["Link"].trim();
                 btnSite.classList.remove('disabled');
@@ -1007,7 +1019,7 @@
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Прокрутка на самую первую строку
+            // Прокрутка большой карточки всегда в самое начало
             modalBody.scrollTop = 0;
         }
 
@@ -1020,15 +1032,15 @@
             const fullImg = document.getElementById('fullImage');
             fullImg.src = url;
             if (isRotated) {
-                fullImg.classList.add('rotated');
+                fullImg.style.transform = 'rotate(90deg)';
             } else {
-                fullImg.classList.remove('rotated');
+                fullImg.style.transform = 'none';
             }
-            document.getElementById('imageModal').classList.add('active');
+            document.getElementById('imageModal').style.display = 'flex';
         }
 
         function closeImageModal() {
-            document.getElementById('imageModal').classList.remove('active');
+            document.getElementById('imageModal').style.display = 'none';
         }
 
         function openPanel(panelId) {
@@ -1036,6 +1048,12 @@
             document.getElementById('panelOverlay').classList.add('active');
             document.getElementById(panelId).classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // При входе в панель фильтра — скролл панели всегда на первую строку
+            if (panelId === 'filterPanel') {
+                const filterPanelBody = document.getElementById('filterPanelBody');
+                if (filterPanelBody) filterPanelBody.scrollTop = 0;
+            }
         }
 
         function closePanels() {
@@ -1044,7 +1062,7 @@
             document.getElementById('filterPanel').classList.remove('active');
             document.body.style.overflow = 'auto';
 
-            // При выходе из панели фильтров - сворачиваем все списки внутри
+            // Сворачиваем выпадающие списки при выходе
             document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('open'));
         }
 
@@ -1078,10 +1096,18 @@
                 const btn = document.createElement('button');
                 btn.className = 'filter-group-title';
                 btn.setAttribute('data-filter-key', key);
-                btn.innerHTML = `${displayName} <span style="color: var(--label-secondary)">▼</span>`;
+                btn.innerHTML = `<span>${displayName}</span> <span style="color: var(--label-secondary); font-size:11px;">▼</span>`;
+                
                 btn.onclick = () => {
                     const dropdown = groupDiv.querySelector('.filter-dropdown');
-                    dropdown.classList.toggle('open');
+                    const isOpen = dropdown.classList.contains('open');
+                    
+                    if (!isOpen) {
+                        dropdown.classList.add('open');
+                        dropdown.scrollTop = 0; // Скролл списка внутри всегда на первую строку
+                    } else {
+                        dropdown.classList.remove('open');
+                    }
                 };
 
                 const dropdown = document.createElement('div');
@@ -1093,7 +1119,10 @@
                     const cb = document.createElement('input');
                     cb.type = 'checkbox';
                     cb.value = val;
-                    cb.onchange = (e) => toggleFilter(key, val, e.target.checked);
+                    cb.onchange = (e) => {
+                        toggleFilter(key, val, e.target.checked);
+                        updateGroupTitleStyle(groupDiv, key);
+                    };
                     lbl.appendChild(cb);
                     lbl.appendChild(document.createTextNode(val));
                     dropdown.appendChild(lbl);
@@ -1103,6 +1132,15 @@
                 groupDiv.appendChild(dropdown);
                 panelContent.appendChild(groupDiv);
             });
+        }
+
+        function updateGroupTitleStyle(groupDiv, key) {
+            const btn = groupDiv.querySelector('.filter-group-title');
+            if (activeFilters[key] && activeFilters[key].length > 0) {
+                btn.classList.add('has-selected');
+            } else {
+                btn.classList.remove('has-selected');
+            }
         }
 
         function toggleFilter(key, val, isChecked) {
@@ -1120,6 +1158,7 @@
         function clearAllFilters() {
             activeFilters = {};
             document.querySelectorAll('.filter-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.filter-group-title').forEach(btn => btn.classList.remove('has-selected'));
             clearInput('searchName', 'clearName');
             clearInput('searchGlobal', 'clearGlobal');
             currentSort = { key: null, direction: 'asc' };

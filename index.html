@@ -3,1689 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Каталог датчиков</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <title>Каталог оборудования</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         :root {
-            --ios-bg: #F2F2F7;
-            --ios-card-bg: #FFFFFF;
-            --ios-blue: #007AFF;
-            --ios-orange: #FF9500;
-            --ios-gray: #8E8E93;
-            --ios-light-gray: #E5E5EA;
-            --ios-border: #C6C6C8;
-            --ios-text: #1C1C1E;
-            --ios-separator: rgba(60, 60, 67, 0.12);
+            --primary-color: #2563eb;
+            --border-color: #e5e7eb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
         }
 
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            min-height: 100vh;
-            padding-bottom: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
         }
 
-        /* Шапка с поиском */
+        /* Шапка и поиск */
         .header {
-            position: sticky;
-            top: 0;
-            background: rgba(249, 249, 249, 0.85);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--ios-separator);
-            z-index: 100;
-            padding: 12px 15px;
+            max-width: 1400px;
+            margin: 0 auto 20px auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .search-container {
             display: flex;
-            gap: 10px;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
-        .search-inputs-group {
-            display: flex;
-            gap: 10px;
-            flex: 1;
-        }
-
-        .search-input-wrapper {
-            flex: 1;
+        .input-wrapper {
             position: relative;
-            background: rgba(118, 118, 128, 0.12);
-            border-radius: 12px;
-            height: 40px;
-            display: flex;
-            align-items: center;
+            flex: 1;
+            min-width: 250px;
         }
 
-        .search-input-wrapper input {
+        .input-wrapper input {
             width: 100%;
-            border: none;
-            background: transparent;
-            padding: 0 35px;
-            font-size: 15px;
+            padding: 10px 30px 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
             outline: none;
-            color: var(--ios-text);
+            transition: border-color 0.2s;
         }
 
-        .search-icon {
-            position: absolute;
-            left: 10px;
-            width: 18px;
-            height: 18px;
-            fill: var(--ios-gray);
+        .input-wrapper input:focus {
+            border-color: var(--primary-color);
         }
 
         .clear-btn {
-            display: none;
             position: absolute;
             right: 8px;
-            width: 20px;
-            height: 20px;
-            background: var(--ios-gray);
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 12px;
-            line-height: 1;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .clear-btn.visible {
-            display: flex;
-        }
-
-        /* Группа управления */
-        .controls-group {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .cards-count {
-            background: var(--ios-card-bg);
-            border-radius: 12px;
-            height: 40px;
-            padding: 0 10px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            flex: 1 1 auto;
-        }
-
-        .header-btn {
-            background: var(--ios-card-bg);
-            border: none;
-            border-radius: 12px;
-            height: 40px;
-            padding: 0 10px;
-            font-size: 14px;
-            color: var(--ios-blue);
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            flex: 1 1 auto;
-        }
-
-        .header-btn:active {
-            background: var(--ios-bg);
-        }
-
-        .header-btn.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        .reset-header-btn {
-            background: var(--ios-card-bg);
-            border: none;
-            border-radius: 12px;
-            height: 40px;
-            width: 40px;
-            min-width: 40px;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex: 0 0 40px;
-        }
-
-        .reset-header-btn.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        .main-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 15px;
-            padding: 20px 15px;
-        }
-
-        /* Боковые панели */
-        .side-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            justify-content: flex-end;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .side-modal-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .side-modal {
-            background: var(--ios-card-bg);
-            width: 340px;
-            max-width: 85%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        .side-modal-overlay.visible .side-modal {
-            transform: translateX(0);
-        }
-
-        .filter-header {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--ios-separator);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--ios-card-bg);
-            gap: 15px;
-        }
-
-        .filter-title {
-            font-weight: 600;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .filter-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
-        }
-
-        .reset-btn-styled {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            color: var(--ios-gray);
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .reset-btn-styled.active {
-            background: var(--ios-blue);
-            color: #FFFFFF;
-        }
-
-        .close-filter-btn {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            border-radius: 8px;
-            width: 30px;
-            height: 30px;
-            font-size: 14px;
-            color: var(--ios-text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .filter-body {
-            padding: 10px 12px;
-            overflow-y: auto;
-            flex: 1;
-            -webkit-overflow-scrolling: touch;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: var(--ios-card-bg);
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            border-bottom: 1px solid var(--ios-separator);
-            padding-bottom: 8px;
-        }
-
-        .filter-group:last-child {
-            border-bottom: none;
-        }
-
-        .filter-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--ios-gray);
-            word-break: break-word;
-            text-transform: uppercase;
-            letter-spacing: -0.2px;
-        }
-
-        .desktop-select {
-            display: block;
-            width: 100%;
-            padding: 8px 10px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            outline: none;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-
-        .desktop-select:focus {
-            border-color: var(--ios-blue);
-        }
-
-        .custom-select-trigger {
-            display: none;
-            width: 100%;
-            padding: 10px 30px 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            outline: none;
-            cursor: pointer;
-            text-align: left;
-            position: relative;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
-        }
-
-        .custom-select-trigger::after {
-            content: '';
-            position: absolute;
-            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            width: 10px;
-            height: 6px;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-
-        .custom-select-trigger.selected {
-            border-color: var(--ios-blue);
-            color: var(--ios-blue);
-            font-weight: 500;
-        }
-
-        /* Bottom Sheet */
-        .ios-sheet-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 2000;
-            justify-content: flex-end;
-            align-items: flex-end;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .ios-sheet-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .ios-sheet {
-            background: #FFFFFF;
-            border-radius: 20px 20px 0 0;
-            max-height: 75vh;
-            width: 340px;
-            max-width: 85%;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
-            overflow: hidden;
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
-        }
-
-        .ios-sheet-overlay.visible .ios-sheet {
-            transform: translateY(0);
-        }
-
-        .ios-sheet-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--ios-separator);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #FFFFFF;
-        }
-
-        .ios-sheet-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--ios-text);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            padding-right: 10px;
-        }
-
-        .ios-sheet-close {
-            background: rgba(118, 118, 128, 0.12);
+            background: transparent;
             border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 13px;
-            color: var(--ios-gray);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+            font-size: 18px;
+            color: var(--text-muted);
+            display: none;
         }
 
-        .ios-sheet-body {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 0;
-        }
-
-        .ios-sheet-item {
-            padding: 14px 16px;
-            font-size: 15px;
-            color: var(--ios-text);
-            border-bottom: 1px solid var(--ios-separator);
-            cursor: pointer;
+        .toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.15s ease;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .ios-sheet-item:last-child {
-            border-bottom: none;
+        .counter {
+            font-size: 14px;
+            color: var(--text-muted);
         }
 
-        .ios-sheet-item:active {
-            background-color: var(--ios-bg);
+        .toolbar-buttons {
+            display: flex;
+            gap: 10px;
         }
 
-        .ios-sheet-item.selected {
-            color: var(--ios-blue);
-            font-weight: 600;
+        .btn {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
-        .ios-sheet-item.selected::after {
-            content: '✓';
-            color: var(--ios-blue);
+        .btn:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-close-header {
+            background: #fee2e2;
+            border-color: #fecaca;
+            color: #b91c1c;
             font-weight: bold;
+            width: 38px;
+            padding: 8px 0;
+            text-align: center;
         }
 
-        .sort-option-btn {
-            display: block;
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--ios-light-gray);
-            background-color: #FFFFFF;
-            font-size: 13px;
-            color: var(--ios-text);
-            text-align: left;
-            cursor: pointer;
-            text-overflow: ellipsis;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
-            overflow: hidden;
-            white-space: nowrap;
+        /* Сетка карточек */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .sort-option-btn:active {
-            border-color: var(--ios-blue);
-            background-color: rgba(0, 122, 255, 0.05);
-        }
-
-        /* Карточка iOS */
         .card {
-            background: var(--ios-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-            overflow: hidden;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
-            padding: 12px;
-            gap: 12px;
-            align-items: stretch;
+            height: 180px;
         }
 
-        .card:active {
-            transform: scale(0.98);
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
-        .card-body {
+        .card-info {
             flex: 1;
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            gap: 6px;
-            min-width: 0;
+            overflow: hidden;
         }
 
-        .badges-container {
+        .card-badges {
             display: flex;
-            gap: 6px;
             flex-wrap: wrap;
-            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
-        .card-tag {
-            background: rgba(0, 122, 255, 0.1);
-            color: var(--ios-blue);
-            padding: 3px 8px;
-            border-radius: 6px;
+        .badge {
+            background: #eff6ff;
+            color: var(--primary-color);
             font-size: 11px;
             font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
             text-transform: uppercase;
         }
 
-        .card-link-tag {
-            background: rgba(255, 149, 0, 0.1);
-            color: var(--ios-orange);
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
+        .badge.group {
+            background: #f3f4f6;
+            color: var(--text-muted);
         }
 
-        .card-title {
-            font-size: 13px;
+        .card-name {
+            font-size: 16px;
             font-weight: 600;
-            line-height: 1.25;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
             word-break: break-word;
         }
 
-        .card-divider {
+        .card-separator {
             height: 1px;
-            background-color: var(--ios-separator);
-            margin: 2px 0;
-            width: 100%;
+            background-color: #e5e7eb;
+            margin-bottom: 8px;
         }
 
-        .card-subtitle {
-            font-size: 11px;
-            color: var(--ios-gray);
-            line-height: 1.35;
-            word-break: break-word;
-        }
-
-        .card-img-container {
-            position: relative;
-            width: 110px;
-            min-width: 110px;
-            height: 100%;
-            min-height: 90px;
-            background: var(--ios-bg);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card-purpose {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
             overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-image-container {
+            width: 120px;
             flex-shrink: 0;
-        }
-
-        .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 4px;
-            cursor: zoom-in;
-        }
-
-        .status-circle {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-        .status-true { background-color: #34C759; }
-        .status-false { background-color: #FF3B30; }
-
-        .image-viewer-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .image-viewer-overlay.visible {
+            background: #f9fafb;
             display: flex;
-            opacity: 1;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid var(--border-color);
+            padding: 10px;
         }
 
-        .image-viewer-overlay img {
-            max-width: 95%;
-            max-height: 95vh;
+        .card-image {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.25s ease;
-            transform: scale(0.9);
         }
 
-        .image-viewer-overlay.visible img {
-            transform: scale(1);
+        .no-image {
+            color: #d1d5db;
+            font-size: 12px;
+            text-align: center;
         }
 
+        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            padding: 20px;
         }
 
-        .modal-overlay.visible {
+        .modal-overlay.active {
             display: flex;
-            opacity: 1;
-        }
-
-        .modal {
-            background: var(--ios-bg);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.visible .modal {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: var(--ios-card-bg);
-            border-bottom: 1px solid var(--ios-separator);
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .close-btn {
-            background: rgba(118, 118, 128, 0.12);
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            color: var(--ios-text);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .modal-content {
-            padding: 0;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        .specs-table {
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-table {
             width: 100%;
             border-collapse: collapse;
-            background: var(--ios-card-bg);
         }
 
-        .specs-table tr {
-            border-bottom: 1px solid var(--ios-separator);
+        .modal-table tr {
+            border-bottom: 1px solid #f3f4f6;
         }
 
-        .specs-table tr:last-child {
+        .modal-table tr:last-child {
             border-bottom: none;
         }
 
-        .specs-table td {
-            padding: 12px 16px;
-            font-size: 15px;
+        .modal-table td {
+            padding: 12px 10px;
+            font-size: 14px;
             vertical-align: top;
-            word-break: break-word;
         }
 
-        .specs-table td:first-child {
-            color: var(--ios-gray);
+        .modal-table td.label {
+            font-weight: 600;
+            color: var(--text-muted);
             width: 40%;
         }
 
-        .specs-table td:last-child {
-            color: var(--ios-text);
-            font-weight: 500;
+        .modal-table td.value {
+            color: var(--text-main);
+            word-break: break-word;
         }
 
         .modal-footer {
-            padding: 15px 20px;
-            background: var(--ios-card-bg);
-            border-top: 1px solid var(--ios-separator);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
         }
 
-        .modal-close-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--ios-blue);
+        .btn-close-modal {
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .loader {
-            text-align: center;
-            padding: 40px;
-            color: var(--ios-gray);
-            font-size: 16px;
-        }
-
-        /* --- СТИЛИ ДЛЯ РАСШИФРОВКИ ТСПТ --- */
-        .tspt-badge {
-            display: inline-block;
-            font-size: 10px;
-            background: rgba(0, 122, 255, 0.12);
-            color: var(--ios-blue);
-            padding: 2px 6px;
+            padding: 10px 20px;
             border-radius: 6px;
-            margin-left: 6px;
-            font-weight: 600;
-            vertical-align: middle;
-        }
-
-        .tspt-tooltip {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--ios-light-gray);
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 420px;
-            width: 92vw;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-        }
-
-        .tspt-tooltip.visible {
-            display: block;
-            opacity: 1;
-        }
-
-        .tspt-tooltip-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--ios-blue);
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid var(--ios-separator);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .tspt-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-            line-height: 1.3;
-        }
-
-        .tspt-table th {
-            text-align: left;
-            padding: 4px 6px;
-            color: var(--ios-gray);
-            border-bottom: 1px solid var(--ios-separator);
-            font-weight: 600;
-        }
-
-        .tspt-table td {
-            padding: 5px 6px;
-            vertical-align: top;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-        }
-
-        .tspt-col-block {
-            color: var(--ios-gray);
+            cursor: pointer;
             font-weight: 500;
-            width: 32%;
         }
 
-        .tspt-col-code {
-            font-weight: 700;
-            color: var(--ios-blue);
-            width: 20%;
-            word-break: break-all;
+        .btn-close-modal:hover {
+            background: #1d4ed8;
         }
 
-        .tspt-col-desc {
-            color: var(--ios-text);
-            width: 48%;
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
         }
 
-        .tspt-modal-box {
-            margin: 15px;
-            background: #FFFFFF;
-            border: 1px solid rgba(0, 122, 255, 0.2);
-            border-radius: 14px;
-            padding: 14px;
-            box-shadow: 0 2px 10px rgba(0, 122, 255, 0.05);
-        }
-
-        .tspt-modal-header {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--ios-blue);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        @media (max-width: 768px) {
-            .desktop-select { display: none; }
-            .custom-select-trigger { display: block; }
-            .search-container { flex-direction: column; gap: 8px; }
-            .search-inputs-group { width: 100%; flex-direction: column; gap: 8px; }
-            .search-input-wrapper { width: 100%; height: 44px; border-radius: 12px; }
-            .search-input-wrapper input { font-size: 15px; padding: 0 35px; }
-            .controls-group { width: 100%; justify-content: space-between; gap: 4px; }
-            .cards-count, .header-btn { font-size: 12px; padding: 0 6px; }
-            .side-modal { width: 75%; max-width: 280px; }
-            .ios-sheet { width: 75%; max-width: 280px; }
-            .modal { width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
-        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="search-container">
-            <div class="search-inputs-group">
-                <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchName" placeholder="Поиск по названию (Столбец B)">
-                    <button class="clear-btn" data-target="searchName">✕</button>
-                </div>
-                
-                <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="searchAll" placeholder="Поиск по всей таблице">
-                    <button class="clear-btn" data-target="searchAll">✕</button>
-                </div>
+            <div class="input-wrapper">
+                <input type="text" id="searchName" placeholder="Поиск по наименованию (ProjectName)..." oninput="handleSearch()">
+                <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">×</button>
             </div>
-
-            <div class="controls-group">
-                <div class="cards-count" id="cardsCount">0 из 0</div>
-                <button class="header-btn" id="sortBtn">Сорт.</button>
-                <button class="header-btn" id="filterBtn">Фильтр</button>
-                <button class="reset-header-btn" id="globalResetBtn" title="Сбросить все фильтры">✕</button>
+            <div class="input-wrapper">
+                <input type="text" id="searchGlobal" placeholder="Поиск по всей таблице..." oninput="handleSearch()">
+                <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">×</button>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="counter" id="counter">Загрузка данных...</div>
+            <div class="toolbar-buttons">
+                <button class="btn" onclick="alert('Заглушка: Сортировка')">Сорт.</button>
+                <button class="btn" onclick="alert('Заглушка: Фильтр')">Фильтр</button>
+                <button class="btn btn-close-header" onclick="alert('Заглушка: Закрыть/Сбросить все')">×</button>
             </div>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="grid" id="cardsGrid">
-            <div class="loader">Загрузка данных...</div>
-        </div>
+    <div class="cards-grid" id="cardsGrid">
+        <div class="loading">Идет загрузка данных, пожалуйста, подождите...</div>
     </div>
 
-    <!-- Боковая панель фильтрации -->
-    <div class="side-modal-overlay" id="filterModalOverlay">
-        <div class="side-modal">
-            <div class="filter-header">
-                <div class="filter-actions">
-                    <button class="reset-btn-styled" id="resetFiltersBtn">Сбросить</button>
-                    <button class="close-filter-btn" id="closeFilterBtn">✕</button>
-                </div>
-            </div>
-            <div class="filter-body" id="filterBody"></div>
-        </div>
-    </div>
-
-    <!-- Боковая панель сортировки -->
-    <div class="side-modal-overlay" id="sortModalOverlay">
-        <div class="side-modal">
-            <div class="filter-header">
-                <div class="filter-actions">
-                    <span class="filter-title">Сортировка</span>
-                    <button class="close-filter-btn" id="closeSortModal">✕</button>
-                </div>
-            </div>
-            <div class="filter-body" id="sortList"></div>
-        </div>
-    </div>
-
-    <!-- iOS Bottom Sheet -->
-    <div class="ios-sheet-overlay" id="iosSheetOverlay">
-        <div class="ios-sheet">
-            <div class="ios-sheet-header">
-                <span class="ios-sheet-title" id="iosSheetTitle">Выберите значение</span>
-                <button class="ios-sheet-close" id="iosSheetClose">✕</button>
-            </div>
-            <div class="ios-sheet-body" id="iosSheetBody"></div>
-        </div>
-    </div>
-
-    <!-- Модальное окно характеристик -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modalOverlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Характеристики</h3>
-                <button class="close-btn" id="modalCloseTop">✕</button>
+                <h2 class="modal-title" id="modalTitle">Детали</h2>
             </div>
-            <div class="modal-content" id="modalContent"></div>
+            <div class="modal-body">
+                <table class="modal-table" id="modalTable"></table>
+            </div>
             <div class="modal-footer">
-                <button class="modal-close-btn" id="modalCloseBottom">Закрыть</button>
+                <button class="btn-close-modal" onclick="closeModal()">Закрыть</button>
             </div>
         </div>
     </div>
-
-    <!-- Просмотрщик картинок -->
-    <div class="image-viewer-overlay" id="imageViewerOverlay">
-        <img id="imageViewerImg" src="" alt="Увеличенное изображение">
-    </div>
-
-    <!-- Всплывающая подсказка при наведении на ТСПТ -->
-    <div id="tsptTooltip" class="tspt-tooltip"></div>
 
     <script>
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4JrZveD8CqGu7WYz9aME8TMtZ-Zxu3Hrw7r1PTp8KsIXbk_VmAJLJwYHvv716aefg-MzYM9CrIyiY/pub?gid=0&single=true&output=csv";
-        
-        let rawData = [];
-        let headers = [];
-        let filterState = {};
-
-        const IDX = {
-            TAG: 0,
-            NAME: 1,
-            N_INFO: 13,
-            O_DATA: 14,
-            STATUS: 32,
-            IMAGE: 65,
-            BO_LINK: 66
+        // Настройки столбцов: "Название в таблице" = "Отображаемое имя"
+        const columnsMap = {
+            "PartNumber": "ТЭГ",
+            "ProjectName": "Наименование",
+            "BlokVCK": "Блок в ВЦК",
+            "ParamKontrol": "Контролируемый параметр",
+            "VzryvVybor": "Наличие взрывозащиты",
+            "Vzryvozaschita": "Взрывозащита",
+            "TipSignala": "Тип сигнала",
+            "DiapazonUstanovkiIzmer": "Диапазон уставки измерения",
+            "Tochnost": "Точность",
+            "IP": "IP",
+            "Displej": "Наличие дисплея",
+            "Temperatura": "Температура",
+            "MPI": "Межповерочный интервал",
+            "Naznachenie": "Назначение",
+            "Proizvodetel": "Производитель",
+            "NaznachenieDlyaZip": "Назначение для ЗИП",
+            "ModelBZ": "Название в БЗ",
+            "Characteristic": "Характеристика",
+            "ActualStatus": "Статус актуальности",
+            "DiamKabelya": "Диаметр кабеля",
+            "KabVvodMetalRukav": "Металлорукав",
+            "KabVvod": "Кабельный ввод",
+            "PowerVoltage": "Напряжение",
+            "Manifold": "Манифольд",
+            "Соединение к прибору": "Присоединение к процессу",
+            "Класс": "Класс",
+            "Status": "Status",
+            "IMG": "Картинки",
+            "Link": "Ссылка на сайт",
+            "Примечание": "Примечание",
+            "Комментарий": "Комментарий",
+            "Группа": "Группа"
         };
 
-        const SORT_COLUMNS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
+        let allData = [];
 
-        // --- ЛОГИКА РАСШИФРОВКИ ТСПТ ---
-        const CABLE_GLANDS = {
-            '0': 'штатный кабельный ввод клеммной головки',
-            'A': 'под небронированный кабель в металлорукаве Р3ЦX-15',
-            'B': 'под небронированный кабель в металлорукаве МРПИ-15',
-            'C': 'под небронированный кабель в металлорукаве DN18',
-            'D': 'под небронированный кабель в металлорукаве DN20',
-            'E': 'под небронированный кабель в металлорукаве DN12',
-            'F': 'под трубный монтаж с внутренней резьбой М20х1,5',
-            'G': 'под трубный монтаж с выходом наружной резьбой G1/2',
-            'H': 'под небронированный кабель диаметром 6,5÷14 мм',
-            'I': 'под небронированный кабель диаметром 3,2÷8,7 мм',
-            'J': 'под кабель 6,1-11,7/9,5-15,9 мм, бронированный однорядной проволочной броней',
-            'K': 'под кабель 3,1-8,7/6,1-11,5 мм, бронированный всеми типами брони',
-            'L': 'под кабель 6,5-14/12,5-20,9 мм, бронированный всеми типами брони'
-        };
-
-        const HEADS = {
-            '10': 'пластиковая головка IP55',
-            '15': 'алюминиевая головка IP66', '16': 'алюминиевая головка IP66', '17': 'алюминиевая головка IP66', '18': 'алюминиевая головка IP66', '19': 'алюминиевая головка IP66',
-            '20': 'алюминиевая головка IP66', '22': 'алюминиевая головка IP66',
-            '14': 'алюминиевая головка IP66', '21': 'алюминиевая головка IP66', '23': 'алюминиевая головка IP66', '24': 'алюминиевая головка IP66', '25': 'алюминиевая головка IP66', '26': 'алюминиевая головка IP66', '28': 'алюминиевая головка IP66', '29': 'алюминиевая головка IP66',
-            '27': 'нержавеющая сталь IP66'
-        };
-
-        const MATERIALS = {
-            'C10': 'сталь 12Х18Н10Т',
-            'C13': 'сталь 10Х17Н13М2Т'
-        };
-
-        const SIGNALS = {
-            'T25': '4-20 мА для АА3 и А3',
-            'T40': '4-20 мА для А3',
-            'T70': '4-20 мА для B3',
-            'H10': '4-20 мА + HART для Ах, Вх Индивидуальная градуировка',
-            'H25': '4-20 мА для B3 для ААх, Ах',
-            'H70': '4-20 мА для B3 для Вх'
-        };
-
-        function parseTSPT(name) {
-            if (!name || !name.includes('ТСПТ')) return null;
-
-            let result = [];
-            
-            // 1. Блок: Тип
-            result.push({ block: '1. Тип датчика', code: 'ТСПТ', desc: 'Термометр сопротивления платиновый' });
-
-            // 2. Блок: Взрывозащита
-            if (name.includes('Exi') || name.includes('0ExiaIICT6')) {
-                result.push({ block: '2. Вид взрывозащиты', code: 'Exi', desc: '0ExiaIICT6 X, искробезопасная цепь по ГОСТ 30852.10-2002' });
-            } else if (name.includes('Exd') || name.includes('1ExdIICT6')) {
-                result.push({ block: '2. Вид взрывозащиты', code: 'Exd', desc: '1ExdIICT6, взрывонепроницаемая оболочка по ГОСТ 30852.1-2002' });
-            } else {
-                result.push({ block: '2. Вид взрывозащиты', code: '—', desc: 'Без взрывозащиты' });
-            }
-
-            // Ищем конструкцию маркировки через регулярное выражение
-            // Пример: 101-D23-Pt100-A4H10-C10-6-80
-            const mainRegex = /(10[12])-([0A-L])(\d{2})-(Pt\d{3,4})-([A-Z]{1,2})([234])([TH]\d{2})?-(C\d{2})-(\d+)-(\d+)(?:[\/-](\d+))?(?:\s*,?\s*(G\d\/\d|М\d+х[\d,]+|M\d+x[\d,]+))?/i;
-            const match = name.match(mainRegex);
-
-            if (match) {
-                const mod = match[1];
-                const gland = match[2];
-                const head = match[3];
-                const nsx = match[4];
-                const cls = match[5];
-                const scheme = match[6];
-                const signal = match[7];
-                const mat = match[8];
-                const diam = match[9];
-                const lenL = match[10];
-                const lenE = match[11];
-                const fitting = match[12];
-
-                // 3. Модификация
-                result.push({ block: '3. Модификация', code: mod, desc: mod === '101' ? 'С подвижным штуцером и упорным кольцом' : `Модификация ${mod}` });
-
-                // 4. Кабельный ввод
-                result.push({ block: '4. Кабельный ввод', code: gland, desc: CABLE_GLANDS[gland] || 'Кабельный ввод' });
-
-                // 5. Узел коммутации
-                result.push({ block: '5. Узел коммутации', code: head, desc: HEADS[head] || `Головка ${head}` });
-
-                // 6. НСХ
-                const ohm = nsx.replace('Pt', '');
-                result.push({ block: '6. НСХ', code: nsx, desc: `Платиновый датчик, R0 = ${ohm} Ом (при 0 °C)` });
-
-                // 7. Класс допуска
-                result.push({ block: '7. Класс допуска', code: cls, desc: `Класс допуска ${cls} по ГОСТ 6651-2009` });
-
-                // 8. Схема соединения
-                result.push({ block: '8. Схема соединения', code: scheme, desc: `${scheme}-х проводная схема подключения` });
-
-                // 9. Выходной сигнал
-                if (signal) {
-                    result.push({ block: '9. Выходной сигнал', code: signal, desc: SIGNALS[signal] || signal });
-                } else {
-                    result.push({ block: '9. Выходной сигнал', code: '—', desc: 'Аналоговый сигнал (Ом) в соответствии с НСХ' });
-                }
-
-                // 10. Материал оболочки
-                result.push({ block: '10. Материал оболочки', code: mat, desc: MATERIALS[mat] || mat });
-
-                // 11. Наружный диаметр
-                result.push({ block: '11. Диаметр штока', code: diam + ' мм', desc: `Наружный диаметр ${diam} мм` });
-
-                // 12. Монтажная длина L
-                result.push({ block: '12. Длина L', code: lenL + ' мм', desc: `Монтажная длина ${lenL} мм` });
-
-                // 13. Размер e
-                if (lenE) {
-                    result.push({ block: '13. Размер e', code: lenE + ' мм', desc: `От уплотнения до головки ${lenE} мм` });
-                } else {
-                    result.push({ block: '13. Размер e', code: '120 мм', desc: '120 мм (по умолчанию)' });
-                }
-
-                // 14. Штуцер
-                if (fitting) {
-                    result.push({ block: '14. Штуцер', code: fitting, desc: `Типоразмер ${fitting}` });
-                } else {
-                    result.push({ block: '14. Штуцер', code: 'М20х1,5', desc: 'М20х1,5 (по умолчанию)' });
-                }
-            }
-
-            // Дополнительные параметры
-            if (name.includes('УПИ-420')) {
-                result.push({ block: 'Преобразователь', code: 'УПИ-420', desc: 'Измерительный электронный модуль 4...20mA' });
-            }
-            if (name.includes('HARTv7') || name.includes('HART')) {
-                result.push({ block: 'Протокол', code: 'HARTv7', desc: 'Цифровой сигнал поверх тока 4–20 мА (7-я версия HART)' });
-            }
-
-            const rangeMatch = name.match(/\(([^)]+)\)/);
-            if (rangeMatch) {
-                result.push({ block: 'Диапазон', code: rangeMatch[1], desc: `Диапазон измерения температур: ${rangeMatch[1]}` });
-            }
-
-            return result;
-        }
-
-        function generateTSPTTableHtml(parsedData) {
-            if (!parsedData || parsedData.length === 0) return '';
-            let html = `
-                <table class="tspt-table">
-                    <thead>
-                        <tr>
-                            <th>Блок</th>
-                            <th>Код</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            parsedData.forEach(item => {
-                html += `
-                    <tr>
-                        <td class="tspt-col-block">${escapeHtml(item.block)}</td>
-                        <td class="tspt-col-code">${escapeHtml(item.code)}</td>
-                        <td class="tspt-col-desc">${escapeHtml(item.desc)}</td>
-                    </tr>
-                `;
-            });
-            html += `</tbody></table>`;
-            return html;
-        }
-
-        Papa.parse(CSV_URL, {
+        // Загрузка и парсинг CSV
+        Papa.parse(csvUrl, {
             download: true,
-            header: false,
+            header: true,
             skipEmptyLines: true,
             complete: function(results) {
-                rawData = results.data;
-                if(rawData.length > 0) {
-                    headers = rawData[0];
-                    rawData.shift();
-                    populateSortOptions();
-                    populateFilterDropdowns();
-                    renderCards(rawData);
-                } else {
-                    document.getElementById('cardsGrid').innerHTML = '<div class="loader">Нет данных</div>';
-                    document.getElementById('cardsCount').innerText = '0 из 0';
-                }
+                allData = results.data;
+                renderCards(allData);
             },
             error: function(err) {
-                document.getElementById('cardsGrid').innerHTML = '<div class="loader">Ошибка загрузки. Проверьте доступность таблицы.</div>';
-                document.getElementById('cardsCount').innerText = '0 из 0';
+                document.getElementById('cardsGrid').innerHTML = `<div class="loading">Ошибка загрузки: ${err}</div>`;
             }
         });
 
+        // Отрисовка карточек
         function renderCards(data) {
             const grid = document.getElementById('cardsGrid');
-            grid.innerHTML = '';
-
-            const countEl = document.getElementById('cardsCount');
-            if (countEl) {
-                countEl.innerText = `${data.length} из ${rawData.length}`;
-            }
-
-            if (data.length === 0) {
-                grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
+            const counter = document.getElementById('counter');
+            
+            if (!data || data.length === 0) {
+                grid.innerHTML = '<div class="loading">Ничего не найдено</div>';
+                counter.innerText = `Отображено карточек: 0`;
                 return;
             }
 
-            data.forEach((row) => {
-                const originalIndex = rawData.indexOf(row);
+            counter.innerText = `Отображено карточек: ${data.length}`;
+            grid.innerHTML = '';
+
+            data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.onclick = () => openModal(originalIndex);
+                card.onclick = () => openModal(item);
 
-                const tag = row[IDX.TAG] || '';
-                const name = row[IDX.NAME] || 'Без названия';
-                const imgUrl = row[IDX.IMAGE] || '';
-                const oData = row[IDX.O_DATA] || '';
-                const boLink = row[IDX.BO_LINK] || '';
-                
-                const nInfoRaw = row[IDX.N_INFO] || '';
-                const nInfo = escapeHtml(nInfoRaw).replace(/;/g, ';<br>');
-                
-                const statusValue = (row[IDX.STATUS] || '').toString().trim().toLowerCase();
-                let statusHtml = '';
-                if (statusValue === 'true') {
-                    statusHtml = '<div class="status-circle status-true"></div>';
-                } else if (statusValue === 'false') {
-                    statusHtml = '<div class="status-circle status-false"></div>';
-                }
-
-                let imgHtml = '';
-                if (imgUrl) {
-                    try {
-                        new URL(imgUrl);
-                        imgHtml = `<img src="${imgUrl}" alt="${escapeHtml(name)}" onerror="this.style.display='none'" onclick="event.stopPropagation(); openImageViewer('${escapeHtml(imgUrl)}')">`;
-                    } catch (_) { imgHtml = ''; }
-                }
-
-                let oTagHtml = '';
-                if (oData) {
-                    if (boLink) {
-                        try {
-                            new URL(boLink);
-                            oTagHtml = `<span class="card-link-tag" onclick="event.stopPropagation(); window.open('${escapeHtml(boLink)}', '_blank')">${escapeHtml(oData)}</span>`;
-                        } catch (_) {
-                            oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
-                        }
-                    } else {
-                        oTagHtml = `<span class="card-link-tag">${escapeHtml(oData)}</span>`;
-                    }
-                }
-
-                const isTspt = name.includes('ТСПТ');
-                const titleHtml = isTspt 
-                    ? `<div class="card-title tspt-hover" data-tspt="${escapeHtml(name)}">${escapeHtml(name)} <span class="tspt-badge">ℹ️ ТСПТ</span></div>`
-                    : `<div class="card-title">${escapeHtml(name)}</div>`;
+                // Получение данных с защитой от undefined
+                const partNumber = item["PartNumber"] || '';
+                const producer = item["Proizvodetel"] || '';
+                const group = item["Группа"] || '';
+                const projectName = item["ProjectName"] || 'Без наименования';
+                const naznachenie = item["Naznachenie"] || '';
+                const imgRaw = item["IMG"] || '';
+                const imgUrl = imgRaw.split(",")[0].trim(); // Берем первую ссылку, если их несколько
 
                 card.innerHTML = `
-                    <div class="card-body">
-                        <div class="badges-container">
-                            ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
-                            ${oTagHtml}
+                    <div class="card-info">
+                        <div class="card-badges">
+                            ${partNumber ? `<span class="badge">${escapeHtml(partNumber)}</span>` : ''}
+                            ${producer ? `<span class="badge">${escapeHtml(producer)}</span>` : ''}
+                            ${group ? `<span class="badge group">${escapeHtml(group)}</span>` : ''}
                         </div>
-                        ${titleHtml}
-                        <div class="card-divider"></div>
-                        ${nInfo ? `<div class="card-subtitle">${nInfo}</div>` : ''}
+                        <div class="card-name">${escapeHtml(projectName)}</div>
+                        <div class="card-separator"></div>
+                        <div class="card-purpose">${escapeHtml(naznachenie)}</div>
                     </div>
-                    <div class="card-img-container">
-                        ${imgHtml}
-                        ${statusHtml}
+                    <div class="card-image-container">
+                        ${imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="Изображение" class="card-image" onerror="this.outerHTML='<div class=\\'no-image\\'>Нет фото</div>'">` : '<div class="no-image">Нет фото</div>'}
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function populateFilterDropdowns() {
-            const filterBody = document.getElementById('filterBody');
-            filterBody.innerHTML = '';
-
-            headers.forEach((headerName, colIndex) => {
-                const uniqueValues = new Set();
-                rawData.forEach(row => {
-                    const val = row[colIndex];
-                    if (val && val.toString().trim() !== '') {
-                        uniqueValues.add(val.toString().trim());
-                    }
-                });
-
-                if (uniqueValues.size > 0) {
-                    const labelText = headerName && headerName.trim() !== '' ? headerName : `Столбец ${colIndex + 1}`;
-                    const group = document.createElement('div');
-                    group.className = 'filter-group';
-
-                    const sortedValues = Array.from(uniqueValues).sort((a, b) => a.localeCompare(b, 'ru'));
-
-                    let selectOptionsHtml = '<option value="">Все значения</option>';
-                    sortedValues.forEach(val => {
-                        selectOptionsHtml += `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`;
-                    });
-
-                    group.innerHTML = `
-                        <label class="filter-label">${escapeHtml(labelText)}</label>
-                        <select class="desktop-select" id="desktop-select-${colIndex}">
-                            ${selectOptionsHtml}
-                        </select>
-                        <button class="custom-select-trigger" id="filter-btn-${colIndex}">
-                            Все значения
-                        </button>
-                    `;
-
-                    const selectEl = group.querySelector('.desktop-select');
-                    selectEl.addEventListener('change', (e) => {
-                        selectFilterOption(colIndex, e.target.value, e.target.options[e.target.selectedIndex].text);
-                    });
-
-                    const triggerBtn = group.querySelector('.custom-select-trigger');
-                    triggerBtn.addEventListener('click', () => {
-                        openIosSheet(labelText, colIndex, sortedValues);
-                    });
-
-                    filterBody.appendChild(group);
-                }
-            });
-        }
-
-        function openIosSheet(title, colIndex, values) {
-            const sheetOverlay = document.getElementById('iosSheetOverlay');
-            const sheetTitle = document.getElementById('iosSheetTitle');
-            const sheetBody = document.getElementById('iosSheetBody');
-
-            sheetTitle.innerText = title;
-            sheetBody.innerHTML = '';
-
-            const currentValue = filterState[colIndex] || '';
-
-            const allItem = document.createElement('div');
-            allItem.className = `ios-sheet-item ${currentValue === '' ? 'selected' : ''}`;
-            allItem.innerText = 'Все значения';
-            allItem.onclick = () => selectFilterOption(colIndex, '', 'Все значения');
-            sheetBody.appendChild(allItem);
-
-            values.forEach(val => {
-                const item = document.createElement('div');
-                item.className = `ios-sheet-item ${currentValue === val ? 'selected' : ''}`;
-                item.innerText = val;
-                item.onclick = () => selectFilterOption(colIndex, val, val);
-                sheetBody.appendChild(item);
-            });
-
-            sheetOverlay.classList.add('visible');
-        }
-
-        function closeIosSheet() {
-            document.getElementById('iosSheetOverlay').classList.remove('visible');
-        }
-
-        document.getElementById('iosSheetClose').addEventListener('click', closeIosSheet);
-        document.getElementById('iosSheetOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'iosSheetOverlay') closeIosSheet();
-        });
-
-        function selectFilterOption(colIndex, value, displayLabel) {
-            const btn = document.getElementById(`filter-btn-${colIndex}`);
-            const select = document.getElementById(`desktop-select-${colIndex}`);
-
-            if (value === '') {
-                delete filterState[colIndex];
-                if (btn) {
-                    btn.innerText = 'Все значения';
-                    btn.classList.remove('selected');
-                }
-                if (select) select.value = '';
-            } else {
-                filterState[colIndex] = value;
-                if (btn) {
-                    btn.innerText = displayLabel;
-                    btn.classList.add('selected');
-                }
-                if (select) select.value = value;
-            }
-            closeIosSheet();
-            applyFilters();
-        }
-
-        function populateSortOptions() {
-            const sortList = document.getElementById('sortList');
-            sortList.innerHTML = '';
-            SORT_COLUMNS.forEach(colIndex => {
-                const colName = headers[colIndex] ? headers[colIndex] : `Столбец ${colIndex + 1}`;
-                
-                const group = document.createElement('div');
-                group.className = 'filter-group';
-
-                const btn = document.createElement('button');
-                btn.className = 'sort-option-btn';
-                btn.innerText = colName;
-                btn.onclick = () => {
-                    rawData.sort((a, b) => {
-                        const valA = (a[colIndex] || '').toString().toLowerCase();
-                        const valB = (b[colIndex] || '').toString().toLowerCase();
-                        return valA.localeCompare(valB, 'ru');
-                    });
-                    closeSortModal();
-                    applyFilters();
-                };
-                
-                group.appendChild(btn);
-                sortList.appendChild(group);
-            });
-        }
-
-        function escapeHtml(text) {
-            if(text === null || text === undefined) return '';
-            return String(text).replace(/[&<>"']/g, m => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-            })[m]);
-        }
-
-        function resetAllFilters() {
-            filterState = {};
-            document.querySelectorAll('.custom-select-trigger').forEach(btn => {
-                btn.innerText = 'Все значения';
-                btn.classList.remove('selected');
-            });
-            document.querySelectorAll('.desktop-select').forEach(select => {
-                select.value = '';
-            });
-            document.getElementById('searchName').value = '';
-            document.getElementById('searchAll').value = '';
-            document.querySelectorAll('.clear-btn').forEach(btn => btn.classList.remove('visible'));
-            applyFilters();
-        }
-
-        function applyFilters() {
+        // Логика поиска
+        function handleSearch() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
-            const allQuery = document.getElementById('searchAll').value.toLowerCase().trim();
+            const globalQuery = document.getElementById('searchGlobal').value.toLowerCase().trim();
 
-            const isFiltered = nameQuery !== '' || allQuery !== '' || Object.keys(filterState).length > 0;
-            
-            const filterBtn = document.getElementById('filterBtn');
-            const resetBtn = document.getElementById('resetFiltersBtn');
-            const globalResetBtn = document.getElementById('globalResetBtn');
+            // Показ/скрытие крестиков
+            document.getElementById('clearName').style.display = nameQuery ? 'block' : 'none';
+            document.getElementById('clearGlobal').style.display = globalQuery ? 'block' : 'none';
 
-            if (isFiltered) {
-                filterBtn.classList.add('active');
-                resetBtn.classList.add('active');
-                globalResetBtn.classList.add('active');
-            } else {
-                filterBtn.classList.remove('active');
-                resetBtn.classList.remove('active');
-                globalResetBtn.classList.remove('active');
-            }
+            let filteredData = allData.filter(item => {
+                // Поиск по ProjectName
+                const projectName = (item["ProjectName"] || '').toString().toLowerCase();
+                const matchName = nameQuery === '' || projectName.includes(nameQuery);
 
-            const filtered = rawData.filter(row => {
-                const name = (row[IDX.NAME] || '').toLowerCase();
-                const rowText = row.join(' ').toLowerCase();
-
-                const matchName = nameQuery === '' || name.includes(nameQuery);
-                const matchAll = allQuery === '' || rowText.includes(allQuery);
-
-                let matchDropdowns = true;
-                for (let colIndex in filterState) {
-                    const cellVal = (row[colIndex] || '').toString().trim();
-                    if (cellVal !== filterState[colIndex]) {
-                        matchDropdowns = false;
-                        break;
+                // Поиск по всей таблице (только по разрешенным столбцам)
+                let matchGlobal = true;
+                if (globalQuery !== '') {
+                    matchGlobal = false;
+                    for (const key in columnsMap) {
+                        if (item[key]) {
+                            const val = item[key].toString().toLowerCase();
+                            if (val.includes(globalQuery)) {
+                                matchGlobal = true;
+                                break;
+                            }
+                        }
                     }
                 }
 
-                return matchName && matchAll && matchDropdowns;
+                return matchName && matchGlobal;
             });
 
-            renderCards(filtered);
+            renderCards(filteredData);
         }
 
-        document.getElementById('searchName').addEventListener('input', function(e) {
-            toggleClearButton(e.target);
-            applyFilters();
-        });
-
-        document.getElementById('searchAll').addEventListener('input', function(e) {
-            toggleClearButton(e.target);
-            applyFilters();
-        });
-
-        function toggleClearButton(input) {
-            const clearBtn = input.parentElement.querySelector('.clear-btn');
-            if (input.value.length > 0) {
-                clearBtn.classList.add('visible');
-            } else {
-                clearBtn.classList.remove('visible');
-            }
+        // Очистка инпута
+        function clearInput(inputId, btnId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(btnId).style.display = 'none';
+            handleSearch();
         }
 
-        document.querySelectorAll('.clear-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const input = document.getElementById(targetId);
-                input.value = '';
-                toggleClearButton(input);
-                applyFilters();
-                input.focus();
-            });
-        });
-
-        const filterBtn = document.getElementById('filterBtn');
-        const filterModalOverlay = document.getElementById('filterModalOverlay');
-        const closeFilterBtn = document.getElementById('closeFilterBtn');
-        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-        const globalResetBtn = document.getElementById('globalResetBtn');
-
-        const sortBtn = document.getElementById('sortBtn');
-        const sortModalOverlay = document.getElementById('sortModalOverlay');
-        const closeSortModalBtn = document.getElementById('closeSortModal');
-
-        filterBtn.addEventListener('click', () => {
-            closeSortModal();
-            filterModalOverlay.classList.add('visible');
-        });
-
-        function closeFilterModal() {
-            filterModalOverlay.classList.remove('visible');
-        }
-
-        closeFilterBtn.addEventListener('click', closeFilterModal);
-        filterModalOverlay.addEventListener('click', function(e) {
-            if (e.target === filterModalOverlay) closeFilterModal();
-        });
-
-        resetFiltersBtn.addEventListener('click', resetAllFilters);
-        globalResetBtn.addEventListener('click', resetAllFilters);
-
-        sortBtn.addEventListener('click', () => {
-            closeFilterModal();
-            sortModalOverlay.classList.add('visible');
-        });
-
-        function closeSortModal() {
-            sortModalOverlay.classList.remove('visible');
-        }
-
-        closeSortModalBtn.addEventListener('click', closeSortModal);
-        sortModalOverlay.addEventListener('click', function(e) {
-            if (e.target === sortModalOverlay) closeSortModal();
-        });
-
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalContent = document.getElementById('modalContent');
-        const modalTitle = document.getElementById('modalTitle');
-
-        function openModal(rowIndex) {
-            const row = rawData[rowIndex];
-            const name = row[IDX.NAME] || 'Характеристики';
-            modalTitle.innerText = name;
+        // Управление модальным окном
+        function openModal(item) {
+            const modalTable = document.getElementById('modalTable');
+            const modalTitle = document.getElementById('modalTitle');
             
-            let contentHtml = '';
+            modalTitle.innerText = item["ProjectName"] || "Карточка оборудования";
+            modalTable.innerHTML = '';
 
-            // Добавляем блок расшифровки при открытии карточки с ТСПТ
-            if (name.includes('ТСПТ')) {
-                const parsed = parseTSPT(name);
-                if (parsed) {
-                    contentHtml += `
-                        <div class="tspt-modal-box">
-                            <div class="tspt-modal-header">
-                                🔍 Расшифровка маркировки ТСПТ
-                            </div>
-                            ${generateTSPTTableHtml(parsed)}
-                        </div>
-                    `;
+            for (const key in columnsMap) {
+                if (item[key] !== undefined && item[key] !== '') {
+                    const row = modalTable.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    cell1.className = 'label';
+                    cell2.className = 'value';
+                    cell1.innerText = columnsMap[key];
+                    
+                    // Если это ссылка, делаем её кликабельной
+                    if (key === 'Link' || key === 'IMG') {
+                        const links = item[key].split(',').map(l => l.trim()).filter(l => l);
+                        cell2.innerHTML = links.map(l => `<a href="${escapeHtml(l)}" target="_blank">${escapeHtml(l)}</a>`).join('<br>');
+                    } else {
+                        cell2.innerText = item[key];
+                    }
                 }
             }
 
-            contentHtml += '<table class="specs-table">';
-            for (let i = 2; i <= 64; i++) {
-                const headerText = headers[i] ? escapeHtml(headers[i]) : '';
-                const valueText = row[i] ? escapeHtml(row[i]).replace(/;/g, ';<br>') : '—';
-                
-                if (headerText || valueText !== '—') {
-                    contentHtml += `
-                        <tr>
-                            <td>${headerText}</td>
-                            <td>${valueText}</td>
-                        </tr>
-                    `;
-                }
-            }
-            contentHtml += '</table>';
-            
-            modalContent.innerHTML = contentHtml;
-            modalOverlay.classList.add('visible');
-            document.body.style.overflow = 'hidden';
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Запрет прокрутки фона
         }
 
         function closeModal() {
-            modalOverlay.classList.remove('visible');
-            document.body.style.overflow = '';
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Возврат прокрутки
         }
 
-        document.getElementById('modalCloseTop').addEventListener('click', closeModal);
-        document.getElementById('modalCloseBottom').addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) closeModal();
-        });
-
-        const imageViewerOverlay = document.getElementById('imageViewerOverlay');
-        const imageViewerImg = document.getElementById('imageViewerImg');
-
-        function openImageViewer(url) {
-            if (!url) return;
-            imageViewerImg.src = url;
-            imageViewerOverlay.classList.add('visible');
-            document.body.style.overflow = 'hidden';
+        // Экранирование HTML для предотвращения XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
-        function closeImageViewer() {
-            imageViewerOverlay.classList.remove('visible');
-            setTimeout(() => {
-                if (!imageViewerOverlay.classList.contains('visible')) {
-                    imageViewerImg.src = '';
-                }
-            }, 250);
-            document.body.style.overflow = '';
-        }
-
-        imageViewerOverlay.addEventListener('click', closeImageViewer);
-
-        // --- СОБЫТИЯ ВСПЛЫВАЮЩЕЙ ПОДСКАЗКИ ПРИ НАВЕДЕНИИ МЫШКОЙ ---
-        const tsptTooltip = document.getElementById('tsptTooltip');
-
-        document.addEventListener('mouseover', function(e) {
-            const target = e.target.closest('.tspt-hover');
-            if (target) {
-                const fullName = target.getAttribute('data-tspt');
-                const parsed = parseTSPT(fullName);
-                if (parsed) {
-                    tsptTooltip.innerHTML = `
-                        <div class="tspt-tooltip-title">🔍 Расшифровка маркировки ТСПТ</div>
-                        ${generateTSPTTableHtml(parsed)}
-                    `;
-                    tsptTooltip.classList.add('visible');
-                }
-            }
+        // Закрытие модального окна по Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
 
-        document.addEventListener('mousemove', function(e) {
-            if (tsptTooltip.classList.contains('visible')) {
-                const padding = 15;
-                let x = e.clientX + padding;
-                let y = e.clientY + padding;
-
-                const rect = tsptTooltip.getBoundingClientRect();
-                if (x + rect.width > window.innerWidth) {
-                    x = e.clientX - rect.width - padding;
-                }
-                if (y + rect.height > window.innerHeight) {
-                    y = e.clientY - rect.height - padding;
-                }
-
-                tsptTooltip.style.left = Math.max(10, x) + 'px';
-                tsptTooltip.style.top = Math.max(10, y) + 'px';
-            }
-        });
-
-        document.addEventListener('mouseout', function(e) {
-            const target = e.target.closest('.tspt-hover');
-            if (target) {
-                tsptTooltip.classList.remove('visible');
-            }
-        });
     </script>
 </body>
 </html>

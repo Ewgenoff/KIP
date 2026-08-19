@@ -3,426 +3,1431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расшифровка датчиков ТСПТ</title>
+    <title>Каталог датчиков</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
+        :root {
+            --ios-bg: #F2F2F7;
+            --ios-card-bg: #FFFFFF;
+            --ios-blue: #007AFF;
+            --ios-orange: #FF9500;
+            --ios-gray: #8E8E93;
+            --ios-light-gray: #E5E5EA;
+            --ios-border: #C6C6C8;
+            --ios-text: #1C1C1E;
+            --ios-separator: rgba(60, 60, 67, 0.12);
+        }
+
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #f4f6f9;
-            padding: 40px 20px;
-            color: #333;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--ios-bg);
+            color: var(--ios-text);
+            min-height: 100vh;
+            padding-bottom: 40px;
         }
 
-        .container {
-            max-width: 1000px;
+        /* Шапка с поиском */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(249, 249, 249, 0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--ios-separator);
+            z-index: 100;
+            padding: 12px 15px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        h1 {
-            margin-bottom: 24px;
-            font-size: 24px;
-            color: #1e293b;
-        }
-
-        /* Грид для карточек */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        /* Карточка товара */
-        .card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-
-        .card-category {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        /* Название с подсказкой */
-        .tspt-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #2563eb;
-            cursor: pointer;
-            text-decoration: underline dotted #2563eb;
-            text-underline-offset: 4px;
-            line-height: 1.4;
-            display: inline-block;
-            margin-bottom: 12px;
-            transition: color 0.2s;
-        }
-
-        .tspt-title:hover {
-            color: #1d4ed8;
-            background-color: #eff6ff;
-            border-radius: 4px;
-        }
-
-        .card-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0f172a;
-            margin-top: 10px;
-        }
-
-        /* Всплывающее окно (Tooltip) */
-        #tspt-tooltip {
-            position: absolute;
-            display: none;
-            z-index: 9999;
-            width: 420px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            padding: 16px;
-            pointer-events: none; /* Чтобы не мешать движению мыши */
-            font-size: 13px;
-        }
-
-        .tooltip-header {
-            font-weight: 700;
-            font-size: 14px;
-            color: #0f172a;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
+        .search-inputs-group {
             display: flex;
-            justify-content: space-between;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+            background: rgba(118, 118, 128, 0.12);
+            border-radius: 12px;
+            height: 40px;
+            display: flex;
             align-items: center;
         }
 
-        .tooltip-table {
+        .search-input-wrapper input {
             width: 100%;
-            border-collapse: collapse;
+            border: none;
+            background: transparent;
+            padding: 0 35px;
+            font-size: 15px;
+            outline: none;
+            color: var(--ios-text);
         }
 
-        .tooltip-table tr {
-            border-bottom: 1px solid #f1f5f9;
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            width: 18px;
+            height: 18px;
+            fill: var(--ios-gray);
         }
 
-        .tooltip-table tr:last-child {
+        .clear-btn {
+            display: none;
+            position: absolute;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: var(--ios-gray);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 12px;
+            line-height: 1;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clear-btn.visible {
+            display: flex;
+        }
+
+        /* Группа управления в 4 элемента */
+        .controls-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .cards-count {
+            background: var(--ios-card-bg);
+            border-radius: 12px;
+            height: 40px;
+            padding: 0 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            flex: 1 1 auto;
+        }
+
+        .header-btn {
+            background: var(--ios-card-bg);
+            border: none;
+            border-radius: 12px;
+            height: 40px;
+            padding: 0 10px;
+            font-size: 14px;
+            color: var(--ios-blue);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex: 1 1 auto;
+        }
+
+        .header-btn:active {
+            background: var(--ios-bg);
+        }
+
+        .header-btn.active {
+            background: var(--ios-blue);
+            color: #FFFFFF;
+        }
+
+        /* Компактная кнопка крестика */
+        .reset-header-btn {
+            background: var(--ios-card-bg);
+            border: none;
+            border-radius: 12px;
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex: 0 0 40px;
+        }
+
+        .reset-header-btn.active {
+            background: var(--ios-blue);
+            color: #FFFFFF;
+        }
+
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 15px;
+            padding: 20px 15px;
+        }
+
+        /* Боковые панели */
+        .side-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .side-modal-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .side-modal {
+            background: var(--ios-card-bg);
+            width: 340px;
+            max-width: 85%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .side-modal-overlay.visible .side-modal {
+            transform: translateX(0);
+        }
+
+        .filter-header {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--ios-separator);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--ios-card-bg);
+            gap: 15px;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .reset-btn-styled {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            color: var(--ios-gray);
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .reset-btn-styled.active {
+            background: var(--ios-blue);
+            color: #FFFFFF;
+        }
+
+        .close-filter-btn {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+            color: var(--ios-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .filter-body {
+            padding: 10px 12px;
+            overflow-y: auto;
+            flex: 1;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--ios-card-bg);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border-bottom: 1px solid var(--ios-separator);
+            padding-bottom: 8px;
+        }
+
+        .filter-group:last-child {
             border-bottom: none;
         }
 
-        .tooltip-table td {
-            padding: 6px 4px;
-            vertical-align: top;
+        .filter-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            word-break: break-word;
+            text-transform: uppercase;
+            letter-spacing: -0.2px;
         }
 
-        .tt-block {
-            color: #64748b;
+        /* --- Элементы выбора для Десктопа и Мобилок --- */
+        .desktop-select {
+            display: block;
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .desktop-select:focus {
+            border-color: var(--ios-blue);
+        }
+
+        .custom-select-trigger {
+            display: none;
+            width: 100%;
+            padding: 10px 30px 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            outline: none;
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+        }
+
+        .custom-select-trigger::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 6px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .custom-select-trigger.selected {
+            border-color: var(--ios-blue);
+            color: var(--ios-blue);
+            font-weight: 500;
+        }
+
+        /* --- iOS-Style Bottom Sheet для Мобилок --- */
+        .ios-sheet-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: flex-end;
+            align-items: flex-end;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .ios-sheet-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .ios-sheet {
+            background: #FFFFFF;
+            border-radius: 20px 20px 0 0;
+            max-height: 75vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+            overflow: hidden;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.15);
+        }
+
+        .ios-sheet-overlay.visible .ios-sheet {
+            transform: translateY(0);
+        }
+
+        .ios-sheet-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--ios-separator);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #FFFFFF;
+        }
+
+        .ios-sheet-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ios-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 10px;
+        }
+
+        .ios-sheet-close {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 13px;
+            color: var(--ios-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ios-sheet-body {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0;
+        }
+
+        .ios-sheet-item {
+            padding: 14px 16px;
+            font-size: 15px;
+            color: var(--ios-text);
+            border-bottom: 1px solid var(--ios-separator);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s ease;
+        }
+
+        .ios-sheet-item:last-child {
+            border-bottom: none;
+        }
+
+        .ios-sheet-item:active {
+            background-color: var(--ios-bg);
+        }
+
+        .ios-sheet-item.selected {
+            color: var(--ios-blue);
+            font-weight: 600;
+        }
+
+        .ios-sheet-item.selected::after {
+            content: '✓';
+            color: var(--ios-blue);
+            font-weight: bold;
+        }
+
+        .sort-option-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--ios-light-gray);
+            background-color: #FFFFFF;
+            font-size: 13px;
+            color: var(--ios-text);
+            text-align: left;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .sort-option-btn:active {
+            border-color: var(--ios-blue);
+            background-color: rgba(0, 122, 255, 0.05);
+        }
+
+        /* Карточка iOS */
+        .card {
+            background: var(--ios-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 12px;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .badges-container {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .card-tag {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--ios-blue);
+            padding: 3px 8px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
-            width: 32%;
+            text-transform: uppercase;
         }
 
-        .tt-val {
-            font-weight: 700;
-            color: #2563eb;
-            width: 18%;
+        .card-link-tag {
+            background: rgba(255, 149, 0, 0.1);
+            color: var(--ios-orange);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .card-divider {
+            height: 1px;
+            background-color: var(--ios-separator);
+            margin: 2px 0;
+            width: 100%;
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--ios-gray);
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .card-img-container {
+            position: relative;
+            width: 110px;
+            min-width: 110px;
+            height: 100%;
+            min-height: 90px;
+            background: var(--ios-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+            cursor: zoom-in;
+        }
+
+        .status-circle {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .status-true { background-color: #34C759; }
+        .status-false { background-color: #FF3B30; }
+
+        .image-viewer-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .image-viewer-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .image-viewer-overlay img {
+            max-width: 95%;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.25s ease;
+            transform: scale(0.9);
+        }
+
+        .image-viewer-overlay.visible img {
+            transform: scale(1);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: var(--ios-bg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.visible .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: var(--ios-card-bg);
+            border-bottom: 1px solid var(--ios-separator);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: rgba(118, 118, 128, 0.12);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            color: var(--ios-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            padding: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--ios-card-bg);
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid var(--ios-separator);
+        }
+
+        .specs-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .specs-table td {
+            padding: 12px 16px;
+            font-size: 15px;
+            vertical-align: top;
+            word-break: break-word;
+        }
+
+        .specs-table td:first-child {
+            color: var(--ios-gray);
+            width: 40%;
+        }
+
+        .specs-table td:last-child {
+            color: var(--ios-text);
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            background: var(--ios-card-bg);
+            border-top: 1px solid var(--ios-separator);
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--ios-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .loader {
             text-align: center;
-            background: #eff6ff;
-            border-radius: 4px;
-            padding: 2px 4px !important;
+            padding: 40px;
+            color: var(--ios-gray);
+            font-size: 16px;
         }
 
-        .tt-desc {
-            color: #334155;
-            width: 50%;
-            padding-left: 8px !important;
+        /* --- Адаптивные переключения Мобильный / Десктоп --- */
+        @media (max-width: 768px) {
+            .desktop-select {
+                display: none;
+            }
+
+            .custom-select-trigger {
+                display: block;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .search-inputs-group {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .search-input-wrapper {
+                width: 100%;
+                height: 44px;
+                border-radius: 12px;
+            }
+
+            .search-input-wrapper input {
+                font-size: 15px;
+                padding: 0 35px;
+            }
+
+            .controls-group {
+                width: 100%;
+                justify-content: space-between;
+                gap: 4px;
+            }
+
+            .cards-count, .header-btn {
+                font-size: 12px;
+                padding: 0 6px;
+            }
+
+            .side-modal {
+                width: 75%;
+                max-width: 280px;
+            }
+
+            .ios-sheet {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .modal {
+                width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border-radius: 0;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Каталог датчиков температуры ТСПТ</h1>
-    
-    <div class="cards-grid">
-        <!-- Карточка 1 -->
-        <div class="card">
-            <div class="card-category">Датчик температуры</div>
-            <div class="tspt-title">ТСПТ 101-D23-Pt100-A4H10-C10-6-80, УПИ-420</div>
-            <div class="card-price">По запросу</div>
-        </div>
-
-        <!-- Карточка 2 -->
-        <div class="card">
-            <div class="card-category">Датчик температуры</div>
-            <div class="tspt-title">ТСПТ 101-D21-Pt100-B3-C10-6-80 (0…+120)</div>
-            <div class="card-price">По запросу</div>
-        </div>
-
-        <!-- Карточка 3 -->
-        <div class="card">
-            <div class="card-category">Датчик температуры</div>
-            <div class="tspt-title">ТСПТ 101-D28-Pt1000-A4H10-C10-6-80 (0…+120)</div>
-            <div class="card-price">По запросу</div>
-        </div>
-
-        <!-- Карточка 4 -->
-        <div class="card">
-            <div class="card-category">Датчик температуры с HART</div>
-            <div class="tspt-title">ТСПТ 101-D23-Pt100-A4H10-C10-6-80, УПИ-420+HARTv7 (0…+150 C)</div>
-            <div class="card-price">По запросу</div>
-        </div>
-        
-        <!-- Карточка 5 (с резьбой и удлинением) -->
-        <div class="card">
-            <div class="card-category">Датчик взрывозащищенный</div>
-            <div class="tspt-title">ТСПТ Exi 101-A15-Pt500-AA3T25-C13-8-120/200-G1/2</div>
-            <div class="card-price">По запросу</div>
-        </div>
-    </div>
-</div>
-
-<!-- Единый элемент всплывающей подсказки -->
-<div id="tspt-tooltip">
-    <div class="tooltip-header">
-        <span>Расшифровка маркировки</span>
-    </div>
-    <table class="tooltip-table">
-        <tbody id="tspt-tooltip-body"></tbody>
-    </table>
-</div>
-
-<script>
-    // Словари для расшифровки парметров
-    const CABLE_GLANDS = {
-        '0': 'Штатный кабельный ввод клеммной головки',
-        'A': 'Под небронированный кабель в металлорукаве Р3ЦX-15',
-        'B': 'Под небронированный кабель в металлорукаве МРПИ-15',
-        'C': 'Под небронированный кабель в металлорукаве DN18',
-        'D': 'Под небронированный кабель в металлорукаве DN20',
-        'E': 'Под небронированный кабель в металлорукаве DN12',
-        'F': 'Под трубный монтаж с внутр. резьбой М20х1,5',
-        'G': 'Под трубный монтаж с выходом нар. резьбой G1/2',
-        'H': 'Под небронированный кабель Ø 6,5÷14 мм',
-        'I': 'Под небронированный кабель Ø 3,2÷8,7 мм',
-        'J': 'Под кабель Ø 6,1-11,7/9,5-15,9 (однорядная броня)',
-        'K': 'Под кабель Ø 3,1-8,7/6,1-11,5 (все типы брони)',
-        'L': 'Под кабель Ø 6,5-14/12,5-20,9 (все типы брони)'
-    };
-
-    const HEAD_TYPES = {
-        '10': 'Пластиковая головка (IP55)',
-        '27': 'Нержавеющая сталь (IP66)'
-    };
-
-    const SIGNALS = {
-        'T25': '4-20 мА',
-        'T40': '4-20 мА',
-        'T70': '4-20 мА',
-        'H10': '4-20 мА + HART (индивид. градуировка)',
-        'H25': '4-20 мА',
-        'H70': '4-20 мА'
-    };
-
-    const MATERIALS = {
-        'C10': 'Сталь 12Х18Н10Т',
-        'C13': 'Сталь 10Х17Н13М2Т'
-    };
-
-    // Функция полного анализа строки ТСПТ
-    function parseTSPT(str) {
-        const rows = [];
-        let raw = str.trim();
-
-        // 1. Извлечение диапазона температур, если есть в скобках
-        let rangeMatch = raw.match(/\((.*?)\)/);
-        let rangeStr = rangeMatch ? rangeMatch[1] : null;
-        if (rangeMatch) {
-            raw = raw.replace(/\(.*\)/, '').trim();
-        }
-
-        // 2. Отделение дополнительных модулей после запятой
-        let partsComma = raw.split(',');
-        let mainCode = partsComma[0].trim();
-        let extraText = partsComma.slice(1).join(',').trim();
-
-        // 3. Разбор основного кода по дефисам
-        let blocks = mainCode.split('-');
-
-        // Блок 1, 2, 3: Первый фрагмент (например, "ТСПТ 101" или "ТСПТ Exi 101")
-        let b123 = blocks[0] || '';
-        if (b123.includes('ТСПТ')) {
-            rows.push({ name: 'Тип датчика', val: 'ТСПТ', desc: 'Термометр сопротивления платиновый' });
-        }
-
-        if (/Exi/i.test(b123)) {
-            rows.push({ name: 'Взрывозащита', val: 'Exi', desc: '0ExiaIICT6 X, искробезопасная цепь' });
-        } else if (/Exd/i.test(b123)) {
-            rows.push({ name: 'Взрывозащита', val: 'Exd', desc: '1ExdIICT6, взрывонепроницаемая оболочка' });
-        } else {
-            rows.push({ name: 'Взрывозащита', val: '—', desc: 'Без взрывозащиты' });
-        }
-
-        let modMatch = b123.match(/\d{3}/);
-        if (modMatch) {
-            let mod = modMatch[0];
-            rows.push({ name: 'Модификация', val: mod, desc: mod === '101' ? 'С подвижным штуцером и упорным кольцом' : `Модификация ${mod}` });
-        }
-
-        // Блок 4 и 5: Кабельный ввод + Узел коммутации (например, "D23" или "A15")
-        let b45 = blocks[1] || '';
-        if (b45) {
-            let cableKey = b45.charAt(0);
-            let headKey = b45.slice(1);
-
-            rows.push({ name: 'Кабельный ввод', val: cableKey, desc: CABLE_GLANDS[cableKey] || cableKey });
-
-            let headDesc = HEAD_TYPES[headKey] || 'Алюминиевая головка (IP66)';
-            rows.push({ name: 'Узел коммутации', val: headKey, desc: headDesc });
-        }
-
-        // Блок 6: НСХ (например, "Pt100", "Pt1000")
-        let b6 = blocks[2] || '';
-        if (b6) {
-            let resistance = b6.replace(/[^\d]/g, '');
-            rows.push({ name: 'НСХ', val: b6, desc: `Платиновый, R₀ = ${resistance} Ом при 0 °C` });
-        }
-
-        // Блок 7, 8, 9: Класс + Схема + Выходной сигнал (например, "A4H10" или "B3")
-        let b789 = blocks[3] || '';
-        if (b789) {
-            let classMatch = b789.match(/^(AA|A|B|C)/);
-            if (classMatch) {
-                let cls = classMatch[0];
-                rows.push({ name: 'Класс допуска', val: cls, desc: `По ГОСТ 6651-2009 (${cls})` });
-
-                let rest = b789.slice(cls.length);
-                let wire = rest.charAt(0);
-                if (/\d/.test(wire)) {
-                    rows.push({ name: 'Схема подкл.', val: `${wire}-пров.`, desc: `${wire}-х проводная схема` });
-
-                    let signal = rest.slice(1);
-                    if (signal) {
-                        rows.push({ name: 'Выходной сигнал', val: signal, desc: SIGNALS[signal] || signal });
-                    } else {
-                        rows.push({ name: 'Выходной сигнал', val: '—', desc: 'Аналоговый сигнал (Ом)' });
-                    }
-                }
-            }
-        }
-
-        // Блок 10: Материал оболочки (например, "C10")
-        let b10 = blocks[4] || '';
-        if (b10) {
-            rows.push({ name: 'Материал', val: b10, desc: MATERIALS[b10] || b10 });
-        }
-
-        // Блок 11: Диаметр штока (например, "6")
-        let b11 = blocks[5] || '';
-        if (b11) {
-            rows.push({ name: 'Диаметр штока', val: `${b11} мм`, desc: `Наружный диаметр штока` });
-        }
-
-        // Блок 12 и 13: Длина L и удлинение e (например, "80" или "120/200")
-        let b1213 = blocks[6] || '';
-        if (b1213) {
-            let [lengthL, lengthE] = b1213.split('/');
-            rows.push({ name: 'Монт. длина (L)', val: `${lengthL} мм`, desc: 'Длина погружной части' });
-            rows.push({ name: 'Удлинение (e)', val: lengthE ? `${lengthE} мм` : '120 мм', desc: lengthE ? 'Размер от уплотнения до головки' : 'Размер по умолчанию (120 мм)' });
-        }
-
-        // Блок 14: Штуцер (например, "G1/2" или по умолчанию М20х1,5)
-        let b14 = blocks[7] || '';
-        rows.push({ 
-            name: 'Штуцер', 
-            val: b14 || 'М20х1,5', 
-            desc: b14 ? `Резьба ${b14}` : 'Стандартная резьба М20х1,5' 
-        });
-
-        // Дополнительные параметры
-        if (extraText) {
-            if (extraText.includes('УПИ-420')) {
-                rows.push({ name: 'Преобразователь', val: 'УПИ-420', desc: 'Электронный модуль 4...20 mA' });
-            }
-            if (/HART/i.test(extraText)) {
-                let hartMatch = extraText.match(/HARTv?\d*/i);
-                rows.push({ name: 'Протокол', val: hartMatch ? hartMatch[0] : 'HART', desc: 'Цифровой протокол поверх 4–20 мА' });
-            }
-        }
-
-        if (rangeStr) {
-            rows.push({ name: 'Диапазон темп.', val: rangeStr, desc: 'Измеряемая температура' });
-        }
-
-        return rows;
-    }
-
-    // Обработка событий мыши
-    document.addEventListener('DOMContentLoaded', () => {
-        const tooltip = document.getElementById('tspt-tooltip');
-        const tooltipBody = document.getElementById('tspt-tooltip-body');
-        const elements = document.querySelectorAll('.tspt-title');
-
-        elements.forEach(el => {
-            el.addEventListener('mouseenter', (e) => {
-                const text = el.innerText;
-                const parsedData = parseTSPT(text);
-
-                // Заполнение таблицы
-                tooltipBody.innerHTML = parsedData.map(item => `
-                    <tr>
-                        <td class="tt-block">${item.name}</td>
-                        <td class="tt-val">${item.val}</td>
-                        <td class="tt-desc">${item.desc}</td>
-                    </tr>
-                `).join('');
-
-                tooltip.style.display = 'block';
-            });
-
-            el.addEventListener('mousemove', (e) => {
-                // Позиционирование подсказки с учетом границ экрана
-                const tooltipWidth = 420;
-                const tooltipHeight = tooltip.offsetHeight;
+    <div class="header">
+        <div class="search-container">
+            <div class="search-inputs-group">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <input type="text" id="searchName" placeholder="Поиск по наименованию">
+                    <button class="clear-btn" id="clearSearchName" data-target="searchName">✕</button>
+                </div>
                 
-                let left = e.pageX + 15;
-                let top = e.pageY + 15;
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <input type="text" id="searchTag" placeholder="Поиск по ТЭГу / Модели">
+                    <button class="clear-btn" id="clearSearchTag" data-target="searchTag">✕</button>
+                </div>
+            </div>
 
-                if (left + tooltipWidth > window.innerWidth) {
-                    left = e.pageX - tooltipWidth - 15;
-                }
+            <div class="controls-group">
+                <div class="cards-count" id="cardsCount">0 шт.</div>
+                <button class="header-btn" id="openFilterBtn">Фильтры</button>
+                <button class="header-btn" id="openSortBtn">Сортировка</button>
+                <button class="reset-header-btn" id="resetHeaderBtn" title="Сбросить всё">✕</button>
+            </div>
+        </div>
+    </div>
 
-                if (top + tooltipHeight > window.innerHeight + window.scrollY) {
-                    top = e.pageY - tooltipHeight - 15;
-                }
+    <div class="main-container">
+        <div class="grid" id="cardsGrid">
+            <div class="loader" id="loader">Загрузка данных...</div>
+        </div>
+    </div>
 
-                tooltip.style.left = `${left}px`;
-                tooltip.style.top = `${top}px`;
-            });
+    <!-- Боковая панель фильтров -->
+    <div class="side-modal-overlay" id="filterOverlay">
+        <div class="side-modal">
+            <div class="filter-header">
+                <div class="filter-actions">
+                    <span class="filter-title">Фильтры</span>
+                    <button class="reset-btn-styled" id="resetFiltersBtn">Сбросить</button>
+                    <button class="close-filter-btn" id="closeFilterBtn">✕</button>
+                </div>
+            </div>
+            <div class="filter-body" id="filterContainer">
+                <!-- Динамические группы фильтров заполняются из JS -->
+            </div>
+        </div>
+    </div>
 
-            el.addEventListener('mouseleave', () => {
-                tooltip.style.display = 'none';
-            });
+    <!-- iOS Bottom Sheet для мобильного выбора / сортировки -->
+    <div class="ios-sheet-overlay" id="sheetOverlay">
+        <div class="ios-sheet">
+            <div class="ios-sheet-header">
+                <div class="ios-sheet-title" id="sheetTitle">Выберите вариант</div>
+                <button class="ios-sheet-close" id="closeSheetBtn">✕</button>
+            </div>
+            <div class="ios-sheet-body" id="sheetBody">
+                <!-- Пункты списка -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно деталей карточки -->
+    <div class="modal-overlay" id="detailModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Характеристики</h3>
+                <button class="close-btn" id="closeModalBtn">✕</button>
+            </div>
+            <div class="modal-content">
+                <table class="specs-table" id="specsTable">
+                    <!-- Заполняется JS -->
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-btn" id="modalCloseFooterBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Просмотрщик изображений -->
+    <div class="image-viewer-overlay" id="imageViewerOverlay">
+        <img src="" id="viewerImage" alt="Изображение">
+    </div>
+
+    <script>
+        // Глобальное состояние приложения
+        let allData = [];
+        let filteredData = [];
+        let filterColumns = [];
+        let activeFilters = {};
+        let currentSort = 'default';
+
+        // URL CSV файла (может переопределяться через URL-параметр ?csv=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const csvUrl = urlParams.get('csv') || 'data.csv';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initSearchInputs();
+            initControlButtons();
+            initModals();
+            loadCSVData(csvUrl);
         });
-    });
-</script>
 
+        // Загрузка и парсинг CSV
+        function loadCSVData(path) {
+            Papa.parse(path, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data && results.data.length > 0) {
+                        allData = results.data;
+                        setupFiltersConfig();
+                        applyFiltersAndRender();
+                    } else {
+                        showError('Файл пуст или содержит неверный формат.');
+                    }
+                },
+                error: function(err) {
+                    // Резервный запуск демонстрационных данных, если файл не найден локально
+                    console.warn('Не удалось загрузить CSV по пути:', path, err);
+                    loadDemoData();
+                }
+            });
+        }
+
+        // Демонстрационные данные при отсутствии внешнего файла CSV
+        function loadDemoData() {
+            allData = [
+                {
+                    "Наименование": "Датчик избыточного давления OWEN PD100",
+                    "ТЭГ": "3150-PDSH-800A",
+                    "Здание": "3150",
+                    "БЗ": "ВЦК.22550",
+                    "Оборудование": "Differential pressure switch",
+                    "Производитель": "OWEN",
+                    "Вес, кг": "0.25",
+                    "Статус": "true",
+                    "Картинка": "https://via.placeholder.com/150/007AFF/FFFFFF?text=OWEN"
+                },
+                {
+                    "Наименование": "Привод воздушной заслонки Hoocon DW-002A",
+                    "ТЭГ": "3150-B01-DW-002A",
+                    "Здание": "3150",
+                    "БЗ": "ВЦК.22550",
+                    "Оборудование": "Actuator",
+                    "Производитель": "Hoocon",
+                    "Вес, кг": "2.6",
+                    "Статус": "true",
+                    "Картинка": "https://via.placeholder.com/150/FF9500/FFFFFF?text=Hoocon"
+                },
+                {
+                    "Наименование": "Защитный термостат RGP THS-800A",
+                    "ТЭГ": "3150-THS-800A",
+                    "Здание": "3150",
+                    "БЗ": "ВЦК.22550",
+                    "Оборудование": "Thermostat",
+                    "Производитель": "RGP",
+                    "Вес, кг": "0.2",
+                    "Статус": "false",
+                    "Картинка": "https://via.placeholder.com/150/8E8E93/FFFFFF?text=RGP"
+                }
+            ];
+            setupFiltersConfig();
+            applyFiltersAndRender();
+        }
+
+        function showError(msg) {
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = `<div class="loader">${msg}</div>`;
+        }
+
+        // Инициализация конфигурации фильтров на основе колонок CSV
+        function setupFiltersConfig() {
+            if (allData.length === 0) return;
+            
+            const keys = Object.keys(allData[0]);
+            // Автоматически определяем подходящие колонки для фильтров
+            filterColumns = keys.filter(k => 
+                !['Наименование', 'Картинка', 'Ссылка на PID', 'Ссылка на чертеж'].includes(k)
+            );
+
+            renderFilterControls();
+        }
+
+        // Отрисовка элементов фильтрации в боковой панели
+        function renderFilterControls() {
+            const container = document.getElementById('filterContainer');
+            container.innerHTML = '';
+
+            filterColumns.forEach(col => {
+                const values = Array.from(new Set(allData.map(item => item[col] ? item[col].trim() : '').filter(Boolean))).sort();
+                if (values.length === 0) return;
+
+                const group = document.createElement('div');
+                group.className = 'filter-group';
+
+                const label = document.createElement('div');
+                label.className = 'filter-label';
+                label.textContent = col;
+
+                // Десктопный селект
+                const select = document.createElement('select');
+                select.className = 'desktop-select';
+                select.dataset.column = col;
+                select.innerHTML = `<option value="">Все (${col})</option>` + 
+                    values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+
+                select.addEventListener('change', (e) => {
+                    setFilterValue(col, e.target.value);
+                });
+
+                // Мобильный триггер Bottom Sheet
+                const trigger = document.createElement('button');
+                trigger.className = 'custom-select-trigger';
+                trigger.id = `trigger_${col}`;
+                trigger.textContent = `Все (${col})`;
+                trigger.addEventListener('click', () => {
+                    openBottomSheetForColumn(col, values);
+                });
+
+                group.appendChild(label);
+                group.appendChild(select);
+                group.appendChild(trigger);
+                container.appendChild(group);
+            });
+        }
+
+        // Установка значения фильтра
+        function setFilterValue(col, val) {
+            if (!val) {
+                delete activeFilters[col];
+            } else {
+                activeFilters[col] = val;
+            }
+
+            // Синхронизация контролов
+            const select = document.querySelector(`.desktop-select[data-column="${col}"]`);
+            if (select) select.value = val || '';
+
+            const trigger = document.getElementById(`trigger_${col}`);
+            if (trigger) {
+                if (val) {
+                    trigger.textContent = val;
+                    trigger.classList.add('selected');
+                } else {
+                    trigger.textContent = `Все (${col})`;
+                    trigger.classList.remove('selected');
+                }
+            }
+
+            updateActiveButtonsState();
+            applyFiltersAndRender();
+        }
+
+        // Логика фильтрации и отрисовки карточек
+        function applyFiltersAndRender() {
+            const searchNameVal = document.getElementById('searchName').value.toLowerCase().trim();
+            const searchTagVal = document.getElementById('searchTag').value.toLowerCase().trim();
+
+            filteredData = allData.filter(item => {
+                // Поиск по названию
+                if (searchNameVal) {
+                    const name = (item['Наименование'] || item['Название'] || '').toLowerCase();
+                    if (!name.includes(searchNameVal)) return false;
+                }
+
+                // Поиск по ТЭГу / Модели
+                if (searchTagVal) {
+                    const tag = (item['ТЭГ'] || item['Модель'] || item['Оборудование'] || '').toLowerCase();
+                    if (!tag.includes(searchTagVal)) return false;
+                }
+
+                // Боковые фильтры
+                for (let col in activeFilters) {
+                    const itemVal = item[col] ? item[col].trim() : '';
+                    if (itemVal !== activeFilters[col]) return false;
+                }
+
+                return true;
+            });
+
+            // Сортировка
+            sortData();
+
+            // Рендер
+            renderGrid();
+        }
+
+        function sortData() {
+            if (currentSort === 'name_asc') {
+                filteredData.sort((a, b) => (a['Наименование'] || '').localeCompare(b['Наименование'] || ''));
+            } else if (currentSort === 'name_desc') {
+                filteredData.sort((a, b) => (b['Наименование'] || '').localeCompare(a['Наименование'] || ''));
+            } else if (currentSort === 'tag_asc') {
+                filteredData.sort((a, b) => (a['ТЭГ'] || '').localeCompare(b['ТЭГ'] || ''));
+            }
+        }
+
+        // Отрисовка сетки карточек
+        function renderGrid() {
+            const grid = document.getElementById('cardsGrid');
+            const countElem = document.getElementById('cardsCount');
+
+            countElem.textContent = `${filteredData.length} шт.`;
+            grid.innerHTML = '';
+
+            if (filteredData.length === 0) {
+                grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
+                return;
+            }
+
+            filteredData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const title = item['Наименование'] || item['Название'] || 'Без названия';
+                const tag = item['ТЭГ'] || item['Модель'] || '';
+                const vendor = item['Производитель'] || item['БЗ'] || '';
+                const status = item['Статус'] === 'true' || item['Статус'] === '1';
+                const imgSrc = item['Картинка'] || item['Изображение'] || 'https://via.placeholder.com/110x90/F2F2F7/8E8E93?text=No+Photo';
+
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="badges-container">
+                            ${tag ? `<span class="card-tag">${escapeHtml(tag)}</span>` : ''}
+                            ${vendor ? `<span class="card-link-tag">${escapeHtml(vendor)}</span>` : ''}
+                        </div>
+                        <div class="card-title">${escapeHtml(title)}</div>
+                        <div class="card-divider"></div>
+                        <div class="card-subtitle">
+                            ${item['Оборудование'] ? `Обор.: ${escapeHtml(item['Оборудование'])}<br>` : ''}
+                            ${item['Здание'] ? `Здание: ${escapeHtml(item['Здание'])}` : ''}
+                        </div>
+                    </div>
+                    <div class="card-img-container">
+                        <div class="status-circle ${status ? 'status-true' : 'status-false'}"></div>
+                        <img src="${escapeHtml(imgSrc)}" alt="Фото" class="card-img-preview" data-src="${escapeHtml(imgSrc)}">
+                    </div>
+                `;
+
+                // Открытие модального окна подробностей
+                card.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('card-img-preview')) {
+                        openImageViewer(e.target.dataset.src);
+                    } else {
+                        openDetailModal(item);
+                    }
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Инициализация полей поиска и их кнопок очистки
+        function initSearchInputs() {
+            ['searchName', 'searchTag'].forEach(id => {
+                const input = document.getElementById(id);
+                const clearBtn = document.querySelector(`.clear-btn[data-target="${id}"]`);
+
+                input.addEventListener('input', () => {
+                    if (input.value) {
+                        clearBtn.classList.add('visible');
+                    } else {
+                        clearBtn.classList.remove('visible');
+                    }
+                    updateActiveButtonsState();
+                    applyFiltersAndRender();
+                });
+
+                clearBtn.addEventListener('click', () => {
+                    input.value = '';
+                    clearBtn.classList.remove('visible');
+                    updateActiveButtonsState();
+                    applyFiltersAndRender();
+                });
+            });
+        }
+
+        // Кнопки управления шапкой
+        function initControlButtons() {
+            const openFilterBtn = document.getElementById('openFilterBtn');
+            const openSortBtn = document.getElementById('openSortBtn');
+            const resetHeaderBtn = document.getElementById('resetHeaderBtn');
+            const filterOverlay = document.getElementById('filterOverlay');
+            const closeFilterBtn = document.getElementById('closeFilterBtn');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+            openFilterBtn.addEventListener('click', () => {
+                filterOverlay.classList.add('visible');
+            });
+
+            closeFilterBtn.addEventListener('click', () => {
+                filterOverlay.classList.remove('visible');
+            });
+
+            filterOverlay.addEventListener('click', (e) => {
+                if (e.target === filterOverlay) filterOverlay.classList.remove('visible');
+            });
+
+            resetFiltersBtn.addEventListener('click', resetAllFilters);
+            resetHeaderBtn.addEventListener('click', resetAllFilters);
+
+            openSortBtn.addEventListener('click', openSortBottomSheet);
+        }
+
+        function resetAllFilters() {
+            activeFilters = {};
+            currentSort = 'default';
+
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchTag').value = '';
+            document.querySelectorAll('.clear-btn').forEach(b => b.classList.remove('visible'));
+
+            document.querySelectorAll('.desktop-select').forEach(s => s.value = '');
+            document.querySelectorAll('.custom-select-trigger').forEach(t => {
+                const col = t.id.replace('trigger_', '');
+                t.textContent = `Все (${col})`;
+                t.classList.remove('selected');
+            });
+
+            updateActiveButtonsState();
+            applyFiltersAndRender();
+        }
+
+        function updateActiveButtonsState() {
+            const hasFilters = Object.keys(activeFilters).length > 0;
+            const hasSearch = document.getElementById('searchName').value || document.getElementById('searchTag').value;
+            
+            const openFilterBtn = document.getElementById('openFilterBtn');
+            const resetHeaderBtn = document.getElementById('resetHeaderBtn');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+            if (hasFilters) {
+                openFilterBtn.classList.add('active');
+                resetFiltersBtn.classList.add('active');
+            } else {
+                openFilterBtn.classList.remove('active');
+                resetFiltersBtn.classList.remove('active');
+            }
+
+            if (hasFilters || hasSearch) {
+                resetHeaderBtn.classList.add('active');
+            } else {
+                resetHeaderBtn.classList.remove('active');
+            }
+        }
+
+        // Работа с Bottom Sheet (iOS стилевой выпадающий список)
+        function openBottomSheetForColumn(col, values) {
+            const overlay = document.getElementById('sheetOverlay');
+            const title = document.getElementById('sheetTitle');
+            const body = document.getElementById('sheetBody');
+
+            title.textContent = col;
+            body.innerHTML = '';
+
+            // Вариант "Все"
+            const allItem = document.createElement('div');
+            allItem.className = `ios-sheet-item ${!activeFilters[col] ? 'selected' : ''}`;
+            allItem.textContent = `Все (${col})`;
+            allItem.addEventListener('click', () => {
+                setFilterValue(col, '');
+                closeBottomSheet();
+            });
+            body.appendChild(allItem);
+
+            values.forEach(v => {
+                const item = document.createElement('div');
+                item.className = `ios-sheet-item ${activeFilters[col] === v ? 'selected' : ''}`;
+                item.textContent = v;
+                item.addEventListener('click', () => {
+                    setFilterValue(col, v);
+                    closeBottomSheet();
+                });
+                body.appendChild(item);
+            });
+
+            overlay.classList.add('visible');
+        }
+
+        function openSortBottomSheet() {
+            const overlay = document.getElementById('sheetOverlay');
+            const title = document.getElementById('sheetTitle');
+            const body = document.getElementById('sheetBody');
+
+            title.textContent = 'Сортировка';
+            body.innerHTML = '';
+
+            const options = [
+                { id: 'default', label: 'По умолчанию' },
+                { id: 'name_asc', label: 'По наименованию (А-Я)' },
+                { id: 'name_desc', label: 'По наименованию (Я-А)' },
+                { id: 'tag_asc', label: 'По ТЭГу' }
+            ];
+
+            options.forEach(opt => {
+                const item = document.createElement('div');
+                item.className = `ios-sheet-item ${currentSort === opt.id ? 'selected' : ''}`;
+                item.textContent = opt.label;
+                item.addEventListener('click', () => {
+                    currentSort = opt.id;
+                    document.getElementById('openSortBtn').classList.toggle('active', currentSort !== 'default');
+                    applyFiltersAndRender();
+                    closeBottomSheet();
+                });
+                body.appendChild(item);
+            });
+
+            overlay.classList.add('visible');
+        }
+
+        function closeBottomSheet() {
+            document.getElementById('sheetOverlay').classList.remove('visible');
+        }
+
+        // Модальные окна детального просмотра и зума фото
+        function initModals() {
+            const sheetOverlay = document.getElementById('sheetOverlay');
+            const closeSheetBtn = document.getElementById('closeSheetBtn');
+            const detailModalOverlay = document.getElementById('detailModalOverlay');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalCloseFooterBtn = document.getElementById('modalCloseFooterBtn');
+            const imageViewerOverlay = document.getElementById('imageViewerOverlay');
+
+            closeSheetBtn.addEventListener('click', closeBottomSheet);
+            sheetOverlay.addEventListener('click', (e) => {
+                if (e.target === sheetOverlay) closeBottomSheet();
+            });
+
+            const closeDetail = () => detailModalOverlay.classList.remove('visible');
+            closeModalBtn.addEventListener('click', closeDetail);
+            modalCloseFooterBtn.addEventListener('click', closeDetail);
+            detailModalOverlay.addEventListener('click', (e) => {
+                if (e.target === detailModalOverlay) closeDetail();
+            });
+
+            imageViewerOverlay.addEventListener('click', () => {
+                imageViewerOverlay.classList.remove('visible');
+            });
+        }
+
+        function openDetailModal(item) {
+            const overlay = document.getElementById('detailModalOverlay');
+            const title = document.getElementById('modalTitle');
+            const table = document.getElementById('specsTable');
+
+            title.textContent = item['Наименование'] || item['Название'] || 'Детализация';
+            table.innerHTML = '';
+
+            for (let key in item) {
+                if (!item[key] || key === 'Картинка') continue;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${escapeHtml(key)}</td><td>${escapeHtml(item[key])}</td>`;
+                table.appendChild(tr);
+            }
+
+            overlay.classList.add('visible');
+        }
+
+        function openImageViewer(src) {
+            const overlay = document.getElementById('imageViewerOverlay');
+            const img = document.getElementById('viewerImage');
+            img.src = src;
+            overlay.classList.add('visible');
+        }
+
+        // Вспомогательная функция защиты от XSS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
 </body>
 </html>

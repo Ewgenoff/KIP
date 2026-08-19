@@ -156,7 +156,7 @@
             color: white;
         }
 
-        /* Сетка карточек: увеличена ширина в десктопе в 2 раза (до 640px) */
+        /* Сетка карточек */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(640px, 1fr));
@@ -180,7 +180,7 @@
             transition: transform 0.15s, box-shadow 0.15s;
             display: flex;
             flex-direction: row;
-            height: 180px;
+            height: 165px; /* Высота карточки слегка уменьшена */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -195,8 +195,8 @@
         }
 
         .card-info {
-            flex: 1;
-            padding: 16px;
+            flex: 1; /* Текстовая часть занимает больше места */
+            padding: 14px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -206,16 +206,22 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .badge {
-            font-size: 11px;
+            font-size: 10px; /* Уменьшено на 1 пункт */
             font-weight: 600;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 6px;
             text-transform: uppercase;
             letter-spacing: 0.2px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .badge:active {
+            opacity: 0.7;
         }
 
         .badge-part {
@@ -224,11 +230,11 @@
         }
 
         .card-name {
-            font-size: 13px; /* Уменьшено на 1 пункт */
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border-bottom: 1px solid var(--separator);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             word-break: break-word;
             line-height: 1.3;
         }
@@ -244,16 +250,17 @@
             -webkit-box-orient: vertical;
         }
 
+        /* Уменьшенный раздел фотографии без серой линии */
         .card-image-container {
             position: relative;
-            width: 140px;
+            width: 100px; /* Фото уменьшено */
             flex-shrink: 0;
-            background: #f9fafb;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-left: 1px solid var(--separator);
-            padding: 10px;
+            border-left: none; /* Серая линия убрана */
+            padding: 8px;
             overflow: hidden;
         }
 
@@ -267,31 +274,32 @@
 
         .card-image.rotated {
             transform: rotate(90deg);
-            max-width: 120px;
-            max-height: 120px;
+            max-width: 85px;
+            max-height: 85px;
         }
 
         .no-image {
             color: #d1d5db;
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
         }
 
         .status-dot {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             width: 10px;
             height: 10px;
             border-radius: 50%;
             border: 2px solid white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             z-index: 2;
+            cursor: help;
         }
         .dot-green { background-color: var(--green); }
         .dot-orange { background-color: var(--orange); }
 
-        /* Модальное окно (iOS Bottom Sheet) */
+        /* Модальное окно (Большая карточка) */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -309,7 +317,7 @@
             background: var(--bg-color);
             border-radius: 16px 16px 0 0;
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             max-height: 90vh;
             display: flex;
             flex-direction: column;
@@ -355,34 +363,63 @@
             background: var(--card-bg);
         }
 
-        .modal-table { width: 100%; border-collapse: collapse; }
-        .modal-table tr { border-bottom: 0.5px solid var(--separator); }
-        .modal-table tr:last-child { border-bottom: none; }
-        .modal-table td { padding: 12px 20px; font-size: 15px; vertical-align: top; }
-        .modal-table td.label { font-weight: 500; color: var(--label-secondary); width: 40%; }
-        .modal-table td.value { color: var(--label-primary); word-break: break-word; text-align: right; font-weight: 400; }
+        /* Выравнивание по центру относительно разделительной линии */
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .modal-table tr {
+            border-bottom: 0.5px solid var(--separator);
+        }
+        .modal-table tr:last-child {
+            border-bottom: none;
+        }
+        .modal-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            vertical-align: middle;
+            word-break: break-word;
+        }
+        .modal-table td.label {
+            font-weight: 500;
+            color: var(--label-secondary);
+            width: 50%;
+            text-align: right; /* Левая колонка выровнена вправо к линии */
+            border-right: 1px solid var(--separator); /* Центральная линия */
+        }
+        .modal-table td.value {
+            color: var(--label-primary);
+            width: 50%;
+            text-align: left; /* Правая колонка выровнена влево от линии */
+            font-weight: 400;
+        }
 
         .modal-footer {
-            padding: 16px 20px;
+            padding: 14px 20px;
             background: var(--card-bg);
             border-top: 0.5px solid var(--separator);
             display: flex;
-            justify-content: center;
+            gap: 12px;
+            justify-content: space-between;
         }
 
-        .btn-close-modal {
-            background: var(--blue);
-            color: white;
-            border: none;
+        .btn-modal-action {
+            flex: 1;
             padding: 12px 0;
-            width: 100%;
             border-radius: 12px;
-            cursor: pointer;
             font-weight: 600;
             font-size: 16px;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            text-decoration: none;
             transition: opacity 0.2s;
         }
-        .btn-close-modal:active { opacity: 0.8; }
+        .btn-modal-action:active { opacity: 0.8; }
+        .btn-site { background: var(--gray-bg); color: var(--blue); }
+        .btn-site.disabled { opacity: 0.4; pointer-events: none; }
+        .btn-close-modal-footer { background: var(--blue); color: white; }
 
         /* Боковые панели (Sort & Filter) */
         .side-panel-overlay {
@@ -408,7 +445,6 @@
         }
         .side-panel.active { right: 0; }
 
-        /* Ширина панели на мобильных устройствах — 66% экрана */
         @media (max-width: 768px) {
             .side-panel {
                 width: 66vw;
@@ -448,8 +484,8 @@
         }
         .sort-btn:active { background: var(--gray-bg); }
 
-        /* Элементы фильтра (iOS Settings Style) */
-        .filter-group { margin-bottom: 12px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        /* Фильтры */
+        .filter-group { margin-bottom: 10px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
         .filter-group-title {
             width: 100%;
             text-align: left;
@@ -461,7 +497,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--label-primary);
+            color: var(--blue); /* Текст заголовка фильтра синий */
             font-size: 15px;
         }
         .filter-group-title:active { background: var(--bg-color); }
@@ -476,18 +512,22 @@
         .filter-item {
             display: flex;
             align-items: center;
-            padding: 12px 16px;
+            padding: 10px 16px;
             cursor: pointer;
             border-bottom: 0.5px solid var(--separator);
-            font-size: 15px;
+            font-size: 14px; /* Шрифт уменьшен на 1 пункт */
         }
         .filter-item:last-child { border-bottom: none; }
         
+        /* Чекбокс фиксированного размера */
         .filter-item input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
             width: 22px;
             height: 22px;
+            min-width: 22px;
+            min-height: 22px;
+            flex-shrink: 0; /* Фиксированный размер */
             background-color: var(--gray-bg);
             border: none;
             border-radius: 6px;
@@ -535,6 +575,31 @@
             transform: rotate(90deg);
         }
 
+        /* iOS Toast "Скопировано" */
+        .ios-toast {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(50, 50, 50, 0.85);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .ios-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         .loading {
             text-align: center;
             padding: 50px;
@@ -558,7 +623,7 @@
             </div>
         </div>
         <div class="toolbar">
-            <div class="counter" id="counter">Загрузка данных...</div>
+            <div class="counter" id="counter">0 из 0</div>
             <div class="toolbar-buttons">
                 <button class="btn" onclick="openPanel('sortPanel')">Сорт.</button>
                 <button class="btn" onclick="openPanel('filterPanel')">Фильтр</button>
@@ -571,17 +636,18 @@
         <div class="loading">Идет загрузка данных, пожалуйста, подождите...</div>
     </div>
 
-    <!-- Модальное окно данных (Bottom Sheet) -->
+    <!-- Модальное окно данных (Большая карточка) -->
     <div class="modal-overlay" id="modalOverlay" onclick="if(event.target === this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="modalTitle">Детали</h2>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalBody">
                 <table class="modal-table" id="modalTable"></table>
             </div>
             <div class="modal-footer">
-                <button class="btn-close-modal" onclick="closeModal()">Закрыть</button>
+                <a id="btnModalSite" class="btn-modal-action btn-site" href="#" target="_blank">Сайт</a>
+                <button class="btn-modal-action btn-close-modal-footer" onclick="closeModal()">Закрыть</button>
             </div>
         </div>
     </div>
@@ -619,6 +685,9 @@
         </div>
     </div>
 
+    <!-- iOS Toast "Скопировано" -->
+    <div class="ios-toast" id="iosToast">Скопировано</div>
+
     <script>
         const columnsMap = {
             "PartNumber": "ТЭГ",
@@ -655,10 +724,10 @@
             "Группа": "Группа"
         };
 
+        // Из раздела фильтров удален "ProjectName"
         const filterColumns = [
             "Proizvodetel",
             "BlokVCK",
-            "ProjectName",
             "ParamKontrol",
             "VzryvVybor",
             "Vzryvozaschita",
@@ -683,14 +752,14 @@
             "Примечание"
         ];
 
-        const excludedModalCols = ["IMG", "Группа", "Status", "ActualStatus"];
+        // Из большой карточки убраны PartNumber и ProjectName, добавлен Комментарий
+        const excludedModalCols = ["IMG", "Группа", "Status", "ActualStatus", "PartNumber", "ProjectName", "Link"];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
         let allData = [];
         let activeFilters = {};
         let currentSort = { key: null, direction: 'asc' };
 
-        // Генератор системных цветов iOS для производителей
         function getProducerColor(str) {
             if (!str) return { bg: 'rgba(142, 142, 147, 0.15)', text: '#8e8e93' };
             let hash = 0;
@@ -763,7 +832,8 @@
                 return matchName && matchGlobal;
             });
 
-            counter.innerText = `Отображено: ${finalData.length}`;
+            // Формат записи "12 из 854" без слова "Отображено:"
+            counter.innerText = `${finalData.length} из ${allData.length}`;
 
             if (finalData.length === 0) {
                 grid.innerHTML = '<div class="loading">Ничего не найдено</div>';
@@ -780,7 +850,7 @@
 
                 const startPress = (e) => {
                     isLongPress = false;
-                    if (e.target.classList.contains('card-image')) return;
+                    if (e.target.classList.contains('card-image') || e.target.classList.contains('badge')) return;
                     pressTimer = setTimeout(() => {
                         isLongPress = true;
                         if (item["Link"]) {
@@ -799,7 +869,7 @@
                 card.addEventListener('touchmove', cancelPress, {passive: true});
 
                 card.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('card-image')) return;
+                    if (e.target.classList.contains('card-image') || e.target.classList.contains('badge')) return;
                     if (isLongPress) {
                         e.preventDefault();
                         isLongPress = false;
@@ -817,19 +887,20 @@
 
                 const producerStyle = getProducerColor(producer);
 
+                // Подсказка при наведении на круглешок
                 const statusRaw = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
                 if (statusRaw === 'А' || statusRaw === 'A') {
-                    dotHtml = '<div class="status-dot dot-green"></div>';
+                    dotHtml = '<div class="status-dot dot-green" title="Популярный"></div>';
                 } else if (statusRaw === 'АК' || statusRaw === 'AK') {
-                    dotHtml = '<div class="status-dot dot-orange"></div>';
+                    dotHtml = '<div class="status-dot dot-orange" title="Редкий"></div>';
                 }
 
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
-                            ${partNumber ? `<span class="badge badge-part">${escapeHtml(partNumber)}</span>` : ''}
-                            ${producer ? `<span class="badge" style="background: ${producerStyle.bg}; color: ${producerStyle.text};">${escapeHtml(producer)}</span>` : ''}
+                            ${partNumber ? `<span class="badge badge-part" onclick="copyPartNumber(event, '${escapeHtml(partNumber)}')">${escapeHtml(partNumber)}</span>` : ''}
+                            ${producer ? `<span class="badge badge-producer" style="background: ${producerStyle.bg}; color: ${producerStyle.text};" onclick="openProducerFilter(event, '${escapeHtml(producer)}')">${escapeHtml(producer)}</span>` : ''}
                         </div>
                         <div class="card-name">${escapeHtml(projectName)}</div>
                         <div class="card-purpose">${escapeHtml(naznachenie)}</div>
@@ -842,7 +913,6 @@
 
                 const imgEl = card.querySelector('.card-image');
                 if (imgEl) {
-                    // Проверка ориентации фото при загрузке
                     imgEl.onload = function() {
                         if (this.naturalWidth > this.naturalHeight) {
                             this.classList.add('rotated');
@@ -857,6 +927,36 @@
 
                 grid.appendChild(card);
             });
+        }
+
+        // Скопировать PartNumber с плашки и показать подсказку
+        function copyPartNumber(e, text) {
+            e.stopPropagation();
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Скопировано");
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('iosToast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 1000); // Подсказка на 1 секунду
+        }
+
+        // Открытие фильтра производителей по клику на плашку
+        function openProducerFilter(e, producerName) {
+            e.stopPropagation();
+            openPanel('filterPanel');
+            const groupTitleBtn = document.querySelector('[data-filter-key="Proizvodetel"]');
+            if (groupTitleBtn) {
+                const dropdown = groupTitleBtn.nextElementSibling;
+                if (dropdown && !dropdown.classList.contains('open')) {
+                    dropdown.classList.add('open');
+                }
+            }
         }
 
         function handleSearch() {
@@ -876,6 +976,9 @@
         function openModal(item) {
             const modalTable = document.getElementById('modalTable');
             const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            const btnSite = document.getElementById('btnModalSite');
+
             modalTitle.innerText = item["ProjectName"] || "Карточка оборудования";
             modalTable.innerHTML = '';
 
@@ -888,16 +991,24 @@
                     cell1.className = 'label';
                     cell2.className = 'value';
                     cell1.innerText = columnsMap[key];
-                    
-                    if (key === 'Link') {
-                        cell2.innerHTML = `<a href="${escapeHtml(item[key])}" target="_blank" style="color: var(--blue); text-decoration: none;">Открыть сайт</a>`;
-                    } else {
-                        cell2.innerText = item[key];
-                    }
+                    cell2.innerText = item[key];
                 }
             }
+
+            // Настройка кнопки "Сайт" внизу
+            if (item["Link"] && item["Link"].trim() !== '') {
+                btnSite.href = item["Link"].trim();
+                btnSite.classList.remove('disabled');
+            } else {
+                btnSite.href = "#";
+                btnSite.classList.add('disabled');
+            }
+
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // Прокрутка на самую первую строку
+            modalBody.scrollTop = 0;
         }
 
         function closeModal() {
@@ -932,6 +1043,9 @@
             document.getElementById('sortPanel').classList.remove('active');
             document.getElementById('filterPanel').classList.remove('active');
             document.body.style.overflow = 'auto';
+
+            // При выходе из панели фильтров - сворачиваем все списки внутри
+            document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('open'));
         }
 
         function sortCards(key) {
@@ -963,6 +1077,7 @@
 
                 const btn = document.createElement('button');
                 btn.className = 'filter-group-title';
+                btn.setAttribute('data-filter-key', key);
                 btn.innerHTML = `${displayName} <span style="color: var(--label-secondary)">▼</span>`;
                 btn.onclick = () => {
                     const dropdown = groupDiv.querySelector('.filter-dropdown');

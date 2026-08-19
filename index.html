@@ -13,7 +13,7 @@
             --label-primary: #1c1c1e;
             --label-secondary: #8e8e93;
             --blue: #007aff;
-            --gray-bg: #e5e5ea;
+            --gray-bg: #dcdce2; /* Сделан более контрастным для лучшей видимости кнопок */
             --green: #34c759;
             --orange: #ff9500;
             --red: #ff3b30;
@@ -58,8 +58,8 @@
         .input-wrapper input {
             width: 100%;
             padding: 11px 36px 11px 16px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0,0,0,0.1);
             border-radius: 12px;
             font-size: 16px;
             outline: none;
@@ -68,7 +68,7 @@
         }
 
         .input-wrapper input:focus {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 1);
         }
 
         .clear-btn {
@@ -97,10 +97,10 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             padding: 12px 16px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .counter {
@@ -115,9 +115,10 @@
             align-items: center;
         }
 
+        /* Кнопки сделать более видимыми */
         .btn {
             background: var(--gray-bg);
-            border: none;
+            border: 1px solid rgba(0,0,0,0.08);
             padding: 8px 18px;
             border-radius: 8px;
             cursor: pointer;
@@ -125,6 +126,11 @@
             font-size: 14px;
             color: var(--label-primary);
             transition: transform 0.1s, background 0.2s, color 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .btn:hover {
+            background: #d0d0d8;
         }
 
         .btn:active {
@@ -146,18 +152,20 @@
         .btn-exclamation.active {
             background: var(--blue);
             color: white;
+            border-color: var(--blue);
         }
 
         .status-toggle {
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            border: none;
+            border: 1px solid rgba(0,0,0,0.1);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .status-toggle.green {
             background: var(--green);
@@ -185,6 +193,7 @@
         .btn-close-header.active {
             background: var(--red);
             color: white;
+            border-color: var(--red);
         }
 
         .btn-reset-panel {
@@ -197,6 +206,7 @@
         .btn-reset-panel.active {
             background: var(--blue);
             color: white;
+            border-color: var(--blue);
         }
 
         .cards-grid {
@@ -327,6 +337,20 @@
             text-align: center;
         }
 
+        /* Красный кружок статуса FALSE в столбце Status */
+        .status-false-dot {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--red);
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
         .status-dot {
             position: absolute;
             top: 6px;
@@ -413,6 +437,11 @@
         }
         .modal-table tr {
             border-bottom: 0.5px solid var(--separator);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .modal-table tr:hover {
+            background: rgba(0, 122, 255, 0.04);
         }
         .modal-table tr:last-child {
             border-bottom: none;
@@ -454,7 +483,7 @@
             font-weight: 600;
             font-size: 15px;
             cursor: pointer;
-            border: none;
+            border: 1px solid rgba(0,0,0,0.08);
             text-align: center;
             text-decoration: none;
             transition: opacity 0.2s;
@@ -462,7 +491,7 @@
         .btn-modal-action:active { opacity: 0.8; }
         .btn-site { background: var(--gray-bg); color: var(--blue); }
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
-        .btn-close-modal-footer { background: var(--blue); color: white; }
+        .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
 
         .side-panel-overlay {
             display: none;
@@ -510,29 +539,32 @@
             flex: 1;
         }
 
+        /* Кнопки в панели сортировки сделать более заметными */
         .sort-btn {
             display: block;
             width: 100%;
             margin-bottom: 10px;
             padding: 12px 16px;
             text-align: left;
-            background: var(--card-bg);
-            border: none;
+            background: #eef0f5;
+            border: 1px solid rgba(0,0,0,0.08);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
             color: var(--label-primary);
             transition: background 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
+        .sort-btn:hover { background: #e2e4ed; }
         .sort-btn:active { background: var(--gray-bg); }
 
-        .filter-group { margin-bottom: 8px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        .filter-group { margin-bottom: 8px; background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
         
         .filter-group-title {
             width: 100%;
             text-align: left;
-            padding: 6px 12px; 
+            padding: 8px 12px; 
             background: transparent;
             border: none;
             font-weight: 400;
@@ -544,6 +576,21 @@
             font-size: 14px;
             transition: color 0.2s;
         }
+
+        .filter-group-title-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            padding-right: 8px;
+        }
+
+        .filter-group-title-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
         .filter-group-title.has-selected {
             color: var(--blue);
             font-weight: 500;
@@ -924,39 +971,11 @@
                 const card = document.createElement('div');
                 card.className = 'card';
 
-                let pressTimer;
-                let isLongPress = false;
-
-                const startPress = (e) => {
-                    isLongPress = false;
-                    if (e.target.classList.contains('card-image') || e.target.classList.contains('badge')) return;
-                    pressTimer = setTimeout(() => {
-                        isLongPress = true;
-                        if (item["Link"]) {
-                            window.open(item["Link"], '_blank');
-                        }
-                    }, 500);
-                };
-
-                const cancelPress = () => { clearTimeout(pressTimer); };
-
-                card.addEventListener('mousedown', startPress);
-                card.addEventListener('mouseup', cancelPress);
-                card.addEventListener('mouseleave', cancelPress);
-                card.addEventListener('touchstart', startPress, {passive: true});
-                card.addEventListener('touchend', cancelPress);
-                card.addEventListener('touchmove', cancelPress, {passive: true});
-
                 card.addEventListener('click', (e) => {
                     const selection = window.getSelection();
                     if (selection.toString().length > 0) return;
 
                     if (e.target.classList.contains('card-image') || e.target.classList.contains('badge')) return;
-                    if (isLongPress) {
-                        e.preventDefault();
-                        isLongPress = false;
-                        return;
-                    }
                     openModal(item);
                 });
 
@@ -966,6 +985,7 @@
                 const naznachenie = item["Naznachenie"] || '';
                 const imgRaw = item["IMG"] || '';
                 const imgUrl = imgRaw.split(",")[0].trim();
+                const isStatusFalse = (item["Status"] || "").toString().trim().toUpperCase() === "FALSE";
 
                 const producerStyle = getProducerColor(producer);
 
@@ -987,6 +1007,7 @@
                         <div class="card-purpose">${escapeHtml(naznachenie)}</div>
                     </div>
                     <div class="card-image-container">
+                        ${isStatusFalse ? '<div class="status-false-dot" title="Статус FALSE"></div>' : ''}
                         ${dotHtml}
                         ${imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="Фото" class="card-image" onerror="this.outerHTML='<div class=\\'no-image\\'>Нет фото</div>'">` : '<div class="no-image">Нет фото</div>'}
                     </div>
@@ -1030,14 +1051,22 @@
 
         function openProducerFilter(e, producerName) {
             e.stopPropagation();
+            openSpecificFilterParam('Proizvodetel');
+        }
+
+        function openSpecificFilterParam(key) {
+            if (!filterColumns.includes(key)) return;
             openPanel('filterPanel');
-            const groupTitleBtn = document.querySelector('[data-filter-key="Proizvodetel"]');
+            const groupTitleBtn = document.querySelector(`[data-filter-key="${key}"]`);
             if (groupTitleBtn) {
                 const dropdown = groupTitleBtn.nextElementSibling;
                 if (dropdown && !dropdown.classList.contains('open')) {
                     dropdown.classList.add('open');
                     dropdown.scrollTop = 0;
                 }
+                setTimeout(() => {
+                    groupTitleBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
             }
         }
 
@@ -1073,6 +1102,12 @@
                     cell2.className = 'value';
                     cell1.innerText = columnsMap[key] || key;
                     cell2.innerText = item[key];
+
+                    // Двойной тап / двойной клик на строке параметра открывает нужный фильтр
+                    row.ondblclick = () => {
+                        closeModal();
+                        openSpecificFilterParam(key);
+                    };
                 }
             });
 
@@ -1159,7 +1194,15 @@
                 const btn = document.createElement('button');
                 btn.className = 'filter-group-title';
                 btn.setAttribute('data-filter-key', key);
-                btn.innerHTML = `<span>${displayName} <span class="group-counter" style="color: var(--label-secondary); font-size: 12px; margin-left: 4px;"></span></span> <span style="color: var(--label-secondary); font-size:11px;">▼</span>`;
+                btn.innerHTML = `
+                    <div class="filter-group-title-left">
+                        <span>${displayName}</span>
+                    </div>
+                    <div class="filter-group-title-right">
+                        <span class="group-counter" style="color: var(--label-secondary); font-size: 12px;">0/${uniqueVals.length}</span>
+                        <span style="color: var(--label-secondary); font-size: 11px;">▼</span>
+                    </div>
+                `;
                 
                 btn.onclick = () => {
                     const dropdown = groupDiv.querySelector('.filter-dropdown');

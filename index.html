@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>РљР°С‚Р°Р»РѕРі РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ</title>
+    <title>Каталог оборудования</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         :root {
@@ -28,7 +28,7 @@
             padding: 20px;
         }
 
-        /* РЁР°РїРєР° Рё РїРѕРёСЃРє */
+        /* Шапка и поиск */
         .header {
             max-width: 1400px;
             margin: 0 auto 20px auto;
@@ -126,7 +126,7 @@
             border-color: var(--primary-color);
         }
 
-        /* РЎРµС‚РєР° РєР°СЂС‚РѕС‡РµРє */
+        /* Сетка карточек */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -185,10 +185,10 @@
         }
 
         .card-name {
-            font-size: 14px; /* РЈРјРµРЅСЊС€РµРЅРѕ РЅР° 2 РїСѓРЅРєС‚Р° */
+            font-size: 14px; /* Уменьшено на 2 пункта */
             font-weight: 600;
             margin-bottom: 8px;
-            border-bottom: 1px solid #e5e7eb; /* РћРґРЅР° СЃРµСЂР°СЏ Р»РёРЅРёСЏ */
+            border-bottom: 1px solid #e5e7eb; /* Одна серая линия */
             padding-bottom: 8px;
             word-break: break-word;
             line-height: 1.3;
@@ -244,7 +244,7 @@
         .dot-green { background-color: #10b981; }
         .dot-orange { background-color: #f59e0b; }
 
-        /* РњРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ */
+        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -298,7 +298,7 @@
         }
         .btn-close-modal:hover { background: #1d4ed8; }
 
-        /* Р‘РѕРєРѕРІС‹Рµ РїР°РЅРµР»Рё */
+        /* Боковые панели */
         .side-panel-overlay {
             display: none;
             position: fixed;
@@ -350,7 +350,7 @@
         }
         .sort-btn:hover { background: #eff6ff; border-color: var(--primary-color); }
 
-        /* Р­Р»РµРјРµРЅС‚С‹ С„РёР»СЊС‚СЂР° */
+        /* Элементы фильтра */
         .filter-group { margin-bottom: 5px; border-bottom: 1px solid #f3f4f6; }
         .filter-group-title {
             width: 100%;
@@ -381,7 +381,7 @@
         .filter-item input { margin-right: 10px; }
         .filter-item:hover { color: var(--primary-color); }
 
-        /* РџРѕР»РЅРѕСЌРєСЂР°РЅРЅС‹Р№ РїСЂРѕСЃРјРѕС‚СЂ С„РѕС‚Рѕ */
+        /* Полноэкранный просмотр фото */
         .image-modal {
             display: none;
             position: fixed;
@@ -413,115 +413,115 @@
     <div class="header">
         <div class="search-container">
             <div class="input-wrapper">
-                <input type="text" id="searchName" placeholder="РџРѕРёСЃРє РїРѕ РЅР°РёРјРµРЅРѕРІР°РЅРёСЋ (ProjectName)..." oninput="handleSearch()">
-                <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">Г—</button>
+                <input type="text" id="searchName" placeholder="Поиск по наименованию (ProjectName)..." oninput="handleSearch()">
+                <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">×</button>
             </div>
             <div class="input-wrapper">
-                <input type="text" id="searchGlobal" placeholder="РџРѕРёСЃРє РїРѕ РІСЃРµР№ С‚Р°Р±Р»РёС†Рµ..." oninput="handleSearch()">
-                <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">Г—</button>
+                <input type="text" id="searchGlobal" placeholder="Поиск по всей таблице..." oninput="handleSearch()">
+                <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">×</button>
             </div>
         </div>
         <div class="toolbar">
-            <div class="counter" id="counter">Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…...</div>
+            <div class="counter" id="counter">Загрузка данных...</div>
             <div class="toolbar-buttons">
-                <button class="btn" onclick="openPanel('sortPanel')">РЎРѕСЂС‚.</button>
-                <button class="btn" onclick="openPanel('filterPanel')">Р¤РёР»СЊС‚СЂ</button>
-                <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="РЎР±СЂРѕСЃРёС‚СЊ С„РёР»СЊС‚СЂС‹">Г—</button>
+                <button class="btn" onclick="openPanel('sortPanel')">Сорт.</button>
+                <button class="btn" onclick="openPanel('filterPanel')">Фильтр</button>
+                <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
             </div>
         </div>
     </div>
 
     <div class="cards-grid" id="cardsGrid">
-        <div class="loading">РРґРµС‚ Р·Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґРѕР¶РґРёС‚Рµ...</div>
+        <div class="loading">Идет загрузка данных, пожалуйста, подождите...</div>
     </div>
 
-    <!-- РњРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ РґР°РЅРЅС‹С… -->
+    <!-- Модальное окно данных -->
     <div class="modal-overlay" id="modalOverlay" onclick="if(event.target === this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Р”РµС‚Р°Р»Рё</h2>
+                <h2 class="modal-title" id="modalTitle">Детали</h2>
             </div>
             <div class="modal-body">
                 <table class="modal-table" id="modalTable"></table>
             </div>
             <div class="modal-footer">
-                <button class="btn-close-modal" onclick="closeModal()">Р—Р°РєСЂС‹С‚СЊ</button>
+                <button class="btn-close-modal" onclick="closeModal()">Закрыть</button>
             </div>
         </div>
     </div>
 
-    <!-- РњРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ С„РѕС‚Рѕ -->
+    <!-- Модальное окно фото -->
     <div class="image-modal" id="imageModal" onclick="closeImageModal()">
-        <img id="fullImage" src="" alt="РџСЂРѕСЃРјРѕС‚СЂ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ">
+        <img id="fullImage" src="" alt="Просмотр изображения">
     </div>
 
-    <!-- РћРІРµСЂР»РµР№ РґР»СЏ РїР°РЅРµР»РµР№ -->
+    <!-- Оверлей для панелей -->
     <div class="side-panel-overlay" id="panelOverlay" onclick="closePanels()"></div>
 
-    <!-- РџР°РЅРµР»СЊ СЃРѕСЂС‚РёСЂРѕРІРєРё -->
+    <!-- Панель сортировки -->
     <div class="side-panel" id="sortPanel">
         <div class="panel-header">
-            <h3>РЎРѕСЂС‚РёСЂРѕРІРєР°</h3>
-            <button class="btn" onclick="closePanels()">Г—</button>
+            <h3>Сортировка</h3>
+            <button class="btn" onclick="closePanels()">×</button>
         </div>
         <div class="panel-body">
-            <button class="sort-btn" onclick="sortCards('ProjectName')">РџРѕ РќР°РёРјРµРЅРѕРІР°РЅРёСЋ (Рђ-РЇ)</button>
-            <button class="sort-btn" onclick="sortCards('Р“СЂСѓРїРїР°')">РџРѕ Р“СЂСѓРїРїРµ (Рђ-РЇ)</button>
-            <button class="sort-btn" onclick="sortCards('Naznachenie')">РџРѕ РќР°Р·РЅР°С‡РµРЅРёСЋ (Рђ-РЇ)</button>
-            <button class="sort-btn" onclick="sortCards('Proizvodetel')">РџРѕ РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЋ (Рђ-РЇ)</button>
+            <button class="sort-btn" onclick="sortCards('ProjectName')">По Наименованию (А-Я)</button>
+            <button class="sort-btn" onclick="sortCards('Группа')">По Группе (А-Я)</button>
+            <button class="sort-btn" onclick="sortCards('Naznachenie')">По Назначению (А-Я)</button>
+            <button class="sort-btn" onclick="sortCards('Proizvodetel')">По Производителю (А-Я)</button>
         </div>
     </div>
 
-    <!-- РџР°РЅРµР»СЊ С„РёР»СЊС‚СЂР° -->
+    <!-- Панель фильтра -->
     <div class="side-panel" id="filterPanel">
         <div class="panel-header">
-            <h3>Р¤РёР»СЊС‚СЂ</h3>
-            <button class="btn" onclick="closePanels()">Г—</button>
+            <h3>Фильтр</h3>
+            <button class="btn" onclick="closePanels()">×</button>
         </div>
         <div class="panel-body" id="filterPanelContent"></div>
     </div>
 
     <script>
-        // РљР°СЂС‚Р° СЃС‚РѕР»Р±С†РѕРІ
+        // Карта столбцов
         const columnsMap = {
-            "PartNumber": "РўР­Р“",
-            "ProjectName": "РќР°РёРјРµРЅРѕРІР°РЅРёРµ",
-            "BlokVCK": "Р‘Р»РѕРє РІ Р’Р¦Рљ",
-            "ParamKontrol": "РљРѕРЅС‚СЂРѕР»РёСЂСѓРµРјС‹Р№ РїР°СЂР°РјРµС‚СЂ",
-            "VzryvVybor": "РќР°Р»РёС‡РёРµ РІР·СЂС‹РІРѕР·Р°С‰РёС‚С‹",
-            "Vzryvozaschita": "Р’Р·СЂС‹РІРѕР·Р°С‰РёС‚Р°",
-            "TipSignala": "РўРёРї СЃРёРіРЅР°Р»Р°",
-            "DiapazonUstanovkiIzmer": "Р”РёР°РїР°Р·РѕРЅ СѓСЃС‚Р°РІРєРё РёР·РјРµСЂРµРЅРёСЏ",
-            "Tochnost": "РўРѕС‡РЅРѕСЃС‚СЊ",
+            "PartNumber": "ТЭГ",
+            "ProjectName": "Наименование",
+            "BlokVCK": "Блок в ВЦК",
+            "ParamKontrol": "Контролируемый параметр",
+            "VzryvVybor": "Наличие взрывозащиты",
+            "Vzryvozaschita": "Взрывозащита",
+            "TipSignala": "Тип сигнала",
+            "DiapazonUstanovkiIzmer": "Диапазон уставки измерения",
+            "Tochnost": "Точность",
             "IP": "IP",
-            "Displej": "РќР°Р»РёС‡РёРµ РґРёСЃРїР»РµСЏ",
-            "Temperatura": "РўРµРјРїРµСЂР°С‚СѓСЂР°",
-            "MPI": "РњРµР¶РїРѕРІРµСЂРѕС‡РЅС‹Р№ РёРЅС‚РµСЂРІР°Р»",
-            "Naznachenie": "РќР°Р·РЅР°С‡РµРЅРёРµ",
-            "Proizvodetel": "РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ",
-            "NaznachenieDlyaZip": "РќР°Р·РЅР°С‡РµРЅРёРµ РґР»СЏ Р—РРџ",
-            "ModelBZ": "РќР°Р·РІР°РЅРёРµ РІ Р‘Р—",
-            "Characteristic": "РҐР°СЂР°РєС‚РµСЂРёСЃС‚РёРєР°",
-            "ActualStatus": "РЎС‚Р°С‚СѓСЃ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё",
-            "DiamKabelya": "Р”РёР°РјРµС‚СЂ РєР°Р±РµР»СЏ",
-            "KabVvodMetalRukav": "РњРµС‚Р°Р»Р»РѕСЂСѓРєР°РІ",
-            "KabVvod": "РљР°Р±РµР»СЊРЅС‹Р№ РІРІРѕРґ",
-            "PowerVoltage": "РќР°РїСЂСЏР¶РµРЅРёРµ",
-            "Manifold": "РњР°РЅРёС„РѕР»СЊРґ",
-            "РЎРѕРµРґРёРЅРµРЅРёРµ Рє РїСЂРёР±РѕСЂСѓ": "РџСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ Рє РїСЂРѕС†РµСЃСЃСѓ",
-            "РљР»Р°СЃСЃ": "РљР»Р°СЃСЃ",
+            "Displej": "Наличие дисплея",
+            "Temperatura": "Температура",
+            "MPI": "Межповерочный интервал",
+            "Naznachenie": "Назначение",
+            "Proizvodetel": "Производитель",
+            "NaznachenieDlyaZip": "Назначение для ЗИП",
+            "ModelBZ": "Название в БЗ",
+            "Characteristic": "Характеристика",
+            "ActualStatus": "Статус актуальности",
+            "DiamKabelya": "Диаметр кабеля",
+            "KabVvodMetalRukav": "Металлорукав",
+            "KabVvod": "Кабельный ввод",
+            "PowerVoltage": "Напряжение",
+            "Manifold": "Манифольд",
+            "Соединение к прибору": "Присоединение к процессу",
+            "Класс": "Класс",
             "Status": "Status",
-            "IMG": "РљР°СЂС‚РёРЅРєРё",
-            "Link": "РЎСЃС‹Р»РєР° РЅР° СЃР°Р№С‚",
-            "РџСЂРёРјРµС‡Р°РЅРёРµ": "РџСЂРёРјРµС‡Р°РЅРёРµ",
-            "РљРѕРјРјРµРЅС‚Р°СЂРёР№": "РљРѕРјРјРµРЅС‚Р°СЂРёР№",
-            "Р“СЂСѓРїРїР°": "Р“СЂСѓРїРїР°"
+            "IMG": "Картинки",
+            "Link": "Ссылка на сайт",
+            "Примечание": "Примечание",
+            "Комментарий": "Комментарий",
+            "Группа": "Группа"
         };
 
-        // РЎРїРёСЃРѕРє СЃС‚РѕР»Р±С†РѕРІ РґР»СЏ С„РёР»СЊС‚СЂР°С†РёРё (РїРѕСЂСЏРґРѕРє СЃРѕР±Р»СЋРґРµРЅ)
+        // Список столбцов для фильтрации (порядок соблюден)
         const filterColumns = [
             "Proizvodetel",
-            "Р“СЂСѓРїРїР°",
+            "Группа",
             "BlokVCK",
             "ProjectName",
             "ParamKontrol",
@@ -543,13 +543,13 @@
             "KabVvod",
             "PowerVoltage",
             "Manifold",
-            "РЎРѕРµРґРёРЅРµРЅРёРµ Рє РїСЂРёР±РѕСЂСѓ",
-            "РљР»Р°СЃСЃ",
-            "РџСЂРёРјРµС‡Р°РЅРёРµ"
+            "Соединение к прибору",
+            "Класс",
+            "Примечание"
         ];
 
-        // РЎС‚РѕР»Р±С†С‹, РёСЃРєР»СЋС‡РµРЅРЅС‹Рµ РёР· Р±РѕР»СЊС€РѕР№ РєР°СЂС‚РѕС‡РєРё
-        const excludedModalCols = ["IMG", "Р“СЂСѓРїРїР°", "Status", "ActualStatus"];
+        // Столбцы, исключенные из большой карточки
+        const excludedModalCols = ["IMG", "Группа", "Status", "ActualStatus"];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
         let allData = [];
@@ -561,13 +561,13 @@
             header: true,
             skipEmptyLines: true,
             complete: function(results) {
-                // Р¤РёР»СЊС‚СЂСѓРµРј С‚РѕР»СЊРєРѕ TRUE РїРѕ Status
+                // Фильтруем только TRUE по Status
                 allData = results.data.filter(item => (item["Status"] || "").toString().trim().toUpperCase() === "TRUE");
                 buildFilterPanel();
                 renderCards();
             },
             error: function(err) {
-                document.getElementById('cardsGrid').innerHTML = `<div class="loading">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё: ${err}</div>`;
+                document.getElementById('cardsGrid').innerHTML = `<div class="loading">Ошибка загрузки: ${err}</div>`;
             }
         });
 
@@ -577,14 +577,14 @@
             
             let dataToRender = [...allData];
 
-            // РџСЂРёРјРµРЅСЏРµРј С„РёР»СЊС‚СЂС‹
+            // Применяем фильтры
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
                     dataToRender = dataToRender.filter(item => activeFilters[key].includes(item[key] || ""));
                 }
             }
 
-            // РџСЂРёРјРµРЅСЏРµРј СЃРѕСЂС‚РёСЂРѕРІРєСѓ
+            // Применяем сортировку
             if (currentSort.key) {
                 dataToRender.sort((a, b) => {
                     let valA = (a[currentSort.key] || "").toString().toLowerCase();
@@ -596,7 +596,7 @@
                 if (currentSort.direction === 'desc') dataToRender.reverse();
             }
 
-            // РџСЂРёРјРµРЅСЏРµРј РїРѕРёСЃРє
+            // Применяем поиск
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const globalQuery = document.getElementById('searchGlobal').value.toLowerCase().trim();
 
@@ -619,10 +619,10 @@
                 return matchName && matchGlobal;
             });
 
-            counter.innerText = `РћС‚РѕР±СЂР°Р¶РµРЅРѕ РєР°СЂС‚РѕС‡РµРє: ${finalData.length}`;
+            counter.innerText = `Отображено карточек: ${finalData.length}`;
 
             if (finalData.length === 0) {
-                grid.innerHTML = '<div class="loading">РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ</div>';
+                grid.innerHTML = '<div class="loading">Ничего не найдено</div>';
                 return;
             }
 
@@ -631,7 +631,7 @@
                 const card = document.createElement('div');
                 card.className = 'card';
 
-                // Р›РѕРіРёРєР° РґРѕР»РіРѕРіРѕ РЅР°Р¶Р°С‚РёСЏ
+                // Логика долгого нажатия
                 let pressTimer;
                 let isLongPress = false;
 
@@ -656,7 +656,7 @@
                 card.addEventListener('touchmove', cancelPress, {passive: true});
 
                 card.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('card-image')) return; // РљР»РёРє РїРѕ С„РѕС‚Рѕ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚СЃСЏ РѕС‚РґРµР»СЊРЅРѕ
+                    if (e.target.classList.contains('card-image')) return; // Клик по фото обрабатывается отдельно
                     if (isLongPress) {
                         e.preventDefault();
                         isLongPress = false;
@@ -667,16 +667,16 @@
 
                 const partNumber = item["PartNumber"] || '';
                 const producer = item["Proizvodetel"] || '';
-                const group = item["Р“СЂСѓРїРїР°"] || '';
-                const projectName = item["ProjectName"] || 'Р‘РµР· РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ';
+                const group = item["Группа"] || '';
+                const projectName = item["ProjectName"] || 'Без наименования';
                 const naznachenie = item["Naznachenie"] || '';
                 const imgRaw = item["IMG"] || '';
                 const imgUrl = imgRaw.split(",")[0].trim();
 
                 const actStatus = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
-                if (actStatus === 'Рђ') dotHtml = '<div class="status-dot dot-green"></div>';
-                else if (actStatus === 'РђРљ') dotHtml = '<div class="status-dot dot-orange"></div>';
+                if (actStatus === 'А') dotHtml = '<div class="status-dot dot-green"></div>';
+                else if (actStatus === 'АК') dotHtml = '<div class="status-dot dot-orange"></div>';
 
                 card.innerHTML = `
                     <div class="card-info">
@@ -690,11 +690,11 @@
                     </div>
                     <div class="card-image-container">
                         ${dotHtml}
-                        ${imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="Р¤РѕС‚Рѕ" class="card-image" onerror="this.outerHTML='<div class=\\'no-image\\'>РќРµС‚ С„РѕС‚Рѕ</div>'">` : '<div class="no-image">РќРµС‚ С„РѕС‚Рѕ</div>'}
+                        ${imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="Фото" class="card-image" onerror="this.outerHTML='<div class=\\'no-image\\'>Нет фото</div>'">` : '<div class="no-image">Нет фото</div>'}
                     </div>
                 `;
 
-                // РћР±СЂР°Р±РѕС‚С‡РёРє РєР»РёРєР° РЅР° С„РѕС‚Рѕ
+                // Обработчик клика на фото
                 const imgEl = card.querySelector('.card-image');
                 if (imgEl) {
                     imgEl.onclick = (e) => {
@@ -707,7 +707,7 @@
             });
         }
 
-        // РџРѕРёСЃРє
+        // Поиск
         function handleSearch() {
             const nameQuery = document.getElementById('searchName').value;
             const globalQuery = document.getElementById('searchGlobal').value;
@@ -722,15 +722,15 @@
             handleSearch();
         }
 
-        // РњРѕРґР°Р»СЊРЅС‹Рµ РѕРєРЅР°
+        // Модальные окна
         function openModal(item) {
             const modalTable = document.getElementById('modalTable');
             const modalTitle = document.getElementById('modalTitle');
-            modalTitle.innerText = item["ProjectName"] || "РљР°СЂС‚РѕС‡РєР° РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ";
+            modalTitle.innerText = item["ProjectName"] || "Карточка оборудования";
             modalTable.innerHTML = '';
 
             for (const key in columnsMap) {
-                if (excludedModalCols.includes(key)) continue; // РџСЂРѕРїСѓСЃРєР°РµРј РёСЃРєР»СЋС‡РµРЅРЅС‹Рµ
+                if (excludedModalCols.includes(key)) continue; // Пропускаем исключенные
                 if (item[key] !== undefined && item[key] !== '') {
                     const row = modalTable.insertRow();
                     const cell1 = row.insertCell(0);
@@ -764,9 +764,9 @@
             document.getElementById('imageModal').classList.remove('active');
         }
 
-        // РџР°РЅРµР»Рё
+        // Панели
         function openPanel(panelId) {
-            closePanels(); // Р—Р°РєСЂС‹РІР°РµРј РґСЂСѓРіРёРµ
+            closePanels(); // Закрываем другие
             document.getElementById('panelOverlay').classList.add('active');
             document.getElementById(panelId).classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -797,7 +797,7 @@
                 const displayName = columnsMap[key];
                 if(!displayName) return;
 
-                // РџРѕР»СѓС‡Р°РµРј СѓРЅРёРєР°Р»СЊРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
+                // Получаем уникальные значения
                 let uniqueVals = [...new Set(allData.map(item => (item[key] || "").trim()).filter(v => v !== ""))];
                 if (uniqueVals.length === 0) return;
 
@@ -808,7 +808,7 @@
 
                 const btn = document.createElement('button');
                 btn.className = 'filter-group-title';
-                btn.innerHTML = `${displayName} <span>в–ј</span>`;
+                btn.innerHTML = `${displayName} <span>▼</span>`;
                 btn.onclick = () => {
                     const dropdown = groupDiv.querySelector('.filter-dropdown');
                     dropdown.classList.toggle('open');
@@ -862,10 +862,10 @@
                 updateFilterButtonState();
                 renderCards();
             } else {
-                // Р•СЃР»Рё С„РёР»СЊС‚СЂРѕРІ РЅРµ Р±С‹Р»Рѕ, РїСЂРѕСЃС‚Рѕ РѕС‡РёС‰Р°РµРј РїРѕРёСЃРє
+                // Если фильтров не было, просто очищаем поиск
                 clearInput('searchName', 'clearName');
                 clearInput('searchGlobal', 'clearGlobal');
-                // РЎР±СЂРѕСЃ СЃРѕСЂС‚РёСЂРѕРІРєРё
+                // Сброс сортировки
                 currentSort = { key: null, direction: 'asc' };
                 renderCards();
             }

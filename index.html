@@ -27,7 +27,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--label-primary);
             padding: 20px;
@@ -61,7 +61,7 @@
             background: rgba(118, 118, 128, 0.12);
             border: none;
             border-radius: 12px;
-            font-size: 16px; /* Предотвращает зум на iOS */
+            font-size: 16px;
             outline: none;
             color: var(--label-primary);
             transition: background 0.2s;
@@ -123,7 +123,7 @@
             font-weight: 600;
             font-size: 14px;
             color: var(--label-primary);
-            transition: transform 0.1s, background 0.2s;
+            transition: transform 0.1s, background 0.2s, color 0.2s;
         }
 
         .btn:active {
@@ -140,17 +140,35 @@
         }
 
         .btn-close-header.active {
+            background: var(--red);
+            color: white;
+        }
+
+        .btn-reset-panel {
+            width: 100%;
+            margin-bottom: 12px;
+            background: var(--gray-bg);
+            color: var(--label-primary);
+        }
+
+        .btn-reset-panel.active {
             background: var(--blue);
             color: white;
         }
 
-        /* Сетка карточек */
+        /* Сетка карточек: увеличена ширина в десктопе в 2 раза (до 640px) */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(640px, 1fr));
             gap: 16px;
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        @media (max-width: 680px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .card {
@@ -192,8 +210,6 @@
         }
 
         .badge {
-            background: rgba(0, 122, 255, 0.1);
-            color: var(--blue);
             font-size: 11px;
             font-weight: 600;
             padding: 4px 10px;
@@ -202,18 +218,23 @@
             letter-spacing: 0.2px;
         }
 
+        .badge-part {
+            background: var(--gray-bg);
+            color: var(--label-primary);
+        }
+
         .card-name {
-            font-size: 14px; /* Уменьшено на 2 пункта */
+            font-size: 13px; /* Уменьшено на 1 пункт */
             font-weight: 600;
             margin-bottom: 8px;
-            border-bottom: 1px solid var(--separator); /* Одна серая линия */
+            border-bottom: 1px solid var(--separator);
             padding-bottom: 8px;
             word-break: break-word;
             line-height: 1.3;
         }
 
         .card-purpose {
-            font-size: 12px; /* Уменьшено на 1 пункт */
+            font-size: 12px;
             color: var(--label-secondary);
             line-height: 1.4;
             overflow: hidden;
@@ -225,7 +246,7 @@
 
         .card-image-container {
             position: relative;
-            width: 120px;
+            width: 140px;
             flex-shrink: 0;
             background: #f9fafb;
             display: flex;
@@ -233,6 +254,7 @@
             justify-content: center;
             border-left: 1px solid var(--separator);
             padding: 10px;
+            overflow: hidden;
         }
 
         .card-image {
@@ -240,6 +262,13 @@
             max-height: 100%;
             object-fit: contain;
             cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .card-image.rotated {
+            transform: rotate(90deg);
+            max-width: 120px;
+            max-height: 120px;
         }
 
         .no-image {
@@ -270,7 +299,7 @@
             background: rgba(0,0,0,0.4);
             z-index: 1000;
             justify-content: center;
-            align-items: flex-end; /* Прижимаем к низу для iOS стиля */
+            align-items: flex-end;
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
@@ -302,7 +331,6 @@
             text-align: center;
         }
         
-        /* Полоска-индикатор сверху (как в iOS) */
         .modal-header::before {
             content: '';
             position: absolute;
@@ -369,7 +397,7 @@
 
         .side-panel {
             position: fixed;
-            top: 0; right: -360px; bottom: 0;
+            top: 0; right: -100%; bottom: 0;
             width: 340px;
             background: var(--bg-color);
             box-shadow: -4px 0 20px rgba(0,0,0,0.1);
@@ -379,6 +407,13 @@
             flex-direction: column;
         }
         .side-panel.active { right: 0; }
+
+        /* Ширина панели на мобильных устройствах — 66% экрана */
+        @media (max-width: 768px) {
+            .side-panel {
+                width: 66vw;
+            }
+        }
 
         .panel-header {
             padding: 16px;
@@ -414,7 +449,7 @@
         .sort-btn:active { background: var(--gray-bg); }
 
         /* Элементы фильтра (iOS Settings Style) */
-        .filter-group { margin-bottom: 20px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
+        .filter-group { margin-bottom: 12px; background: var(--card-bg); border-radius: 10px; overflow: hidden; }
         .filter-group-title {
             width: 100%;
             text-align: left;
@@ -448,7 +483,6 @@
         }
         .filter-item:last-child { border-bottom: none; }
         
-        /* iOS Checkbox Style */
         .filter-item input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
@@ -495,6 +529,10 @@
             max-height: 90%;
             object-fit: contain;
             border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        .image-modal img.rotated {
+            transform: rotate(90deg);
         }
 
         .loading {
@@ -575,11 +613,13 @@
             <h3>Фильтр</h3>
             <button class="btn" onclick="closePanels()">×</button>
         </div>
-        <div class="panel-body" id="filterPanelContent"></div>
+        <div class="panel-body">
+            <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
+            <div id="filterPanelContent"></div>
+        </div>
     </div>
 
     <script>
-        // Карта столбцов
         const columnsMap = {
             "PartNumber": "ТЭГ",
             "ProjectName": "Наименование",
@@ -615,7 +655,6 @@
             "Группа": "Группа"
         };
 
-        // Список столбцов для фильтрации (порядок соблюден)
         const filterColumns = [
             "Proizvodetel",
             "BlokVCK",
@@ -644,7 +683,6 @@
             "Примечание"
         ];
 
-        // Столбцы, исключенные из большой карточки
         const excludedModalCols = ["IMG", "Группа", "Status", "ActualStatus"];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
@@ -652,12 +690,25 @@
         let activeFilters = {};
         let currentSort = { key: null, direction: 'asc' };
 
+        // Генератор системных цветов iOS для производителей
+        function getProducerColor(str) {
+            if (!str) return { bg: 'rgba(142, 142, 147, 0.15)', text: '#8e8e93' };
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const h = Math.abs(hash) % 360;
+            return {
+                bg: `hsla(${h}, 70%, 50%, 0.15)`,
+                text: `hsl(${h}, 80%, 32%)`
+            };
+        }
+
         Papa.parse(csvUrl, {
             download: true,
             header: true,
             skipEmptyLines: true,
             complete: function(results) {
-                // Фильтруем только TRUE по Status
                 allData = results.data.filter(item => (item["Status"] || "").toString().trim().toUpperCase() === "TRUE");
                 buildFilterPanel();
                 renderCards();
@@ -673,14 +724,12 @@
             
             let dataToRender = [...allData];
 
-            // Применяем фильтры
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
                     dataToRender = dataToRender.filter(item => activeFilters[key].includes(item[key] || ""));
                 }
             }
 
-            // Применяем сортировку
             if (currentSort.key) {
                 dataToRender.sort((a, b) => {
                     let valA = (a[currentSort.key] || "").toString().toLowerCase();
@@ -692,7 +741,6 @@
                 if (currentSort.direction === 'desc') dataToRender.reverse();
             }
 
-            // Применяем поиск
             const nameQuery = document.getElementById('searchName').value.toLowerCase().trim();
             const globalQuery = document.getElementById('searchGlobal').value.toLowerCase().trim();
 
@@ -727,7 +775,6 @@
                 const card = document.createElement('div');
                 card.className = 'card';
 
-                // Логика долгого нажатия
                 let pressTimer;
                 let isLongPress = false;
 
@@ -768,7 +815,8 @@
                 const imgRaw = item["IMG"] || '';
                 const imgUrl = imgRaw.split(",")[0].trim();
 
-                // Обработка ActualStatus (только "А" или "АК")
+                const producerStyle = getProducerColor(producer);
+
                 const statusRaw = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
                 if (statusRaw === 'А' || statusRaw === 'A') {
@@ -780,8 +828,8 @@
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
-                            ${partNumber ? `<span class="badge">${escapeHtml(partNumber)}</span>` : ''}
-                            ${producer ? `<span class="badge">${escapeHtml(producer)}</span>` : ''}
+                            ${partNumber ? `<span class="badge badge-part">${escapeHtml(partNumber)}</span>` : ''}
+                            ${producer ? `<span class="badge" style="background: ${producerStyle.bg}; color: ${producerStyle.text};">${escapeHtml(producer)}</span>` : ''}
                         </div>
                         <div class="card-name">${escapeHtml(projectName)}</div>
                         <div class="card-purpose">${escapeHtml(naznachenie)}</div>
@@ -792,12 +840,18 @@
                     </div>
                 `;
 
-                // Обработчик клика на фото
                 const imgEl = card.querySelector('.card-image');
                 if (imgEl) {
+                    // Проверка ориентации фото при загрузке
+                    imgEl.onload = function() {
+                        if (this.naturalWidth > this.naturalHeight) {
+                            this.classList.add('rotated');
+                        }
+                    };
+
                     imgEl.onclick = (e) => {
                         e.stopPropagation();
-                        openImageModal(imgUrl);
+                        openImageModal(imgUrl, imgEl.classList.contains('rotated'));
                     };
                 }
 
@@ -805,7 +859,6 @@
             });
         }
 
-        // Поиск
         function handleSearch() {
             const nameQuery = document.getElementById('searchName').value;
             const globalQuery = document.getElementById('searchGlobal').value;
@@ -820,7 +873,6 @@
             handleSearch();
         }
 
-        // Модальные окна
         function openModal(item) {
             const modalTable = document.getElementById('modalTable');
             const modalTitle = document.getElementById('modalTitle');
@@ -828,7 +880,7 @@
             modalTable.innerHTML = '';
 
             for (const key in columnsMap) {
-                if (excludedModalCols.includes(key)) continue; // Пропускаем исключенные
+                if (excludedModalCols.includes(key)) continue;
                 if (item[key] !== undefined && item[key] !== '') {
                     const row = modalTable.insertRow();
                     const cell1 = row.insertCell(0);
@@ -853,8 +905,14 @@
             document.body.style.overflow = 'auto';
         }
 
-        function openImageModal(url) {
-            document.getElementById('fullImage').src = url;
+        function openImageModal(url, isRotated) {
+            const fullImg = document.getElementById('fullImage');
+            fullImg.src = url;
+            if (isRotated) {
+                fullImg.classList.add('rotated');
+            } else {
+                fullImg.classList.remove('rotated');
+            }
             document.getElementById('imageModal').classList.add('active');
         }
 
@@ -862,9 +920,8 @@
             document.getElementById('imageModal').classList.remove('active');
         }
 
-        // Панели
         function openPanel(panelId) {
-            closePanels(); // Закрываем другие
+            closePanels();
             document.getElementById('panelOverlay').classList.add('active');
             document.getElementById(panelId).classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -896,7 +953,6 @@
                 const displayName = columnsMap[key];
                 if(!displayName) return;
 
-                // Получаем уникальные значения
                 let uniqueVals = [...new Set(allData.map(item => (item[key] || "").trim()).filter(v => v !== ""))];
                 if (uniqueVals.length === 0) return;
 
@@ -947,31 +1003,18 @@
         }
 
         function clearAllFilters() {
-            let wasFiltered = false;
-            for (let key in activeFilters) {
-                if (activeFilters[key].length > 0) {
-                    wasFiltered = true;
-                    break;
-                }
-            }
-
-            if (wasFiltered) {
-                activeFilters = {};
-                document.querySelectorAll('.filter-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
-                updateFilterButtonState();
-                renderCards();
-            } else {
-                // Если фильтров не было, просто очищаем поиск
-                clearInput('searchName', 'clearName');
-                clearInput('searchGlobal', 'clearGlobal');
-                // Сброс сортировки
-                currentSort = { key: null, direction: 'asc' };
-                renderCards();
-            }
+            activeFilters = {};
+            document.querySelectorAll('.filter-dropdown input[type="checkbox"]').forEach(cb => cb.checked = false);
+            clearInput('searchName', 'clearName');
+            clearInput('searchGlobal', 'clearGlobal');
+            currentSort = { key: null, direction: 'asc' };
+            updateFilterButtonState();
+            renderCards();
         }
 
         function updateFilterButtonState() {
-            const btn = document.getElementById('clearFiltersBtn');
+            const btnHeader = document.getElementById('clearFiltersBtn');
+            const btnPanel = document.getElementById('panelResetBtn');
             let isFiltered = false;
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
@@ -979,8 +1022,13 @@
                     break;
                 }
             }
-            if (isFiltered) btn.classList.add('active');
-            else btn.classList.remove('active');
+            if (isFiltered) {
+                btnHeader.classList.add('active');
+                btnPanel.classList.add('active');
+            } else {
+                btnHeader.classList.remove('active');
+                btnPanel.classList.remove('active');
+            }
         }
 
         function escapeHtml(text) {

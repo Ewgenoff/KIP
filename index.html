@@ -327,7 +327,6 @@
             -webkit-box-orient: vertical;
         }
 
-        /* Увеличен размер контейнера картинок на 10% (с 90px до 99px) */
         .card-image-container {
             position: relative;
             width: 99px;
@@ -458,6 +457,72 @@
         .btn-site { background: var(--gray-bg); color: var(--blue); }
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
         .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
+
+        /* Стиль всплывающего окна расшифровки ТСПТ по приложенному фото */
+        .decode-modal-content {
+            border-radius: 12px;
+            max-width: 620px;
+            margin: auto;
+            align-self: center;
+            background: #f4f5f8;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            border: 1px solid #d1d1d6;
+        }
+
+        .decode-modal-header {
+            text-align: left;
+            padding: 14px 18px;
+            background: #f4f5f8;
+            border-bottom: 1px solid #e2e2e7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .decode-modal-header::before { display: none; }
+
+        .decode-modal-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0056b3;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .decode-table-container {
+            padding: 0 12px 12px 12px;
+        }
+
+        .decode-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .decode-table th {
+            text-align: left;
+            padding: 8px;
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 1px solid #d1d1d6;
+        }
+
+        .decode-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #e5e5ea;
+            vertical-align: top;
+            color: #2c2c2e;
+        }
+
+        .decode-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .decode-table .col-block { width: 32%; }
+        .decode-table .col-code { width: 18%; font-weight: 700; color: #0056b3; }
+        .decode-table .col-desc { width: 50%; }
 
         .side-panel-overlay {
             display: none;
@@ -718,14 +783,23 @@
         </div>
     </div>
 
-    <!-- Модальное окно расшифровки ТСПТ 101 -->
+    <!-- Модальное окно расшифровки ТСПТ 101 по образцу на фото -->
     <div class="modal-overlay" id="decodeModalOverlay" onclick="if(event.target === this) closeDecodeModal()">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="decodeModalTitle">Расшифровка датчика</h2>
+        <div class="modal-content decode-modal-content">
+            <div class="modal-header decode-modal-header">
+                <h2 class="modal-title decode-modal-title" id="decodeModalTitle">🔍 Расшифровка маркировки ТСПТ</h2>
             </div>
-            <div class="modal-body" id="decodeModalBody">
-                <table class="modal-table" id="decodeModalTable"></table>
+            <div class="modal-body decode-table-container" id="decodeModalBody">
+                <table class="decode-table">
+                    <thead>
+                        <tr>
+                            <th class="col-block">Блок</th>
+                            <th class="col-code">Код</th>
+                            <th class="col-desc">Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody id="decodeModalTableBody"></tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button class="btn-modal-action btn-close-modal-footer" onclick="closeDecodeModal()">Закрыть</button>
@@ -862,7 +936,6 @@
         let filterOnlyUniquePart = false;
         let tspt101Data = null;
 
-        // Загрузка JSON расшифровки
         fetch('TSPT.json')
             .then(res => res.json())
             .then(data => { tspt101Data = data; })
@@ -998,7 +1071,6 @@
                 const imgUrl = imgRaw.split(",")[0].trim();
                 const isStatusFalse = (item["Status"] || "").toString().trim().toUpperCase() === "FALSE";
 
-                // Обработка группы для Задача 1
                 const groupRaw = item["Группа"] || '';
                 const groupClean = groupRaw.replace(/Группа\s*/gi, '').trim();
 
@@ -1014,15 +1086,15 @@
                     dotHtml = '<div class="status-dot dot-yellow" title="Редкий"></div>';
                 }
 
-                // Иконка ℹ️ только для ТСПТ 101
+                // Расшифровка открывается по клику и наведению мыши
                 const isTspt101 = projectName.includes('ТСПТ') && projectName.includes('101');
-                const infoIconHtml = isTspt101 ? `<span class="info-btn" onclick="openDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
+                const infoIconHtml = isTspt101 ? `<span class="info-btn" onclick="openDecodeModal(event, '${escapeHtml(projectName)}')" onmouseenter="openDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
 
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
                             ${partNumber ? `<span class="badge badge-part" onclick="copyPartNumber(event, '${escapeHtml(partNumber)}')">${escapeHtml(partNumber)}</span>` : ''}
-                            ${groupClean ? `<span class="badge badge-group">${escapeHtml(groupClean)}</span>` : ''}
+                            ${groupClean ? `<span class="badge badge-group" onclick="openGroupFilter(event)">${escapeHtml(groupClean)}</span>` : ''}
                             ${producer ? `<span class="badge badge-producer" style="background: ${producerStyle.bg}; color: ${producerStyle.text};" onclick="openProducerFilter(event, '${escapeHtml(producer)}')">${escapeHtml(producer)}</span>` : ''}
                         </div>
                         <div class="card-name">
@@ -1070,6 +1142,12 @@
         function openProducerFilter(e, producerName) {
             e.stopPropagation();
             openSpecificFilterParam('Proizvodetel');
+        }
+
+        // Вызов открытия фильтра для плашки Группа
+        function openGroupFilter(e) {
+            e.stopPropagation();
+            openSpecificFilterParam('Группа');
         }
 
         function openSpecificFilterParam(key) {
@@ -1147,26 +1225,28 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Логика расшифровки датчика ТСПТ 101
         function openDecodeModal(e, sensorName) {
             e.stopPropagation();
-            const modalTable = document.getElementById('decodeModalTable');
-            const modalTitle = document.getElementById('decodeModalTitle');
-            modalTitle.innerText = `Расшифровка: ${sensorName}`;
-            modalTable.innerHTML = '';
+            const modalTableBody = document.getElementById('decodeModalTableBody');
+            modalTableBody.innerHTML = '';
 
             if (!tspt101Data) {
-                modalTable.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
+                modalTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
             } else {
                 const parsedData = parseTspt101Name(sensorName, tspt101Data);
                 parsedData.forEach(item => {
-                    const tr = modalTable.insertRow();
-                    const tdLabel = tr.insertCell(0);
-                    const tdValue = tr.insertCell(1);
-                    tdLabel.className = 'label';
-                    tdValue.className = 'value';
-                    tdLabel.innerText = item.label;
-                    tdValue.innerText = item.value;
+                    const tr = modalTableBody.insertRow();
+                    const tdBlock = tr.insertCell(0);
+                    const tdCode = tr.insertCell(1);
+                    const tdDesc = tr.insertCell(2);
+                    
+                    tdBlock.className = 'col-block';
+                    tdCode.className = 'col-code';
+                    tdDesc.className = 'col-desc';
+                    
+                    tdBlock.innerText = item.label;
+                    tdCode.innerText = item.code;
+                    tdDesc.innerText = item.value;
                 });
             }
 
@@ -1192,65 +1272,69 @@
 
             const parts = cleanStr.split('-').map(p => p.trim());
 
-            // Блок 1, 2, 3
             if (parts[0]) {
                 const tokens = parts[0].split(/\s+/);
                 const typeKey = tokens[0];
                 list.push({
                     label: "1. Тип датчика",
-                    value: `${typeKey} (${data.type[typeKey] || 'термометр сопротивления платиновый'})`
+                    code: typeKey,
+                    value: data.type[typeKey] || 'Термометр сопротивления платиновый'
                 });
 
                 if (tokens.length === 3) {
                     const exKey = tokens[1];
                     list.push({
                         label: "2. Вид взрывозащиты",
-                        value: `${exKey} (${data.ex[exKey] || ''})`
+                        code: exKey,
+                        value: data.ex[exKey] || ''
                     });
                     const modKey = tokens[2];
                     list.push({
                         label: "3. Модификация",
-                        value: `${modKey} (${data.modification[modKey] || ''})`
+                        code: modKey,
+                        value: data.modification[modKey] || ''
                     });
                 } else if (tokens.length === 2) {
                     list.push({
                         label: "2. Вид взрывозащиты",
+                        code: "—",
                         value: "Без взрывозащиты"
                     });
                     const modKey = tokens[1];
                     list.push({
                         label: "3. Модификация",
-                        value: `${modKey} (${data.modification[modKey] || ''})`
+                        code: modKey,
+                        value: data.modification[modKey] || ''
                     });
                 }
             }
 
-            // Блок 4, 5
             if (parts[1]) {
                 const cableKey = parts[1].charAt(0);
                 const nodeKey = parts[1].slice(1);
 
                 list.push({
                     label: "4. Кабельный ввод",
-                    value: `${cableKey} — ${data.cableEntry[cableKey] || ''}`
+                    code: cableKey,
+                    value: data.cableEntry[cableKey] || ''
                 });
 
                 list.push({
                     label: "5. Узел коммутации",
-                    value: `${nodeKey} — ${data.switchingNode[nodeKey] || ''}`
+                    code: nodeKey,
+                    value: data.switchingNode[nodeKey] || ''
                 });
             }
 
-            // Блок 6
             if (parts[2]) {
                 const nshKey = parts[2];
                 list.push({
                     label: "6. НСХ",
-                    value: `${nshKey} (${data.nsh[nshKey] || ''})`
+                    code: nshKey,
+                    value: data.nsh[nshKey] || ''
                 });
             }
 
-            // Блок 7, 8, 9
             if (parts[3]) {
                 let p3 = parts[3];
                 let cls = "";
@@ -1262,7 +1346,8 @@
                 if (cls) {
                     list.push({
                         label: "7. Класс допуска",
-                        value: `${cls} (по ГОСТ 6651-2009)`
+                        code: cls,
+                        value: `Класс допуска ${cls} по ГОСТ 6651-2009`
                     });
                     p3 = p3.slice(cls.length);
                 }
@@ -1271,7 +1356,8 @@
                 if (["2", "3", "4"].includes(scheme)) {
                     list.push({
                         label: "8. Схема соединения",
-                        value: `${scheme} — ${data.wireScheme[scheme] || ''}`
+                        code: scheme,
+                        value: data.wireScheme[scheme] || ''
                     });
                     p3 = p3.slice(1);
                 }
@@ -1279,73 +1365,77 @@
                 let sig = p3;
                 if (sig && data.signal[sig]) {
                     list.push({
-                        label: "9. Выходной сигнал / Точность",
-                        value: `${sig} — ${data.signal[sig]}`
+                        label: "9. Выходной сигнал",
+                        code: sig,
+                        value: data.signal[sig]
                     });
                 } else {
                     list.push({
                         label: "9. Выходной сигнал",
+                        code: "—",
                         value: "Аналоговый сигнал (Ом) в соответствии с НСХ"
                     });
                 }
             }
 
-            // Блок 10
             if (parts[4]) {
                 const matKey = parts[4];
                 list.push({
                     label: "10. Материал оболочки",
-                    value: `${matKey} — ${data.sheathMaterial[matKey] || matKey}`
+                    code: matKey,
+                    value: data.sheathMaterial[matKey] || matKey
                 });
             }
 
-            // Блок 11
             if (parts[5]) {
                 list.push({
-                    label: "11. Наружный диаметр штока",
-                    value: `${parts[5]} мм`
+                    label: "11. Диаметр штока",
+                    code: `${parts[5]} мм`,
+                    value: `Наружный диаметр ${parts[5]} мм`
                 });
             }
 
-            // Блок 12
             if (parts[6]) {
                 list.push({
-                    label: "12. Монтажная длина",
-                    value: `${parts[6]} мм`
+                    label: "12. Длина L",
+                    code: `${parts[6]} мм`,
+                    value: `Монтажная длина ${parts[6]} мм`
                 });
             }
 
-            // Блок 13
             list.push({
-                label: "13. Размер e (уплотнение-головка)",
+                label: "13. Размер e",
+                code: parts[7] ? `${parts[7]} мм` : "120 мм",
                 value: parts[7] ? `${parts[7]} мм` : "120 мм (по умолчанию)"
             });
 
-            // Блок 14
             list.push({
-                label: "14. Типоразмер штуцера",
-                value: parts[8] ? parts[8] : "М20х1,5 (по умолчанию)"
+                label: "14. Штуцер",
+                code: parts[8] ? parts[8] : "M20x1.5",
+                value: parts[8] ? parts[8] : "M20x1,5 (по умолчанию)"
             });
 
-            // Доп. элементы
             if (hasUpi) {
                 list.push({
                     label: "Преобразователь",
-                    value: `УПИ-420 — ${data.extras["УПИ-420"]}`
+                    code: "УПИ-420",
+                    value: data.extras["УПИ-420"]
                 });
             }
 
             if (hasHart) {
                 list.push({
                     label: "Протокол связи",
-                    value: `HARTv7 — ${data.extras["HARTv7"]}`
+                    code: "HARTv7",
+                    value: data.extras["HARTv7"]
                 });
             }
 
             if (rangeVal) {
                 list.push({
-                    label: "Диапазон измерения",
-                    value: rangeVal
+                    label: "Диапазон",
+                    code: rangeVal,
+                    value: `Диапазон измерения температур: ${rangeVal}`
                 });
             }
 

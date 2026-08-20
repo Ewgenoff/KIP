@@ -14,7 +14,7 @@
             --label-secondary: #8e8e93;
             --blue: #007aff;
             --gray-bg: rgba(120, 120, 128, 0.12);
-            --gray-bg-hover: rgba(120, 120, 128, 0.2);
+            --gray-bg-hover: rgba(120, 120, 128, 0.25);
             --green: #34c759;
             --yellow: #ffcc00;
             --red: #ff3b30;
@@ -455,12 +455,14 @@
             border: none;
             text-align: center;
             text-decoration: none;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, background 0.2s;
         }
         .btn-modal-action:active { opacity: 0.8; }
         .btn-site { background: var(--gray-bg); color: var(--blue); }
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
-        .btn-close-modal-footer { background: var(--blue); color: white; }
+        /* Кнопка Закрыть в том же стиле, что и Сайт */
+        .btn-close-modal-footer { background: var(--gray-bg); color: var(--blue); }
+        .btn-close-modal-footer:hover { background: var(--gray-bg-hover); }
 
         /* Оверлей для карточки расшифровки ТСПТ */
         .modal-overlay.decode-overlay {
@@ -496,51 +498,67 @@
 
         .decode-modal-header {
             text-align: center;
-            padding: 16px 18px 12px 18px;
+            padding: 10px 12px;
             background: var(--card-bg);
             border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
         .decode-modal-header::before { display: none; }
 
-        /* Контейнер для блоков заголовка */
+        /* Контейнер для блоков заголовка (сжат на 30%) */
         .tspt-header-blocks {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 2px 4px;
+            margin-top: 2px;
         }
 
         .tspt-block-item {
             display: flex;
             flex-direction: column;
             align-items: center;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 1px 2px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .tspt-block-item.highlighted {
+            background: rgba(0, 122, 255, 0.15);
+        }
+
+        .tspt-block-item.highlighted .tspt-block-text {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
         }
 
         .tspt-block-text {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--label-primary);
-            padding: 2px 4px;
+            padding: 0 2px;
             border-bottom: 1px solid var(--separator);
-            min-width: 22px;
+            min-width: 14px;
             text-align: center;
+            line-height: 1.1;
         }
 
         .tspt-block-num {
-            font-size: 11px;
+            font-size: 9px;
             color: var(--label-secondary);
-            margin-top: 3px;
+            margin-top: 2px;
+            line-height: 1;
         }
 
         .tspt-block-sep {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--label-secondary);
             align-self: flex-start;
-            margin-top: 2px;
+            margin-top: 0px;
+            line-height: 1.1;
         }
 
         .decode-table-container {
@@ -558,17 +576,26 @@
 
         .decode-table th {
             text-align: left;
-            padding: 8px;
+            padding: 6px 8px;
             color: var(--label-secondary);
             font-weight: 600;
             border-bottom: 1px solid var(--separator);
         }
 
         .decode-table td {
-            padding: 8px;
+            padding: 6px 8px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             vertical-align: top;
             color: var(--label-primary);
+        }
+
+        .decode-table tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .decode-table tr.highlighted {
+            background: rgba(0, 122, 255, 0.12) !important;
         }
 
         .decode-table tr:last-child td { border-bottom: none; }
@@ -647,7 +674,7 @@
             flex: 1;
         }
 
-        /* Кнопки сортировки в стиле фильтров */
+        /* Кнопки сортировки с яркой подсветкой при наведении */
         .sort-btn {
             display: block;
             width: 100%;
@@ -663,7 +690,8 @@
             color: var(--label-primary);
             transition: background 0.2s;
         }
-        .sort-btn:active { background: rgba(0,0,0,0.03); }
+        .sort-btn:hover { background: var(--gray-bg-hover); }
+        .sort-btn:active { background: rgba(0,0,0,0.1); }
 
         .filter-group {
             margin-bottom: 8px;
@@ -673,6 +701,7 @@
             border: 1px solid var(--separator);
         }
         
+        /* Подсветка кнопок-заголовков фильтров */
         .filter-group-title {
             width: 100%;
             text-align: left;
@@ -686,7 +715,11 @@
             align-items: center;
             color: var(--label-primary);
             font-size: 14px;
-            transition: color 0.2s;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .filter-group-title:hover {
+            background: var(--gray-bg-hover);
         }
 
         .filter-group-title-left {
@@ -708,7 +741,7 @@
             font-weight: 500;
         }
 
-        .filter-group-title:active { background: rgba(0,0,0,0.03); }
+        .filter-group-title:active { background: rgba(0,0,0,0.1); }
 
         .filter-dropdown {
             max-height: 0;
@@ -718,14 +751,17 @@
         }
         .filter-dropdown.open { max-height: 350px; overflow-y: auto; border-top: 0.5px solid var(--separator); }
         
+        /* Подсветка выпадающих списков и уменьшенный на 20% межстрочный интервал */
         .filter-item {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 6px 12px;
             cursor: pointer;
             border-bottom: 0.5px solid var(--separator);
             font-size: 13px;
+            transition: background 0.2s;
         }
+        .filter-item:hover { background-color: var(--gray-bg-hover); }
         .filter-item:last-child { border-bottom: none; }
         
         .filter-item input[type="checkbox"] {
@@ -757,7 +793,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .filter-item:hover { background-color: rgba(0,0,0,0.02); }
 
         .ios-toast {
             position: fixed;
@@ -1143,12 +1178,13 @@
                     onmouseleave="unhoverDecodeModal()" 
                     onclick="pinDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
 
+                /* Поменяли местами плашку Производитель и Группа */
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
                             ${partNumber ? `<span class="badge badge-part" onclick="copyPartNumber(event, '${escapeHtml(partNumber)}')">${escapeHtml(partNumber)}</span>` : ''}
-                            ${groupClean ? `<span class="badge badge-group" onclick="openGroupFilter(event)">${escapeHtml(groupClean)}</span>` : ''}
                             ${producer ? `<span class="badge badge-producer" style="background: ${producerStyle.bg}; color: ${producerStyle.text};" onclick="openProducerFilter(event, '${escapeHtml(producer)}')">${escapeHtml(producer)}</span>` : ''}
+                            ${groupClean ? `<span class="badge badge-group" onclick="openGroupFilter(event)">${escapeHtml(groupClean)}</span>` : ''}
                         </div>
                         <div class="card-name">
                             <span>${escapeHtml(projectName)}</span>
@@ -1322,10 +1358,14 @@
             } else {
                 const parsedData = parseTspt101Name(sensorName, tspt101Data);
                 
-                // Рендер блоков в заголовке с подчеркиванием и номерами
+                // Рендер блоков в заголовке с номерами
                 parsedData.forEach((item, index) => {
+                    const blockId = `tspt-block-${index}`;
+                    const rowId = `tspt-row-${index}`;
+
                     const blockDiv = document.createElement('div');
                     blockDiv.className = 'tspt-block-item';
+                    blockDiv.id = blockId;
                     
                     const textSpan = document.createElement('span');
                     textSpan.className = 'tspt-block-text';
@@ -1337,9 +1377,22 @@
 
                     blockDiv.appendChild(textSpan);
                     blockDiv.appendChild(numSpan);
+
+                    // Двусторонняя подсветка: при наведении на блок подсвечивается строка
+                    blockDiv.onmouseenter = () => {
+                        blockDiv.classList.add('highlighted');
+                        const row = document.getElementById(rowId);
+                        if (row) row.classList.add('highlighted');
+                    };
+                    blockDiv.onmouseleave = () => {
+                        blockDiv.classList.remove('highlighted');
+                        const row = document.getElementById(rowId);
+                        if (row) row.classList.remove('highlighted');
+                    };
+
                     blocksContainer.appendChild(blockDiv);
 
-                    // Добавляем разделитель тире между блоками
+                    // Разделитель тире между блоками
                     if (index < parsedData.length - 1) {
                         const sep = document.createElement('span');
                         sep.className = 'tspt-block-sep';
@@ -1349,8 +1402,12 @@
                 });
 
                 // Рендер таблицы расшифровки
-                parsedData.forEach(item => {
+                parsedData.forEach((item, index) => {
+                    const blockId = `tspt-block-${index}`;
+                    const rowId = `tspt-row-${index}`;
+
                     const tr = modalTableBody.insertRow();
+                    tr.id = rowId;
                     const tdBlock = tr.insertCell(0);
                     const tdCode = tr.insertCell(1);
                     const tdDesc = tr.insertCell(2);
@@ -1362,6 +1419,18 @@
                     tdBlock.innerText = item.label;
                     tdCode.innerText = item.code;
                     tdDesc.innerText = item.value;
+
+                    // Двусторонняя подсветка: при наведении на строку подсвечивается блок
+                    tr.onmouseenter = () => {
+                        tr.classList.add('highlighted');
+                        const block = document.getElementById(blockId);
+                        if (block) block.classList.add('highlighted');
+                    };
+                    tr.onmouseleave = () => {
+                        tr.classList.remove('highlighted');
+                        const block = document.getElementById(blockId);
+                        if (block) block.classList.remove('highlighted');
+                    };
                 });
             }
         }

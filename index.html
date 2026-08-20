@@ -32,11 +32,10 @@
             background-attachment: fixed;
             color: var(--label-primary);
             padding: 20px;
-            padding-top: 150px; /* Отступ под липкую шапку */
+            padding-top: 150px;
             min-height: 100vh;
         }
 
-        /* Зафиксированная шапка сверху */
         .header {
             position: fixed;
             top: 0;
@@ -142,7 +141,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        /* Кнопка "Фильтр" без жирного шрифта */
         .btn-filter-toggle {
             font-weight: normal;
         }
@@ -218,7 +216,6 @@
             border-color: var(--blue);
         }
 
-        /* 3 карточки в один ряд на десктопе */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -291,6 +288,12 @@
             color: var(--label-primary);
         }
 
+        /* Плашка Группы */
+        .badge-group {
+            background: #e5e5ea;
+            color: #3a3a3c;
+        }
+
         .card-name {
             font-size: 13px;
             font-weight: 600;
@@ -299,7 +302,19 @@
             padding-bottom: 4px;
             word-break: break-word;
             line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
+        .info-btn {
+            font-size: 14px;
+            margin-left: 6px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+        .info-btn:active { transform: scale(1.2); }
 
         .card-purpose {
             font-size: 12px;
@@ -312,9 +327,10 @@
             -webkit-box-orient: vertical;
         }
 
+        /* Увеличен размер контейнера картинок на 10% (с 90px до 99px) */
         .card-image-container {
             position: relative;
-            width: 90px;
+            width: 99px;
             flex-shrink: 0;
             background: transparent;
             display: flex;
@@ -339,7 +355,6 @@
             text-align: center;
         }
 
-        /* Все статусные кружки с одной стороны (справа вверху) */
         .status-dot {
             position: absolute;
             top: 6px;
@@ -356,7 +371,6 @@
         .dot-yellow { background-color: var(--yellow); }
         .dot-red { background-color: var(--red); }
 
-        /* Модальные окна */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -415,9 +429,9 @@
         .modal-table tr { border-bottom: 0.5px solid var(--separator); cursor: pointer; transition: background 0.15s; }
         .modal-table tr:hover { background: rgba(0, 122, 255, 0.04); }
         .modal-table tr:last-child { border-bottom: none; }
-        .modal-table td { padding: 4px 12px; font-size: 13px; vertical-align: middle; word-break: break-word; line-height: 1.25; }
-        .modal-table td.label { font-weight: 500; color: var(--label-secondary); width: 50%; text-align: right; border-right: 1px solid var(--separator); }
-        .modal-table td.value { color: var(--label-primary); width: 50%; text-align: left; font-weight: 400; }
+        .modal-table td { padding: 6px 12px; font-size: 13px; vertical-align: middle; word-break: break-word; line-height: 1.25; }
+        .modal-table td.label { font-weight: 500; color: var(--label-secondary); width: 45%; text-align: right; border-right: 1px solid var(--separator); }
+        .modal-table td.value { color: var(--label-primary); width: 55%; text-align: left; font-weight: 400; }
 
         .modal-footer {
             padding: 12px 20px;
@@ -445,14 +459,13 @@
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
         .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
 
-        /* Панель фильтрации (без затенения фона) */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: transparent; /* Убрано затенение */
+            background: transparent;
             z-index: 998;
-            pointer-events: none; /* Пропускает клики вне панели, если нужно, но оставим для клика отмены */
+            pointer-events: none;
         }
         .side-panel-overlay.active { display: block; pointer-events: auto; }
 
@@ -482,7 +495,6 @@
             align-items: center;
         }
 
-        /* Переключатель Табов (Фильтр / Сортировка) */
         .panel-tabs {
             display: flex;
             background: var(--gray-bg);
@@ -535,13 +547,12 @@
         .sort-btn:hover { background: #e2e4ed; }
         .sort-btn:active { background: var(--gray-bg); }
 
-        /* Тонкий серый кант вокруг заголовков в панели фильтрации */
         .filter-group {
             margin-bottom: 8px;
             background: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #d1d1d6; /* Серый тонкий кант */
+            border: 1px solid #d1d1d6;
         }
         
         .filter-group-title {
@@ -663,7 +674,6 @@
 </head>
 <body>
 
-    <!-- Зафиксированная шапка -->
     <div class="header">
         <div class="header-inner">
             <div class="search-container">
@@ -681,7 +691,6 @@
                 <div class="toolbar-buttons">
                     <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">!</button>
                     <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
-                    <!-- Кнопка фильтр без жирного шрифта -->
                     <button class="btn btn-filter-toggle" onclick="openCombinedPanel()">Фильтр / Сорт.</button>
                     <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
                 </div>
@@ -693,6 +702,7 @@
         <div class="loading">Идет загрузка данных, пожалуйста, подождите...</div>
     </div>
 
+    <!-- Модальное окно общей информации -->
     <div class="modal-overlay" id="modalOverlay" onclick="if(event.target === this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
@@ -708,14 +718,27 @@
         </div>
     </div>
 
+    <!-- Модальное окно расшифровки ТСПТ 101 -->
+    <div class="modal-overlay" id="decodeModalOverlay" onclick="if(event.target === this) closeDecodeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="decodeModalTitle">Расшифровка датчика</h2>
+            </div>
+            <div class="modal-body" id="decodeModalBody">
+                <table class="modal-table" id="decodeModalTable"></table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-action btn-close-modal-footer" onclick="closeDecodeModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
     <div class="image-modal" id="imageModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;" onclick="closeImageModal()">
         <img id="fullImage" src="" alt="Просмотр" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:8px;">
     </div>
 
-    <!-- Затенение сделано прозрачным -->
     <div class="side-panel-overlay" id="panelOverlay" onclick="closePanels()"></div>
 
-    <!-- Объединенная панель Фильтрации и Сортировки -->
     <div class="side-panel" id="combinedPanel">
         <div class="panel-header">
             <div class="panel-tabs">
@@ -725,13 +748,11 @@
             <button class="btn" onclick="closePanels()">×</button>
         </div>
         
-        <!-- Вкладка Фильтра -->
         <div class="panel-body" id="tabContentFilter">
             <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
             <div id="filterPanelContent"></div>
         </div>
 
-        <!-- Вкладка Сортировки -->
         <div class="panel-body" id="tabContentSort" style="display: none;">
             <button class="sort-btn" onclick="sortCards('ProjectName')">По Наименованию (А-Я)</button>
             <button class="sort-btn" onclick="sortCards('Naznachenie')">По Назначению (А-Я)</button>
@@ -839,6 +860,13 @@
         
         let filterStatus = true;
         let filterOnlyUniquePart = false;
+        let tspt101Data = null;
+
+        // Загрузка JSON расшифровки
+        fetch('TSPT.json')
+            .then(res => res.json())
+            .then(data => { tspt101Data = data; })
+            .catch(err => console.warn('Файл TSPT.json не найден или содержит ошибки:', err));
 
         function getProducerColor(str) {
             if (!str) return { bg: 'rgba(142, 142, 147, 0.15)', text: '#8e8e93' };
@@ -870,11 +898,7 @@
         function toggleStatusFilter() {
             filterStatus = !filterStatus;
             const btn = document.getElementById('statusToggleBtn');
-            if (filterStatus) {
-                btn.className = 'status-toggle green';
-            } else {
-                btn.className = 'status-toggle red';
-            }
+            btn.className = filterStatus ? 'status-toggle green' : 'status-toggle red';
             renderCards();
         }
 
@@ -962,8 +986,7 @@
                 card.addEventListener('click', (e) => {
                     const selection = window.getSelection();
                     if (selection.toString().length > 0) return;
-
-                    if (e.target.classList.contains('card-image') || e.target.classList.contains('badge')) return;
+                    if (e.target.classList.contains('card-image') || e.target.classList.contains('badge') || e.target.classList.contains('info-btn')) return;
                     openModal(item);
                 });
 
@@ -975,9 +998,12 @@
                 const imgUrl = imgRaw.split(",")[0].trim();
                 const isStatusFalse = (item["Status"] || "").toString().trim().toUpperCase() === "FALSE";
 
+                // Обработка группы для Задача 1
+                const groupRaw = item["Группа"] || '';
+                const groupClean = groupRaw.replace(/Группа\s*/gi, '').trim();
+
                 const producerStyle = getProducerColor(producer);
 
-                /* Размещение всех статусных кружков в одном месте (справа вверху) + Оранжевый заменен на Желтый */
                 const statusRaw = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
                 if (isStatusFalse) {
@@ -988,13 +1014,21 @@
                     dotHtml = '<div class="status-dot dot-yellow" title="Редкий"></div>';
                 }
 
+                // Иконка ℹ️ только для ТСПТ 101
+                const isTspt101 = projectName.includes('ТСПТ') && projectName.includes('101');
+                const infoIconHtml = isTspt101 ? `<span class="info-btn" onclick="openDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
+
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
                             ${partNumber ? `<span class="badge badge-part" onclick="copyPartNumber(event, '${escapeHtml(partNumber)}')">${escapeHtml(partNumber)}</span>` : ''}
+                            ${groupClean ? `<span class="badge badge-group">${escapeHtml(groupClean)}</span>` : ''}
                             ${producer ? `<span class="badge badge-producer" style="background: ${producerStyle.bg}; color: ${producerStyle.text};" onclick="openProducerFilter(event, '${escapeHtml(producer)}')">${escapeHtml(producer)}</span>` : ''}
                         </div>
-                        <div class="card-name">${escapeHtml(projectName)}</div>
+                        <div class="card-name">
+                            <span>${escapeHtml(projectName)}</span>
+                            ${infoIconHtml}
+                        </div>
                         <div class="card-purpose">${escapeHtml(naznachenie)}</div>
                     </div>
                     <div class="card-image-container">
@@ -1113,6 +1147,211 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Логика расшифровки датчика ТСПТ 101
+        function openDecodeModal(e, sensorName) {
+            e.stopPropagation();
+            const modalTable = document.getElementById('decodeModalTable');
+            const modalTitle = document.getElementById('decodeModalTitle');
+            modalTitle.innerText = `Расшифровка: ${sensorName}`;
+            modalTable.innerHTML = '';
+
+            if (!tspt101Data) {
+                modalTable.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
+            } else {
+                const parsedData = parseTspt101Name(sensorName, tspt101Data);
+                parsedData.forEach(item => {
+                    const tr = modalTable.insertRow();
+                    const tdLabel = tr.insertCell(0);
+                    const tdValue = tr.insertCell(1);
+                    tdLabel.className = 'label';
+                    tdValue.className = 'value';
+                    tdLabel.innerText = item.label;
+                    tdValue.innerText = item.value;
+                });
+            }
+
+            document.getElementById('decodeModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDecodeModal() {
+            document.getElementById('decodeModalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function parseTspt101Name(str, data) {
+            const list = [];
+            
+            let rangeMatch = str.match(/\(([^)]+)\)/);
+            let rangeVal = rangeMatch ? rangeMatch[1] : null;
+            let cleanStr = str.replace(/\([^)]+\)/, '').trim();
+
+            let hasUpi = cleanStr.includes('УПИ-420');
+            let hasHart = cleanStr.includes('HARTv7');
+            cleanStr = cleanStr.replace(/,\s*УПИ-420|\+HARTv7|УПИ-420/g, '').trim();
+
+            const parts = cleanStr.split('-').map(p => p.trim());
+
+            // Блок 1, 2, 3
+            if (parts[0]) {
+                const tokens = parts[0].split(/\s+/);
+                const typeKey = tokens[0];
+                list.push({
+                    label: "1. Тип датчика",
+                    value: `${typeKey} (${data.type[typeKey] || 'термометр сопротивления платиновый'})`
+                });
+
+                if (tokens.length === 3) {
+                    const exKey = tokens[1];
+                    list.push({
+                        label: "2. Вид взрывозащиты",
+                        value: `${exKey} (${data.ex[exKey] || ''})`
+                    });
+                    const modKey = tokens[2];
+                    list.push({
+                        label: "3. Модификация",
+                        value: `${modKey} (${data.modification[modKey] || ''})`
+                    });
+                } else if (tokens.length === 2) {
+                    list.push({
+                        label: "2. Вид взрывозащиты",
+                        value: "Без взрывозащиты"
+                    });
+                    const modKey = tokens[1];
+                    list.push({
+                        label: "3. Модификация",
+                        value: `${modKey} (${data.modification[modKey] || ''})`
+                    });
+                }
+            }
+
+            // Блок 4, 5
+            if (parts[1]) {
+                const cableKey = parts[1].charAt(0);
+                const nodeKey = parts[1].slice(1);
+
+                list.push({
+                    label: "4. Кабельный ввод",
+                    value: `${cableKey} — ${data.cableEntry[cableKey] || ''}`
+                });
+
+                list.push({
+                    label: "5. Узел коммутации",
+                    value: `${nodeKey} — ${data.switchingNode[nodeKey] || ''}`
+                });
+            }
+
+            // Блок 6
+            if (parts[2]) {
+                const nshKey = parts[2];
+                list.push({
+                    label: "6. НСХ",
+                    value: `${nshKey} (${data.nsh[nshKey] || ''})`
+                });
+            }
+
+            // Блок 7, 8, 9
+            if (parts[3]) {
+                let p3 = parts[3];
+                let cls = "";
+                if (p3.startsWith("AA")) cls = "AA";
+                else if (p3.startsWith("A")) cls = "A";
+                else if (p3.startsWith("B")) cls = "B";
+                else if (p3.startsWith("C")) cls = "C";
+
+                if (cls) {
+                    list.push({
+                        label: "7. Класс допуска",
+                        value: `${cls} (по ГОСТ 6651-2009)`
+                    });
+                    p3 = p3.slice(cls.length);
+                }
+
+                let scheme = p3.charAt(0);
+                if (["2", "3", "4"].includes(scheme)) {
+                    list.push({
+                        label: "8. Схема соединения",
+                        value: `${scheme} — ${data.wireScheme[scheme] || ''}`
+                    });
+                    p3 = p3.slice(1);
+                }
+
+                let sig = p3;
+                if (sig && data.signal[sig]) {
+                    list.push({
+                        label: "9. Выходной сигнал / Точность",
+                        value: `${sig} — ${data.signal[sig]}`
+                    });
+                } else {
+                    list.push({
+                        label: "9. Выходной сигнал",
+                        value: "Аналоговый сигнал (Ом) в соответствии с НСХ"
+                    });
+                }
+            }
+
+            // Блок 10
+            if (parts[4]) {
+                const matKey = parts[4];
+                list.push({
+                    label: "10. Материал оболочки",
+                    value: `${matKey} — ${data.sheathMaterial[matKey] || matKey}`
+                });
+            }
+
+            // Блок 11
+            if (parts[5]) {
+                list.push({
+                    label: "11. Наружный диаметр штока",
+                    value: `${parts[5]} мм`
+                });
+            }
+
+            // Блок 12
+            if (parts[6]) {
+                list.push({
+                    label: "12. Монтажная длина",
+                    value: `${parts[6]} мм`
+                });
+            }
+
+            // Блок 13
+            list.push({
+                label: "13. Размер e (уплотнение-головка)",
+                value: parts[7] ? `${parts[7]} мм` : "120 мм (по умолчанию)"
+            });
+
+            // Блок 14
+            list.push({
+                label: "14. Типоразмер штуцера",
+                value: parts[8] ? parts[8] : "М20х1,5 (по умолчанию)"
+            });
+
+            // Доп. элементы
+            if (hasUpi) {
+                list.push({
+                    label: "Преобразователь",
+                    value: `УПИ-420 — ${data.extras["УПИ-420"]}`
+                });
+            }
+
+            if (hasHart) {
+                list.push({
+                    label: "Протокол связи",
+                    value: `HARTv7 — ${data.extras["HARTv7"]}`
+                });
+            }
+
+            if (rangeVal) {
+                list.push({
+                    label: "Диапазон измерения",
+                    value: rangeVal
+                });
+            }
+
+            return list;
+        }
+
         function openImageModal(url) {
             const fullImg = document.getElementById('fullImage');
             fullImg.src = url;
@@ -1124,7 +1363,6 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
-        /* Управление объединенной панелью и переключением вкладак */
         function openCombinedPanel() {
             closePanels();
             document.getElementById('panelOverlay').classList.add('active');
@@ -1324,6 +1562,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
+                closeDecodeModal();
                 closeImageModal();
                 closePanels();
             }

@@ -13,7 +13,8 @@
             --label-primary: #1c1c1e;
             --label-secondary: #8e8e93;
             --blue: #007aff;
-            --gray-bg: #dcdce2;
+            --gray-bg: rgba(120, 120, 128, 0.12);
+            --gray-bg-hover: rgba(120, 120, 128, 0.2);
             --green: #34c759;
             --yellow: #ffcc00;
             --red: #ff3b30;
@@ -38,15 +39,13 @@
 
         .header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 900;
-            background: rgba(238, 245, 252, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(238, 245, 252, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 15px 20px 10px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 0.5px solid rgba(0,0,0,0.1);
             max-width: 100%;
         }
 
@@ -71,17 +70,20 @@
         .input-wrapper input {
             width: 100%;
             padding: 11px 36px 11px 16px;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 0.5px solid rgba(0,0,0,0.12);
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
             color: var(--label-primary);
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .input-wrapper input:focus {
-            background: rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
 
         .clear-btn {
@@ -89,14 +91,14 @@
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--label-secondary);
+            background: rgba(142, 142, 147, 0.3);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: none;
             align-items: center;
@@ -110,110 +112,114 @@
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 8px 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 14px;
+            border: 0.5px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
         }
 
         .counter {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--label-secondary);
             font-weight: 500;
         }
 
         .toolbar-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
+        /* Воздушные iOS кнопки */
         .btn {
             background: var(--gray-bg);
-            border: 1px solid rgba(0,0,0,0.08);
-            padding: 8px 18px;
-            border-radius: 8px;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 14px;
-            color: var(--label-primary);
-            transition: transform 0.1s, background 0.2s, color 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            color: var(--blue);
+            transition: background 0.2s, transform 0.1s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-filter-toggle {
-            font-weight: normal;
-        }
-
-        .btn:hover { background: #d0d0d8; }
-        .btn:active { transform: scale(0.96); }
+        .btn:hover { background: var(--gray-bg-hover); }
+        .btn:active { transform: scale(0.95); opacity: 0.8; }
 
         .btn-circle {
             width: 34px;
             height: 34px;
             padding: 0;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--blue);
         }
 
         .btn-exclamation.active {
             background: var(--blue);
             color: white;
-            border-color: var(--blue);
         }
 
         .status-toggle {
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: var(--gray-bg);
         }
-        .status-toggle.green { background: var(--green); }
-        .status-toggle.red { background: var(--red); }
+        .status-toggle:active { transform: scale(0.95); }
+        .status-toggle.green { background: rgba(52, 199, 89, 0.18); }
+        .status-toggle.red { background: rgba(255, 59, 48, 0.18); }
         .status-toggle::after {
             content: '';
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: white;
         }
+        .status-toggle.green::after { background: var(--green); }
+        .status-toggle.red::after { background: var(--red); }
 
         .btn-close-header {
             background: var(--gray-bg);
-            color: var(--label-primary);
-            font-weight: bold;
-            width: 36px;
-            padding: 8px 0;
-            text-align: center;
+            color: var(--label-secondary);
+            font-weight: 600;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 16px;
         }
 
         .btn-close-header.active {
-            background: var(--red);
-            color: white;
-            border-color: var(--red);
+            background: rgba(255, 59, 48, 0.18);
+            color: var(--red);
         }
 
         .btn-reset-panel {
             width: 100%;
             margin-bottom: 12px;
             background: var(--gray-bg);
-            color: var(--label-primary);
+            color: var(--blue);
+            border-radius: 10px;
+            padding: 10px;
+            font-weight: 500;
         }
 
         .btn-reset-panel.active {
             background: var(--blue);
             color: white;
-            border-color: var(--blue);
         }
 
         .cards-grid {
@@ -289,7 +295,7 @@
         }
 
         .badge-group {
-            background: #e5e5ea;
+            background: rgba(120, 120, 128, 0.1);
             color: #3a3a3c;
         }
 
@@ -334,7 +340,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-left: none;
             padding: 6px;
             overflow: hidden;
             user-select: none;
@@ -391,7 +396,7 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-            animation: slideUp 0.3s ease-out;
+            animation: slideUp 0.25s ease-out;
         }
 
         @keyframes slideUp {
@@ -415,7 +420,7 @@
             transform: translateX(-50%);
             width: 40px;
             height: 4px;
-            background: var(--gray-bg);
+            background: var(--separator);
             border-radius: 2px;
         }
 
@@ -447,7 +452,7 @@
             font-weight: 600;
             font-size: 15px;
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.08);
+            border: none;
             text-align: center;
             text-decoration: none;
             transition: opacity 0.2s;
@@ -455,17 +460,19 @@
         .btn-modal-action:active { opacity: 0.8; }
         .btn-site { background: var(--gray-bg); color: var(--blue); }
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
-        .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
+        .btn-close-modal-footer { background: var(--blue); color: white; }
 
-        /* Оверлей для карточки расшифровки */
+        /* Оверлей для карточки расшифровки ТСПТ */
         .modal-overlay.decode-overlay {
             background: rgba(0, 0, 0, 0);
-            transition: background 0.3s ease;
+            transition: background 0.2s ease, opacity 0.2s ease;
             pointer-events: none;
+            opacity: 0;
         }
 
         .modal-overlay.decode-overlay.active {
             display: flex;
+            opacity: 1;
         }
 
         .modal-overlay.decode-overlay.pinned {
@@ -473,52 +480,74 @@
             pointer-events: auto;
         }
 
-        /* Вырастаяющее окно расшифровки ТСПТ с фоном #f9efe4 */
+        /* Карточка расшифровки с фоном как у мини-карточек */
         .decode-modal-content {
-            border-radius: 12px;
-            max-width: 620px;
+            border-radius: 16px;
+            max-width: 680px;
+            width: 92%;
             margin: auto;
             align-self: center;
-            background: #f9efe4;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-            border: 1px solid #d1d1d6;
-            
-            transform: scale(0);
-            opacity: 0;
-            transform-origin: center center;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
-        }
-
-        .modal-overlay.decode-overlay .decode-modal-content.full-size {
-            transform: scale(1);
-            opacity: 1;
+            background: var(--card-bg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--separator);
+            overflow: hidden;
+            transition: opacity 0.2s ease;
         }
 
         .decode-modal-header {
-            text-align: left;
-            padding: 14px 18px 8px 18px;
-            background: transparent;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            text-align: center;
+            padding: 16px 18px 12px 18px;
+            background: var(--card-bg);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
         .decode-modal-header::before { display: none; }
 
-        .decode-modal-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #0056b3;
-            margin-top: 0;
+        /* Контейнер для блоков заголовка */
+        .tspt-header-blocks {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
             gap: 6px;
+            margin-top: 6px;
+        }
+
+        .tspt-block-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tspt-block-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--label-primary);
+            padding: 2px 4px;
+            border-bottom: 1px solid var(--separator);
+            min-width: 22px;
+            text-align: center;
+        }
+
+        .tspt-block-num {
+            font-size: 11px;
+            color: var(--label-secondary);
+            margin-top: 3px;
+        }
+
+        .tspt-block-sep {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--label-secondary);
+            align-self: flex-start;
+            margin-top: 2px;
         }
 
         .decode-table-container {
-            padding: 0 12px 14px 12px;
-            background: transparent;
+            padding: 6px 16px 16px 16px;
+            background: var(--card-bg);
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
         .decode-table {
@@ -530,41 +559,40 @@
         .decode-table th {
             text-align: left;
             padding: 8px;
-            color: #6c757d;
+            color: var(--label-secondary);
             font-weight: 600;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--separator);
         }
 
         .decode-table td {
-            padding: 6px 8px;
+            padding: 8px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             vertical-align: top;
-            color: #2c2c2e;
+            color: var(--label-primary);
         }
 
-        .decode-table tr:last-child td {
-            border-bottom: none;
-        }
+        .decode-table tr:last-child td { border-bottom: none; }
 
         .decode-table .col-block { width: 32%; }
-        .decode-table .col-code { width: 18%; font-weight: 700; color: #0056b3; }
+        .decode-table .col-code { width: 18%; font-weight: 700; color: var(--blue); }
         .decode-table .col-desc { width: 50%; }
 
+        /* Боковая панель */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: transparent;
+            background: rgba(0,0,0,0.2);
             z-index: 998;
-            pointer-events: none;
+            backdrop-filter: blur(2px);
         }
-        .side-panel-overlay.active { display: block; pointer-events: auto; }
+        .side-panel-overlay.active { display: block; }
 
         .side-panel {
             position: fixed;
             top: 0; right: -100%; bottom: 0;
             width: 360px;
-            background: #f9f9fb;
+            background: #f2f2f7;
             box-shadow: -4px 0 20px rgba(0,0,0,0.15);
             z-index: 999;
             transition: right 0.3s ease-in-out;
@@ -588,8 +616,8 @@
 
         .panel-tabs {
             display: flex;
-            background: var(--gray-bg);
-            border-radius: 8px;
+            background: rgba(120, 120, 128, 0.12);
+            border-radius: 9px;
             padding: 2px;
             width: 220px;
         }
@@ -601,15 +629,15 @@
             padding: 6px 0;
             font-size: 13px;
             font-weight: 500;
-            border-radius: 6px;
+            border-radius: 7px;
             cursor: pointer;
             color: var(--label-primary);
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .tab-btn.active {
             background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
             font-weight: 600;
         }
         
@@ -619,31 +647,30 @@
             flex: 1;
         }
 
+        /* Кнопки сортировки в стиле фильтров */
         .sort-btn {
             display: block;
             width: 100%;
-            margin-bottom: 10px;
-            padding: 12px 16px;
+            margin-bottom: 8px;
+            padding: 10px 12px;
             text-align: left;
-            background: #eef0f5;
-            border: 1px solid rgba(0,0,0,0.08);
+            background: var(--card-bg);
+            border: 1px solid var(--separator);
             border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
             color: var(--label-primary);
             transition: background 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
-        .sort-btn:hover { background: #e2e4ed; }
-        .sort-btn:active { background: var(--gray-bg); }
+        .sort-btn:active { background: rgba(0,0,0,0.03); }
 
         .filter-group {
             margin-bottom: 8px;
             background: var(--card-bg);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--separator);
         }
         
         .filter-group-title {
@@ -782,7 +809,7 @@
                 <div class="toolbar-buttons">
                     <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">!</button>
                     <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
-                    <button class="btn btn-filter-toggle" onclick="openCombinedPanel()">Фильтр / Сорт.</button>
+                    <button class="btn" onclick="openCombinedPanel()">Фильтр</button>
                     <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
                 </div>
             </div>
@@ -809,11 +836,11 @@
         </div>
     </div>
 
-    <!-- Окно расшифровки ТСПТ без кнопки «Закрыть» и с новым фоном -->
+    <!-- Всплывающая карточка ТСПТ с блоками заголовка -->
     <div class="modal-overlay decode-overlay" id="decodeModalOverlay" onclick="if(event.target === this) closeDecodeModal(true)">
         <div class="modal-content decode-modal-content" id="decodeModalContent">
             <div class="modal-header decode-modal-header">
-                <h2 class="modal-title decode-modal-title" id="decodeModalTitle">🔍 Расшифровка маркировки ТСПТ</h2>
+                <div class="tspt-header-blocks" id="tsptHeaderBlocks"></div>
             </div>
             <div class="modal-body decode-table-container" id="decodeModalBody">
                 <table class="decode-table">
@@ -830,7 +857,7 @@
         </div>
     </div>
 
-    <div class="image-modal" id="imageModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;" onclick="closeImageModal()">
+    <div class="image-modal" id="imageModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:2000; justify-content:center; align-items:center;" onclick="closeImageModal()">
         <img id="fullImage" src="" alt="Просмотр" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:8px;">
     </div>
 
@@ -842,7 +869,7 @@
                 <button class="tab-btn active" id="tabFilter" onclick="switchTab('filter')">Фильтр</button>
                 <button class="tab-btn" id="tabSort" onclick="switchTab('sort')">Сортировка</button>
             </div>
-            <button class="btn" onclick="closePanels()">×</button>
+            <button class="btn btn-close-header" onclick="closePanels()">×</button>
         </div>
         
         <div class="panel-body" id="tabContentFilter">
@@ -1250,26 +1277,13 @@
             document.body.style.overflow = 'auto';
         }
 
-        /* --- Логика анимированного окна расшифровки --- */
+        /* --- Логика всплывающей карточки ТСПТ --- */
 
         function hoverDecodeModal(e, sensorName) {
             if (isDecodePinned) return;
-
-            const rect = e.currentTarget.getBoundingClientRect();
-            const iconCenterX = rect.left + rect.width / 2;
-            const iconCenterY = rect.top + rect.height / 2;
-
-            const modalContent = document.getElementById('decodeModalContent');
-            modalContent.style.transformOrigin = `${iconCenterX}px ${iconCenterY}px`;
-
             fillDecodeTable(sensorName);
-
             const overlay = document.getElementById('decodeModalOverlay');
             overlay.classList.add('active');
-            
-            setTimeout(() => {
-                modalContent.classList.add('full-size');
-            }, 10);
         }
 
         function unhoverDecodeModal() {
@@ -1291,29 +1305,50 @@
 
         function closeDecodeModal(force = false) {
             if (!force && isDecodePinned) return;
-
             isDecodePinned = false;
             const overlay = document.getElementById('decodeModalOverlay');
-            const modalContent = document.getElementById('decodeModalContent');
-
-            modalContent.classList.remove('full-size');
             overlay.classList.remove('pinned');
-
-            setTimeout(() => {
-                if (!isDecodePinned) {
-                    overlay.classList.remove('active');
-                }
-            }, 250);
+            overlay.classList.remove('active');
         }
 
         function fillDecodeTable(sensorName) {
             const modalTableBody = document.getElementById('decodeModalTableBody');
+            const blocksContainer = document.getElementById('tsptHeaderBlocks');
             modalTableBody.innerHTML = '';
+            blocksContainer.innerHTML = '';
 
             if (!tspt101Data) {
                 modalTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
             } else {
                 const parsedData = parseTspt101Name(sensorName, tspt101Data);
+                
+                // Рендер блоков в заголовке с подчеркиванием и номерами
+                parsedData.forEach((item, index) => {
+                    const blockDiv = document.createElement('div');
+                    blockDiv.className = 'tspt-block-item';
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'tspt-block-text';
+                    textSpan.innerText = item.code;
+                    
+                    const numSpan = document.createElement('span');
+                    numSpan.className = 'tspt-block-num';
+                    numSpan.innerText = item.num || (index + 1);
+
+                    blockDiv.appendChild(textSpan);
+                    blockDiv.appendChild(numSpan);
+                    blocksContainer.appendChild(blockDiv);
+
+                    // Добавляем разделитель тире между блоками
+                    if (index < parsedData.length - 1) {
+                        const sep = document.createElement('span');
+                        sep.className = 'tspt-block-sep';
+                        sep.innerText = '-';
+                        blocksContainer.appendChild(sep);
+                    }
+                });
+
+                // Рендер таблицы расшифровки
                 parsedData.forEach(item => {
                     const tr = modalTableBody.insertRow();
                     const tdBlock = tr.insertCell(0);
@@ -1348,6 +1383,7 @@
                 const tokens = parts[0].split(/\s+/);
                 const typeKey = tokens[0];
                 list.push({
+                    num: 1,
                     label: "1. Тип датчика",
                     code: typeKey,
                     value: data.type[typeKey] || 'Термометр сопротивления платиновый'
@@ -1356,24 +1392,22 @@
                 if (tokens.length === 3) {
                     const exKey = tokens[1];
                     list.push({
+                        num: 2,
                         label: "2. Вид взрывозащиты",
                         code: exKey,
                         value: data.ex[exKey] || ''
                     });
                     const modKey = tokens[2];
                     list.push({
+                        num: 3,
                         label: "3. Модификация",
                         code: modKey,
                         value: data.modification[modKey] || ''
                     });
                 } else if (tokens.length === 2) {
-                    list.push({
-                        label: "2. Вид взрывозащиты",
-                        code: "—",
-                        value: "Без взрывозащиты"
-                    });
                     const modKey = tokens[1];
                     list.push({
+                        num: 3,
                         label: "3. Модификация",
                         code: modKey,
                         value: data.modification[modKey] || ''
@@ -1386,12 +1420,14 @@
                 const nodeKey = parts[1].slice(1);
 
                 list.push({
+                    num: 4,
                     label: "4. Кабельный ввод",
                     code: cableKey,
                     value: data.cableEntry[cableKey] || ''
                 });
 
                 list.push({
+                    num: 5,
                     label: "5. Узел коммутации",
                     code: nodeKey,
                     value: data.switchingNode[nodeKey] || ''
@@ -1401,6 +1437,7 @@
             if (parts[2]) {
                 const nshKey = parts[2];
                 list.push({
+                    num: 6,
                     label: "6. НСХ",
                     code: nshKey,
                     value: data.nsh[nshKey] || ''
@@ -1417,6 +1454,7 @@
 
                 if (cls) {
                     list.push({
+                        num: 7,
                         label: "7. Класс допуска",
                         code: cls,
                         value: `Класс допуска ${cls} по ГОСТ 6651-2009`
@@ -1427,6 +1465,7 @@
                 let scheme = p3.charAt(0);
                 if (["2", "3", "4"].includes(scheme)) {
                     list.push({
+                        num: 8,
                         label: "8. Схема соединения",
                         code: scheme,
                         value: data.wireScheme[scheme] || ''
@@ -1437,15 +1476,10 @@
                 let sig = p3;
                 if (sig && data.signal[sig]) {
                     list.push({
+                        num: 9,
                         label: "9. Выходной сигнал",
                         code: sig,
                         value: data.signal[sig]
-                    });
-                } else {
-                    list.push({
-                        label: "9. Выходной сигнал",
-                        code: "—",
-                        value: "Аналоговый сигнал (Ом) в соответствии с НСХ"
                     });
                 }
             }
@@ -1453,6 +1487,7 @@
             if (parts[4]) {
                 const matKey = parts[4];
                 list.push({
+                    num: 10,
                     label: "10. Материал оболочки",
                     code: matKey,
                     value: data.sheathMaterial[matKey] || matKey
@@ -1461,34 +1496,43 @@
 
             if (parts[5]) {
                 list.push({
+                    num: 11,
                     label: "11. Диаметр штока",
-                    code: `${parts[5]} мм`,
+                    code: parts[5],
                     value: `Наружный диаметр ${parts[5]} мм`
                 });
             }
 
             if (parts[6]) {
                 list.push({
+                    num: 12,
                     label: "12. Длина L",
-                    code: `${parts[6]} мм`,
+                    code: parts[6],
                     value: `Монтажная длина ${parts[6]} мм`
                 });
             }
 
-            list.push({
-                label: "13. Размер e",
-                code: parts[7] ? `${parts[7]} мм` : "120 мм",
-                value: parts[7] ? `${parts[7]} мм` : "120 мм (по умолчанию)"
-            });
+            if (parts[7]) {
+                list.push({
+                    num: 13,
+                    label: "13. Размер e",
+                    code: parts[7],
+                    value: `${parts[7]} мм`
+                });
+            }
 
-            list.push({
-                label: "14. Штуцер",
-                code: parts[8] ? parts[8] : "M20x1.5",
-                value: parts[8] ? parts[8] : "M20x1,5 (по умолчанию)"
-            });
+            if (parts[8]) {
+                list.push({
+                    num: 14,
+                    label: "14. Штуцер",
+                    code: parts[8],
+                    value: parts[8]
+                });
+            }
 
             if (hasUpi) {
                 list.push({
+                    num: "—",
                     label: "Преобразователь",
                     code: "УПИ-420",
                     value: data.extras["УПИ-420"]
@@ -1497,6 +1541,7 @@
 
             if (hasHart) {
                 list.push({
+                    num: "—",
                     label: "Протокол связи",
                     code: "HARTv7",
                     value: data.extras["HARTv7"]
@@ -1505,6 +1550,7 @@
 
             if (rangeVal) {
                 list.push({
+                    num: "—",
                     label: "Диапазон",
                     code: rangeVal,
                     value: `Диапазон измерения температур: ${rangeVal}`
@@ -1517,7 +1563,6 @@
         function openImageModal(url) {
             const fullImg = document.getElementById('fullImage');
             fullImg.src = url;
-            fullImg.style.transform = 'none';
             document.getElementById('imageModal').style.display = 'flex';
         }
 

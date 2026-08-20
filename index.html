@@ -288,7 +288,6 @@
             color: var(--label-primary);
         }
 
-        /* Плашка Группы */
         .badge-group {
             background: #e5e5ea;
             color: #3a3a3c;
@@ -458,51 +457,48 @@
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
         .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
 
-        /* Обновленный стиль контента окна расшифровки */
-.decode-modal-content {
-    border-radius: 12px;
-    max-width: 620px;
-    margin: auto;
-    align-self: center;
-    background: #f4f5f8;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    border: 1px solid #d1d1d6;
-    
-    /* Добавляем трансформации и анимацию */
-    transform: scale(0);
-    opacity: 0;
-    transform-origin: center center;
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
-}
+        /* Оверлей для карточки расшифровки */
+        .modal-overlay.decode-overlay {
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.3s ease;
+            pointer-events: none;
+        }
 
-/* При активации оверлея делаем его видимым без затемнения для ховера */
-.modal-overlay.decode-overlay {
-    background: rgba(0, 0, 0, 0); /* Прозрачный фон по умолчанию */
-    transition: background 0.3s ease;
-    pointer-events: none; /* Чтобы не перекрывать клики при ховере */
-}
+        .modal-overlay.decode-overlay.active {
+            display: flex;
+        }
 
-.modal-overlay.decode-overlay.active {
-    display: flex;
-}
+        .modal-overlay.decode-overlay.pinned {
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: auto;
+        }
 
-/* Окно развернуто (scale 1) */
-.modal-overlay.decode-overlay .decode-modal-content.full-size {
-    transform: scale(1);
-    opacity: 1;
-}
+        /* Вырастаяющее окно расшифровки ТСПТ с фоном #f9efe4 */
+        .decode-modal-content {
+            border-radius: 12px;
+            max-width: 620px;
+            margin: auto;
+            align-self: center;
+            background: #f9efe4;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            border: 1px solid #d1d1d6;
+            
+            transform: scale(0);
+            opacity: 0;
+            transform-origin: center center;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+        }
 
-/* Затемняем фон и включаем клики, только если окно зафиксировано (кликнули) */
-.modal-overlay.decode-overlay.pinned {
-    background: rgba(0, 0, 0, 0.3);
-    pointer-events: auto;
-}
+        .modal-overlay.decode-overlay .decode-modal-content.full-size {
+            transform: scale(1);
+            opacity: 1;
+        }
 
         .decode-modal-header {
             text-align: left;
-            padding: 14px 18px;
-            background: #f4f5f8;
-            border-bottom: 1px solid #e2e2e7;
+            padding: 14px 18px 8px 18px;
+            background: transparent;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -521,7 +517,8 @@
         }
 
         .decode-table-container {
-            padding: 0 12px 12px 12px;
+            padding: 0 12px 14px 12px;
+            background: transparent;
         }
 
         .decode-table {
@@ -535,12 +532,12 @@
             padding: 8px;
             color: #6c757d;
             font-weight: 600;
-            border-bottom: 1px solid #d1d1d6;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         .decode-table td {
             padding: 6px 8px;
-            border-bottom: 1px solid #e5e5ea;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             vertical-align: top;
             color: #2c2c2e;
         }
@@ -812,9 +809,9 @@
         </div>
     </div>
 
-    <!-- Модальное окно расшифровки ТСПТ 101 по образцу на фото -->
- <div class="modal-overlay decode-overlay" id="decodeModalOverlay" onclick="if(event.target === this) closeDecodeModal(true)">
-    <div class="modal-content decode-modal-content" id="decodeModalContent">
+    <!-- Окно расшифровки ТСПТ без кнопки «Закрыть» и с новым фоном -->
+    <div class="modal-overlay decode-overlay" id="decodeModalOverlay" onclick="if(event.target === this) closeDecodeModal(true)">
+        <div class="modal-content decode-modal-content" id="decodeModalContent">
             <div class="modal-header decode-modal-header">
                 <h2 class="modal-title decode-modal-title" id="decodeModalTitle">🔍 Расшифровка маркировки ТСПТ</h2>
             </div>
@@ -829,9 +826,6 @@
                     </thead>
                     <tbody id="decodeModalTableBody"></tbody>
                 </table>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal-action btn-close-modal-footer" onclick="closeDecodeModal()">Закрыть</button>
             </div>
         </div>
     </div>
@@ -964,6 +958,7 @@
         let filterStatus = true;
         let filterOnlyUniquePart = false;
         let tspt101Data = null;
+        let isDecodePinned = false;
 
         fetch('TSPT.json')
             .then(res => res.json())
@@ -1115,12 +1110,11 @@
                     dotHtml = '<div class="status-dot dot-yellow" title="Редкий"></div>';
                 }
 
-                // Расшифровка открывается по клику и наведению мыши
                 const isTspt101 = projectName.includes('ТСПТ') && projectName.includes('101');
                 const infoIconHtml = isTspt101 ? `<span class="info-btn" 
-    onmouseenter="hoverDecodeModal(event, '${escapeHtml(projectName)}')" 
-    onmouseleave="unhoverDecodeModal()" 
-    onclick="pinDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
+                    onmouseenter="hoverDecodeModal(event, '${escapeHtml(projectName)}')" 
+                    onmouseleave="unhoverDecodeModal()" 
+                    onclick="pinDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
 
                 card.innerHTML = `
                     <div class="card-info">
@@ -1176,7 +1170,6 @@
             openSpecificFilterParam('Proizvodetel');
         }
 
-        // Вызов открытия фильтра для плашки Группа
         function openGroupFilter(e) {
             e.stopPropagation();
             openSpecificFilterParam('Группа');
@@ -1257,99 +1250,86 @@
             document.body.style.overflow = 'auto';
         }
 
-       let isDecodePinned = false; // Флаг: зафиксировано ли окно кликом
+        /* --- Логика анимированного окна расшифровки --- */
 
-// 1. При наведении мыши (ховер)
-function hoverDecodeModal(e, sensorName) {
-    if (isDecodePinned) return; // Если уже зафиксировано кликом, не перерисовываем
+        function hoverDecodeModal(e, sensorName) {
+            if (isDecodePinned) return;
 
-    // Вычисляем координаты иконки, чтобы окно "вырастало" именно из нее
-    const rect = e.currentTarget.getBoundingClientRect();
-    const iconCenterX = rect.left + rect.width / 2;
-    const iconCenterY = rect.top + rect.height / 2;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const iconCenterX = rect.left + rect.width / 2;
+            const iconCenterY = rect.top + rect.height / 2;
 
-    const modalContent = document.getElementById('decodeModalContent');
-    modalContent.style.transformOrigin = `${iconCenterX}px ${iconCenterY}px`;
+            const modalContent = document.getElementById('decodeModalContent');
+            modalContent.style.transformOrigin = `${iconCenterX}px ${iconCenterY}px`;
 
-    // Заполняем данные
-    fillDecodeTable(sensorName);
+            fillDecodeTable(sensorName);
 
-    // Показываем окно
-    const overlay = document.getElementById('decodeModalOverlay');
-    overlay.classList.add('active');
-    
-    // Задержка в 10мс для срабатывания CSS-анимации
-    setTimeout(() => {
-        modalContent.classList.add('full-size');
-    }, 10);
-}
-
-// 2. Когда убрали мышь (если не было клика)
-function unhoverDecodeModal() {
-    if (isDecodePinned) return; // Если зафиксировано кликом — не закрываем!
-
-    closeDecodeModal();
-}
-
-// 3. При клике на пиктограмму (фиксация окна)
-function pinDecodeModal(e, sensorName) {
-    e.stopPropagation();
-    isDecodePinned = true;
-
-    const overlay = document.getElementById('decodeModalOverlay');
-    overlay.classList.add('pinned'); // Включаем затемнение и клики по оверлею
-    
-    // Если открыли сразу кликом без ховера
-    if (!overlay.classList.contains('active')) {
-        hoverDecodeModal(e, sensorName);
-    }
-}
-
-// 4. Закрытие окна
-function closeDecodeModal(force = false) {
-    // Если закрываем не принудительно (например, убрали мышь), но окно зафиксировано — ничего не делаем
-    if (!force && isDecodePinned) return;
-
-    isDecodePinned = false;
-    const overlay = document.getElementById('decodeModalOverlay');
-    const modalContent = document.getElementById('decodeModalContent');
-
-    modalContent.classList.remove('full-size');
-    overlay.classList.remove('pinned');
-
-    // Ждем окончания анимации уменьшения (250мс) и скрываем оверлей
-    setTimeout(() => {
-        if (!isDecodePinned) {
-            overlay.classList.remove('active');
+            const overlay = document.getElementById('decodeModalOverlay');
+            overlay.classList.add('active');
+            
+            setTimeout(() => {
+                modalContent.classList.add('full-size');
+            }, 10);
         }
-    }, 250);
-}
 
-// Вспомогательная функция наполнения таблицы
-function fillDecodeTable(sensorName) {
-    const modalTableBody = document.getElementById('decodeModalTableBody');
-    modalTableBody.innerHTML = '';
+        function unhoverDecodeModal() {
+            if (isDecodePinned) return;
+            closeDecodeModal();
+        }
 
-    if (!tspt101Data) {
-        modalTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
-    } else {
-        const parsedData = parseTspt101Name(sensorName, tspt101Data);
-        parsedData.forEach(item => {
-            const tr = modalTableBody.insertRow();
-            const tdBlock = tr.insertCell(0);
-            const tdCode = tr.insertCell(1);
-            const tdDesc = tr.insertCell(2);
+        function pinDecodeModal(e, sensorName) {
+            e.stopPropagation();
+            isDecodePinned = true;
+
+            const overlay = document.getElementById('decodeModalOverlay');
+            overlay.classList.add('pinned');
             
-            tdBlock.className = 'col-block';
-            tdCode.className = 'col-code';
-            tdDesc.className = 'col-desc';
-            
-            tdBlock.innerText = item.label;
-            tdCode.innerText = item.code;
-            tdDesc.innerText = item.value;
-        });
-    }
-}
+            if (!overlay.classList.contains('active')) {
+                hoverDecodeModal(e, sensorName);
+            }
+        }
+
+        function closeDecodeModal(force = false) {
+            if (!force && isDecodePinned) return;
+
+            isDecodePinned = false;
+            const overlay = document.getElementById('decodeModalOverlay');
+            const modalContent = document.getElementById('decodeModalContent');
+
+            modalContent.classList.remove('full-size');
+            overlay.classList.remove('pinned');
+
+            setTimeout(() => {
+                if (!isDecodePinned) {
+                    overlay.classList.remove('active');
+                }
+            }, 250);
+        }
+
+        function fillDecodeTable(sensorName) {
+            const modalTableBody = document.getElementById('decodeModalTableBody');
+            modalTableBody.innerHTML = '';
+
+            if (!tspt101Data) {
+                modalTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:15px; color:#8e8e93;">Загрузка данных расшифровки...</td></tr>';
+            } else {
+                const parsedData = parseTspt101Name(sensorName, tspt101Data);
+                parsedData.forEach(item => {
+                    const tr = modalTableBody.insertRow();
+                    const tdBlock = tr.insertCell(0);
+                    const tdCode = tr.insertCell(1);
+                    const tdDesc = tr.insertCell(2);
+                    
+                    tdBlock.className = 'col-block';
+                    tdCode.className = 'col-code';
+                    tdDesc.className = 'col-desc';
+                    
+                    tdBlock.innerText = item.label;
+                    tdCode.innerText = item.code;
+                    tdDesc.innerText = item.value;
+                });
+            }
+        }
 
         function parseTspt101Name(str, data) {
             const list = [];
@@ -1744,7 +1724,7 @@ function fillDecodeTable(sensorName) {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
-                closeDecodeModal();
+                closeDecodeModal(true);
                 closeImageModal();
                 closePanels();
             }

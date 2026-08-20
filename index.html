@@ -13,9 +13,9 @@
             --label-primary: #1c1c1e;
             --label-secondary: #8e8e93;
             --blue: #007aff;
-            --gray-bg: #dcdce2; /* Сделан более контрастным для лучшей видимости кнопок */
+            --gray-bg: #dcdce2;
             --green: #34c759;
-            --orange: #ff9500;
+            --yellow: #ffcc00;
             --red: #ff3b30;
         }
 
@@ -32,20 +32,34 @@
             background-attachment: fixed;
             color: var(--label-primary);
             padding: 20px;
+            padding-top: 150px; /* Отступ под липкую шапку */
             min-height: 100vh;
         }
 
+        /* Зафиксированная шапка сверху */
         .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(238, 245, 252, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 20px 10px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            max-width: 100%;
+        }
+
+        .header-inner {
             max-width: 1400px;
-            margin: 0 auto 20px auto;
-            background: transparent;
-            padding: 0;
+            margin: 0 auto;
         }
 
         .search-container {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
@@ -98,7 +112,7 @@
             gap: 12px;
             flex-wrap: wrap;
             background: rgba(255, 255, 255, 0.9);
-            padding: 12px 16px;
+            padding: 8px 16px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
@@ -115,7 +129,6 @@
             align-items: center;
         }
 
-        /* Кнопки сделать более видимыми */
         .btn {
             background: var(--gray-bg);
             border: 1px solid rgba(0,0,0,0.08);
@@ -129,13 +142,13 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        .btn:hover {
-            background: #d0d0d8;
+        /* Кнопка "Фильтр" без жирного шрифта */
+        .btn-filter-toggle {
+            font-weight: normal;
         }
 
-        .btn:active {
-            transform: scale(0.96);
-        }
+        .btn:hover { background: #d0d0d8; }
+        .btn:active { transform: scale(0.96); }
 
         .btn-circle {
             width: 34px;
@@ -167,12 +180,8 @@
             transition: background 0.2s, transform 0.1s;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .status-toggle.green {
-            background: var(--green);
-        }
-        .status-toggle.red {
-            background: var(--red);
-        }
+        .status-toggle.green { background: var(--green); }
+        .status-toggle.red { background: var(--red); }
         .status-toggle::after {
             content: '';
             width: 12px;
@@ -209,18 +218,22 @@
             border-color: var(--blue);
         }
 
+        /* 3 карточки в один ряд на десктопе */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(640px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
+        @media (max-width: 1100px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 680px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
+            .cards-grid { grid-template-columns: 1fr; }
+            body { padding-top: 180px; }
         }
 
         .card {
@@ -242,9 +255,7 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
 
-        .card:active {
-            transform: scale(0.99);
-        }
+        .card:active { transform: scale(0.99); }
 
         .card-info {
             flex: 1;
@@ -273,9 +284,7 @@
             user-select: none;
         }
 
-        .badge:active {
-            opacity: 0.7;
-        }
+        .badge:active { opacity: 0.7; }
 
         .badge-part {
             background: var(--gray-bg);
@@ -322,13 +331,6 @@
             max-height: 100%;
             object-fit: contain;
             cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .card-image.rotated {
-            transform: rotate(90deg);
-            max-width: 75px;
-            max-height: 75px;
         }
 
         .no-image {
@@ -337,20 +339,7 @@
             text-align: center;
         }
 
-        /* Красный кружок статуса FALSE в столбце Status */
-        .status-false-dot {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--red);
-            border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            z-index: 2;
-        }
-
+        /* Все статусные кружки с одной стороны (справа вверху) */
         .status-dot {
             position: absolute;
             top: 6px;
@@ -364,8 +353,10 @@
             cursor: help;
         }
         .dot-green { background-color: var(--green); }
-        .dot-orange { background-color: var(--orange); }
+        .dot-yellow { background-color: var(--yellow); }
+        .dot-red { background-color: var(--red); }
 
+        /* Модальные окна */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -374,8 +365,6 @@
             z-index: 1000;
             justify-content: center;
             align-items: flex-end;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
         }
 
         .modal-overlay.active { display: flex; }
@@ -418,54 +407,17 @@
             border-radius: 2px;
         }
 
-        .modal-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 4px;
-        }
+        .modal-title { font-size: 16px; font-weight: 600; margin-top: 4px; }
 
-        .modal-body {
-            padding: 8px 0;
-            overflow-y: auto;
-            background: var(--card-bg);
-        }
+        .modal-body { padding: 8px 0; overflow-y: auto; background: var(--card-bg); }
 
-        .modal-table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-        .modal-table tr {
-            border-bottom: 0.5px solid var(--separator);
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-        .modal-table tr:hover {
-            background: rgba(0, 122, 255, 0.04);
-        }
-        .modal-table tr:last-child {
-            border-bottom: none;
-        }
-        .modal-table td {
-            padding: 4px 12px;
-            font-size: 13px;
-            vertical-align: middle;
-            word-break: break-word;
-            line-height: 1.25;
-        }
-        .modal-table td.label {
-            font-weight: 500;
-            color: var(--label-secondary);
-            width: 50%;
-            text-align: right;
-            border-right: 1px solid var(--separator);
-        }
-        .modal-table td.value {
-            color: var(--label-primary);
-            width: 50%;
-            text-align: left;
-            font-weight: 400;
-        }
+        .modal-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .modal-table tr { border-bottom: 0.5px solid var(--separator); cursor: pointer; transition: background 0.15s; }
+        .modal-table tr:hover { background: rgba(0, 122, 255, 0.04); }
+        .modal-table tr:last-child { border-bottom: none; }
+        .modal-table td { padding: 4px 12px; font-size: 13px; vertical-align: middle; word-break: break-word; line-height: 1.25; }
+        .modal-table td.label { font-weight: 500; color: var(--label-secondary); width: 50%; text-align: right; border-right: 1px solid var(--separator); }
+        .modal-table td.value { color: var(--label-primary); width: 50%; text-align: left; font-weight: 400; }
 
         .modal-footer {
             padding: 12px 20px;
@@ -493,23 +445,23 @@
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
         .btn-close-modal-footer { background: var(--blue); color: white; border: none; }
 
+        /* Панель фильтрации (без затенения фона) */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.25);
+            background: transparent; /* Убрано затенение */
             z-index: 998;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+            pointer-events: none; /* Пропускает клики вне панели, если нужно, но оставим для клика отмены */
         }
-        .side-panel-overlay.active { display: block; }
+        .side-panel-overlay.active { display: block; pointer-events: auto; }
 
         .side-panel {
             position: fixed;
             top: 0; right: -100%; bottom: 0;
-            width: 340px;
+            width: 360px;
             background: #f9f9fb;
-            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            box-shadow: -4px 0 20px rgba(0,0,0,0.15);
             z-index: 999;
             transition: right 0.3s ease-in-out;
             display: flex;
@@ -518,20 +470,45 @@
         .side-panel.active { right: 0; }
 
         @media (max-width: 768px) {
-            .side-panel {
-                width: 75vw;
-            }
+            .side-panel { width: 85vw; }
         }
 
         .panel-header {
-            padding: 16px;
+            padding: 12px 16px;
             background: var(--card-bg);
             border-bottom: 0.5px solid var(--separator);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .panel-header h3 { font-size: 17px; font-weight: 600; }
+
+        /* Переключатель Табов (Фильтр / Сортировка) */
+        .panel-tabs {
+            display: flex;
+            background: var(--gray-bg);
+            border-radius: 8px;
+            padding: 2px;
+            width: 220px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 6px 0;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--label-primary);
+            transition: background 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
         
         .panel-body {
             padding: 12px;
@@ -539,7 +516,6 @@
             flex: 1;
         }
 
-        /* Кнопки в панели сортировки сделать более заметными */
         .sort-btn {
             display: block;
             width: 100%;
@@ -559,7 +535,14 @@
         .sort-btn:hover { background: #e2e4ed; }
         .sort-btn:active { background: var(--gray-bg); }
 
-        .filter-group { margin-bottom: 8px; background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); }
+        /* Тонкий серый кант вокруг заголовков в панели фильтрации */
+        .filter-group {
+            margin-bottom: 8px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #d1d1d6; /* Серый тонкий кант */
+        }
         
         .filter-group-title {
             width: 100%;
@@ -680,25 +663,28 @@
 </head>
 <body>
 
+    <!-- Зафиксированная шапка -->
     <div class="header">
-        <div class="search-container">
-            <div class="input-wrapper">
-                <input type="text" id="searchName" placeholder="Поиск по наименованию..." oninput="handleSearch()">
-                <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">×</button>
+        <div class="header-inner">
+            <div class="search-container">
+                <div class="input-wrapper">
+                    <input type="text" id="searchName" placeholder="Поиск по наименованию..." oninput="handleSearch()">
+                    <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">×</button>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="searchGlobal" placeholder="Поиск по всей таблице..." oninput="handleSearch()">
+                    <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">×</button>
+                </div>
             </div>
-            <div class="input-wrapper">
-                <input type="text" id="searchGlobal" placeholder="Поиск по всей таблице..." oninput="handleSearch()">
-                <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">×</button>
-            </div>
-        </div>
-        <div class="toolbar">
-            <div class="counter" id="counter">0 из 0</div>
-            <div class="toolbar-buttons">
-                <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">!</button>
-                <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
-                <button class="btn" onclick="openPanel('sortPanel')">Сорт.</button>
-                <button class="btn" onclick="openPanel('filterPanel')">Фильтр</button>
-                <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
+            <div class="toolbar">
+                <div class="counter" id="counter">0 из 0</div>
+                <div class="toolbar-buttons">
+                    <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">!</button>
+                    <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
+                    <!-- Кнопка фильтр без жирного шрифта -->
+                    <button class="btn btn-filter-toggle" onclick="openCombinedPanel()">Фильтр / Сорт.</button>
+                    <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
+                </div>
             </div>
         </div>
     </div>
@@ -726,28 +712,30 @@
         <img id="fullImage" src="" alt="Просмотр" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:8px;">
     </div>
 
+    <!-- Затенение сделано прозрачным -->
     <div class="side-panel-overlay" id="panelOverlay" onclick="closePanels()"></div>
 
-    <div class="side-panel" id="sortPanel">
+    <!-- Объединенная панель Фильтрации и Сортировки -->
+    <div class="side-panel" id="combinedPanel">
         <div class="panel-header">
-            <h3>Сортировка</h3>
+            <div class="panel-tabs">
+                <button class="tab-btn active" id="tabFilter" onclick="switchTab('filter')">Фильтр</button>
+                <button class="tab-btn" id="tabSort" onclick="switchTab('sort')">Сортировка</button>
+            </div>
             <button class="btn" onclick="closePanels()">×</button>
         </div>
-        <div class="panel-body">
+        
+        <!-- Вкладка Фильтра -->
+        <div class="panel-body" id="tabContentFilter">
+            <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
+            <div id="filterPanelContent"></div>
+        </div>
+
+        <!-- Вкладка Сортировки -->
+        <div class="panel-body" id="tabContentSort" style="display: none;">
             <button class="sort-btn" onclick="sortCards('ProjectName')">По Наименованию (А-Я)</button>
             <button class="sort-btn" onclick="sortCards('Naznachenie')">По Назначению (А-Я)</button>
             <button class="sort-btn" onclick="sortCards('Proizvodetel')">По Производителю (А-Я)</button>
-        </div>
-    </div>
-
-    <div class="side-panel" id="filterPanel">
-        <div class="panel-header">
-            <h3>Фильтр</h3>
-            <button class="btn" onclick="closePanels()">×</button>
-        </div>
-        <div class="panel-body" id="filterPanelBody">
-            <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
-            <div id="filterPanelContent"></div>
         </div>
     </div>
 
@@ -849,7 +837,7 @@
         let activeFilters = {};
         let currentSort = { key: null, direction: 'asc' };
         
-        let filterStatus = true; // true = Зеленый (TRUE), false = Красный (FALSE)
+        let filterStatus = true;
         let filterOnlyUniquePart = false;
 
         function getProducerColor(str) {
@@ -989,12 +977,15 @@
 
                 const producerStyle = getProducerColor(producer);
 
+                /* Размещение всех статусных кружков в одном месте (справа вверху) + Оранжевый заменен на Желтый */
                 const statusRaw = (item["ActualStatus"] || '').trim().toUpperCase();
                 let dotHtml = '';
-                if (statusRaw === 'А' || statusRaw === 'A') {
+                if (isStatusFalse) {
+                    dotHtml = '<div class="status-dot dot-red" title="Статус FALSE"></div>';
+                } else if (statusRaw === 'А' || statusRaw === 'A') {
                     dotHtml = '<div class="status-dot dot-green" title="Популярный"></div>';
                 } else if (statusRaw === 'АК' || statusRaw === 'AK') {
-                    dotHtml = '<div class="status-dot dot-orange" title="Редкий"></div>';
+                    dotHtml = '<div class="status-dot dot-yellow" title="Редкий"></div>';
                 }
 
                 card.innerHTML = `
@@ -1007,7 +998,6 @@
                         <div class="card-purpose">${escapeHtml(naznachenie)}</div>
                     </div>
                     <div class="card-image-container">
-                        ${isStatusFalse ? '<div class="status-false-dot" title="Статус FALSE"></div>' : ''}
                         ${dotHtml}
                         ${imgUrl ? `<img src="${escapeHtml(imgUrl)}" alt="Фото" class="card-image" onerror="this.outerHTML='<div class=\\'no-image\\'>Нет фото</div>'">` : '<div class="no-image">Нет фото</div>'}
                     </div>
@@ -1015,15 +1005,9 @@
 
                 const imgEl = card.querySelector('.card-image');
                 if (imgEl) {
-                    imgEl.onload = function() {
-                        if (this.naturalWidth > this.naturalHeight) {
-                            this.classList.add('rotated');
-                        }
-                    };
-
                     imgEl.onclick = (e) => {
                         e.stopPropagation();
-                        openImageModal(imgUrl, imgEl.classList.contains('rotated'));
+                        openImageModal(imgUrl);
                     };
                 }
 
@@ -1056,7 +1040,8 @@
 
         function openSpecificFilterParam(key) {
             if (!filterColumns.includes(key)) return;
-            openPanel('filterPanel');
+            openCombinedPanel();
+            switchTab('filter');
             const groupTitleBtn = document.querySelector(`[data-filter-key="${key}"]`);
             if (groupTitleBtn) {
                 const dropdown = groupTitleBtn.nextElementSibling;
@@ -1103,7 +1088,6 @@
                     cell1.innerText = columnsMap[key] || key;
                     cell2.innerText = item[key];
 
-                    // Двойной тап / двойной клик на строке параметра открывает нужный фильтр
                     row.ondblclick = () => {
                         closeModal();
                         openSpecificFilterParam(key);
@@ -1129,14 +1113,10 @@
             document.body.style.overflow = 'auto';
         }
 
-        function openImageModal(url, isRotated) {
+        function openImageModal(url) {
             const fullImg = document.getElementById('fullImage');
             fullImg.src = url;
-            if (isRotated) {
-                fullImg.style.transform = 'rotate(90deg)';
-            } else {
-                fullImg.style.transform = 'none';
-            }
+            fullImg.style.transform = 'none';
             document.getElementById('imageModal').style.display = 'flex';
         }
 
@@ -1144,23 +1124,35 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
-        function openPanel(panelId) {
+        /* Управление объединенной панелью и переключением вкладак */
+        function openCombinedPanel() {
             closePanels();
             document.getElementById('panelOverlay').classList.add('active');
-            document.getElementById(panelId).classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.getElementById('combinedPanel').classList.add('active');
+        }
 
-            if (panelId === 'filterPanel') {
-                const filterPanelBody = document.getElementById('filterPanelBody');
-                if (filterPanelBody) filterPanelBody.scrollTop = 0;
+        function switchTab(tab) {
+            const tabFilter = document.getElementById('tabFilter');
+            const tabSort = document.getElementById('tabSort');
+            const contentFilter = document.getElementById('tabContentFilter');
+            const contentSort = document.getElementById('tabContentSort');
+
+            if (tab === 'filter') {
+                tabFilter.classList.add('active');
+                tabSort.classList.remove('active');
+                contentFilter.style.display = 'block';
+                contentSort.style.display = 'none';
+            } else {
+                tabSort.classList.add('active');
+                tabFilter.classList.remove('active');
+                contentSort.style.display = 'block';
+                contentFilter.style.display = 'none';
             }
         }
 
         function closePanels() {
             document.getElementById('panelOverlay').classList.remove('active');
-            document.getElementById('sortPanel').classList.remove('active');
-            document.getElementById('filterPanel').classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.getElementById('combinedPanel').classList.remove('active');
             document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('open'));
         }
 

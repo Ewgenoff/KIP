@@ -1796,7 +1796,26 @@
             renderCards();
         }
 
+       // Глобальные переменные для отслеживания быстрых кликов
+        let resetClickCount = 0;
+        let resetClickTimer = null;
+
         function clearAllFilters() {
+            // Логика счетчика 4-х быстрых кликов
+            resetClickCount++;
+            clearTimeout(resetClickTimer);
+
+            if (resetClickCount === 4) {
+                resetClickCount = 0;
+                window.location.href = 'KB.html';
+                return;
+            }
+
+            resetClickTimer = setTimeout(() => {
+                resetClickCount = 0;
+            }, 1500); // Таймаут 1.5 секунды между кликами
+
+            // Основная логика сброса фильтров
             activeFilters = {};
             filterOnlyUniquePart = false;
             document.getElementById('btnUniquePart').classList.remove('active');

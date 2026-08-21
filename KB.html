@@ -49,7 +49,7 @@
             letter-spacing: -0.01em;
         }
 
-        /* Карточка панели фильтрации */
+        /* Карточка панели фильтрации по эскизу */
         .filter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -62,7 +62,6 @@
             gap: 16px;
         }
 
-        /* Строки с элементами управления по эскизу */
         .filter-row {
             display: flex;
             align-items: center;
@@ -85,7 +84,7 @@
 
         .filter-item input {
             height: 38px;
-            width: 90px;
+            width: 100px;
             padding: 0 12px;
             font-family: inherit;
             font-size: 14px;
@@ -103,10 +102,9 @@
             box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
         }
 
-        /* Переключатель Ex */
         .btn-ex {
             height: 38px;
-            padding: 0 18px;
+            padding: 0 20px;
             font-family: inherit;
             font-size: 14px;
             font-weight: 700;
@@ -150,11 +148,9 @@
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
-            transition: opacity 0.15s;
         }
 
         .reset-link:hover {
-            opacity: 0.8;
             text-decoration: underline;
         }
 
@@ -197,15 +193,10 @@
             border-bottom: none;
         }
 
-        tbody tr {
-            transition: background-color 0.15s ease;
-        }
-
         tbody tr:hover {
             background-color: var(--table-row-hover);
         }
 
-        /* Стилевые бейджи для статусов */
         .badge {
             display: inline-block;
             padding: 4px 8px;
@@ -242,13 +233,13 @@
     <div class="container">
         <h1 class="page-title">Подбор кабельных вводов</h1>
 
-        <!-- Форма фильтрации по эскизу -->
+        <!-- Панель фильтрации -->
         <div class="filter-card">
             <!-- Первая строка эскиза -->
             <div class="filter-row">
                 <div class="filter-item">
                     <label for="holeInput">Посадочное отверстие</label>
-                    <input type="text" id="holeInput" placeholder="20">
+                    <input type="text" id="holeInput" placeholder="М20 / 20">
                 </div>
                 <button type="button" id="exBtn" class="btn-ex">Ex</button>
             </div>
@@ -284,15 +275,15 @@
                     <tr>
                         <th style="width: 15%;">Пр-ль</th>
                         <th style="width: 10%;">Ex</th>
-                        <th style="width: 12%;">Броня</th>
+                        <th style="width: 10%;">Броня</th>
                         <th style="width: 10%;">МР</th>
-                        <th style="width: 38%;">Наименование</th>
+                        <th style="width: 40%;">Наименование</th>
                         <th style="width: 15%;">УПП</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     <tr>
-                        <td colspan="6" class="loader">Инициализация и получение данных...</td>
+                        <td colspan="6" class="loader">Инициализация и получение таблицы...</td>
                     </tr>
                 </tbody>
             </table>
@@ -300,12 +291,13 @@
     </div>
 
     <script>
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?output=csv';
+        const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?output=csv';
+        // Обход возможных CORS ограничений локального запуска
+        const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
 
         let rawData = [];
         let isExActive = false;
 
-        // Элементы UI
         const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
@@ -315,78 +307,102 @@
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
 
-        // Потоковый парсинг CSV
+        // Полноценный CSV-парсер с поддержкой кавычек и переносов
         function parseCSV(text) {
-            const lines = text.split(/\r\n|\n/);
-            if (lines.length === 0) return [];
-
-            const headers = parseCSVLine(lines[0]);
-            const result = [];
-
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                const row = parseCSVLine(lines[i]);
-                const obj = {};
-                headers.forEach((header, index) => {
-                    obj[header.trim()] = row[index] ? row[index].trim() : '';
-                });
-                result.push(obj);
-            }
-            return result;
-        }
-
-        function parseCSVLine(line) {
-            const values = [];
-            let current = '';
-            let inQuotes = false;
-
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    values.push(current);
-                    current = '';
+            let p = '', c = '', r = [];
+            let q = false;
+            let row = [''];
+            
+            for (let i = 0; i < text.length; i++) {
+                c = text[i];
+                p = text[i - 1];
+                
+                if (c === '"') {
+                    if (q && text[i + 1] === '"') {
+                        row[row.length - 1] += '"';
+                        i++;
+                    } else {
+                        q = !q;
+                    }
+                } else if (c === ',' && !q) {
+                    row.push('');
+                } else if ((c === '\r' || c === '\n') && !q) {
+                    if (c === '\r' && text[i + 1] === '\n') {
+                        i++;
+                    }
+                    r.push(row);
+                    row = [''];
                 } else {
-                    current += char;
+                    row[row.length - 1] += c;
                 }
             }
-            values.push(current);
-            return values.map(v => v.replace(/^"|"$/g, '').trim());
+            if (row.length > 1 || row[0] !== '') {
+                r.push(row);
+            }
+
+            if (r.length < 2) return [];
+
+            const headers = r[0].map(h => h.trim());
+            const objects = [];
+
+            for (let i = 1; i < r.length; i++) {
+                const current = r[i];
+                if (current.length === 1 && current[0] === '') continue;
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = current[index] ? current[index].trim() : '';
+                });
+                objects.push(obj);
+            }
+
+            return objects;
         }
 
-        // Загрузка
+        // Загрузка данных
+        async function fetchCSV() {
+            try {
+                let response = await fetch(PRIMARY_CSV_URL);
+                if (!response.ok) throw new Error('Primary failed');
+                return await response.text();
+            } catch (err) {
+                // Если сработал CORS, пробуем через прокси
+                let response = await fetch(PROXY_CSV_URL);
+                return await response.text();
+            }
+        }
+
         async function loadData() {
             try {
-                const response = await fetch(CSV_URL);
-                const csvText = await response.text();
+                const csvText = await fetchCSV();
                 const allData = parseCSV(csvText);
 
-                // Оставляем только нужные категории
+                // Фильтрация по столбцу Function
                 rawData = allData.filter(item => {
-                    const func = (item['Function'] || '').toLowerCase();
-                    return func === 'каб. ввод' || func === 'каб. ввод под мр';
+                    const func = (item['Function'] || '').toLowerCase().trim();
+                    // Проверяем мягкое соответствие (включает ли "каб. ввод")
+                    return func.includes('каб. ввод') || func.includes('каб.ввод');
                 });
 
                 applyFilters();
             } catch (error) {
                 console.error('Ошибка:', error);
-                statusInfo.textContent = 'Ошибка загрузки данных';
-                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ошибка при получении данных CSV</td></tr>';
+                statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV. Убедитесь в наличии интернет-соединения.</td></tr>';
             }
         }
 
-        // Парсинг размера (M20x1.5 -> 20)
+        // Получение числа после 'M' или просто числа
         function extractSizeNumber(str) {
             if (!str) return null;
-            const match = str.match(/M(\d+)/i);
+            const clean = str.replace(',', '.');
+            const match = clean.match(/M?\s*(\d+(?:\.\d+)?)/i);
             return match ? parseFloat(match[1]) : null;
         }
 
-        // Проверка попадания числа в диапазон (12-25 или 6.5-13.9)
+        // Проверка попадания значения в диапазон (например, 12-25 или 6.5-13.9)
         function isNumberInRange(valStr, targetNum) {
             if (!valStr || isNaN(targetNum)) return false;
-            
+
             const cleanStr = valStr.replace(',', '.');
             const match = cleanStr.match(/([\d.]+)\s*[-—–]\s*([\d.]+)/);
 
@@ -400,14 +416,13 @@
             }
         }
 
-        // Логика фильтрации «на лету»
+        // Фильтрация "на лету"
         function applyFilters() {
             const holeVal = parseFloat(holeInput.value.replace(',', '.'));
             const cableVal = parseFloat(cableDiameterInput.value.replace(',', '.'));
             const armorVal = parseFloat(armorInput.value.replace(',', '.'));
             const mrVal = mrInput.value.trim().toLowerCase();
 
-            // Проверяем, заполнено ли хотя бы одно поле
             const hasActiveFilters = !isNaN(holeVal) || !isNaN(cableVal) || !isNaN(armorVal) || mrVal !== '' || isExActive;
             resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
 
@@ -434,7 +449,7 @@
                     if (!itemMR.includes(mrVal)) return false;
                 }
 
-                // 5. Переключатель Ex
+                // 5. Кнопка Ex
                 if (isExActive) {
                     const exVal = (item['Ex'] || '').toLowerCase();
                     if (!exVal.includes('ex')) return false;
@@ -446,19 +461,19 @@
             renderTable(filtered);
         }
 
-        // Рендеринг строк
+        // Отрисовка
         function renderTable(data) {
             statusInfo.textContent = `Показано позиций: ${data.length} из ${rawData.length}`;
 
             if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">По вашему запросу ничего не найдено</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ничего не найдено по вашему запросу</td></tr>';
                 return;
             }
 
             const html = data.map(item => {
-                const exText = item['Explosion protection'] || item['Ex'] || '-';
+                const exText = item['Ex'] || item['Explosion protection'] || '-';
                 const isEx = exText.toLowerCase().includes('ex');
-                
+
                 return `
                     <tr>
                         <td><strong>${item['Manufacturer'] || '-'}</strong></td>
@@ -474,19 +489,17 @@
             tableBody.innerHTML = html;
         }
 
-        // Слушатели событий ввода
+        // Слушатели событий
         [holeInput, cableDiameterInput, armorInput, mrInput].forEach(input => {
             input.addEventListener('input', applyFilters);
         });
 
-        // Нажатие кнопки Ex
         exBtn.addEventListener('click', () => {
             isExActive = !isExActive;
             exBtn.classList.toggle('active', isExActive);
             applyFilters();
         });
 
-        // Сброс
         resetBtn.addEventListener('click', () => {
             holeInput.value = '';
             cableDiameterInput.value = '';
@@ -497,7 +510,7 @@
             applyFilters();
         });
 
-        // Запуск
+        // Инициализация
         loadData();
     </script>
 </body>

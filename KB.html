@@ -247,6 +247,65 @@
             border: 1px solid #ffedd5;
         }
 
+        /* Элементы наименования и иконки */
+        .name-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .name-text {
+            flex: 1;
+        }
+
+        .icons-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+            user-select: none;
+        }
+
+        .action-icon:hover {
+            background-color: #e2e8f0;
+            transform: scale(1.1);
+        }
+
+        /* Всплывающее окно предпросмотра картинки */
+        #imgTooltip {
+            position: fixed;
+            display: none;
+            z-index: 1000;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        #imgTooltip img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 4px;
+            display: block;
+            object-fit: contain;
+        }
+
         .no-data {
             text-align: center;
             padding: 40px;
@@ -309,8 +368,10 @@
                 </div>
 
                 <div class="filter-item">
-                    <label for="mrInput">в МР</label>
-                    <input type="text" id="mrInput" placeholder="20">
+                    <label for="mrSelect">в МР</label>
+                    <select id="mrSelect">
+                        <option value="">Все</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -341,6 +402,11 @@
         </div>
     </div>
 
+    <!-- Контейнер превью картинки -->
+    <div id="imgTooltip">
+        <img id="tooltipImg" src="" alt="Превью">
+    </div>
+
     <script>
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
@@ -352,14 +418,16 @@
 
         const functionSelect = document.getElementById('functionSelect');
         const materialSelect = document.getElementById('materialSelect');
+        const mrSelect = document.getElementById('mrSelect');
         const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
-        const mrInput = document.getElementById('mrInput');
         const exBtn = document.getElementById('exBtn');
         const resetBtn = document.getElementById('resetBtn');
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
+        const imgTooltip = document.getElementById('imgTooltip');
+        const tooltipImg = document.getElementById('tooltipImg');
 
         function parseCSV(text) {
             let p = '', c = '', r = [];
@@ -427,9 +495,15 @@
         async function loadData() {
             try {
                 const csvText = await fetchCSV();
-                rawData = parseCSV(csvText);
+                const parsed = parseCSV(csvText);
 
-                populateMaterialOptions();
+                // Исключаем строки, у которых Status === FALSE
+                rawData = parsed.filter(item => {
+                    const statusVal = (item['Status'] || '').trim().toUpperCase();
+                    return statusVal !== 'FALSE';
+                });
+
+                populateDynamicSelects();
                 applyFilters();
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -454,29 +528,42 @@
             return true;
         }
 
-        function populateMaterialOptions() {
+        function populateDynamicSelects() {
             const selectedFunc = functionSelect.value;
             const currentSelectedMat = materialSelect.value;
+            const currentSelectedMR = mrSelect.value;
             
             const materials = new Set();
+            const mrValues = new Set();
+
             rawData.forEach(item => {
                 if (checkFunctionMatch(item['Function'], selectedFunc)) {
                     const mat = item['Material'];
                     if (mat) materials.add(mat.trim());
+
+                    const mr = item['MR'];
+                    if (mr) mrValues.add(mr.trim());
                 }
             });
 
+            // Материалы
             materialSelect.innerHTML = '<option value="">Все материалы</option>';
-            const sortedMaterials = Array.from(materials).sort();
-            
-            sortedMaterials.forEach(mat => {
+            Array.from(materials).sort().forEach(mat => {
                 const opt = document.createElement('option');
                 opt.value = mat;
                 opt.textContent = mat;
-                if (mat === currentSelectedMat) {
-                    opt.selected = true;
-                }
+                if (mat === currentSelectedMat) opt.selected = true;
                 materialSelect.appendChild(opt);
+            });
+
+            // в МР
+            mrSelect.innerHTML = '<option value="">Все</option>';
+            Array.from(mrValues).sort().forEach(mr => {
+                const opt = document.createElement('option');
+                opt.value = mr;
+                opt.textContent = mr;
+                if (mr === currentSelectedMR) opt.selected = true;
+                mrSelect.appendChild(opt);
             });
         }
 
@@ -521,7 +608,6 @@
             const dataRange = extractDataRange(dataValueStr);
             if (!dataRange) return false;
 
-            // Обе границы диапазона пользователя должны входить в диапазон кабельного ввода
             return dataRange.min <= inputRange.min && dataRange.max >= inputRange.max;
         }
 
@@ -535,12 +621,12 @@
         function applyFilters() {
             const selectedFunc = functionSelect.value;
             const selectedMat = materialSelect.value;
+            const selectedMR = mrSelect.value;
             const holeVal = parseFloat(holeInput.value.replace(',', '.'));
             const cableRange = parseRangeInput(cableDiameterInput.value);
             const armorRange = parseRangeInput(armorInput.value);
-            const mrVal = mrInput.value.trim().toLowerCase();
 
-            const hasActiveFilters = selectedFunc !== 'all' || selectedMat !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || mrVal !== '' || isExActive;
+            const hasActiveFilters = selectedFunc !== 'all' || selectedMat !== '' || selectedMR !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || isExActive;
             resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
 
             let filtered = rawData.filter(item => {
@@ -560,20 +646,19 @@
                     if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
                 }
 
-                // 4. Диаметр кабеля (нижняя и верхняя границы пользователя входят в диапазон)
+                // 4. Диаметр кабеля
                 if (cableRange && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) {
                     return false;
                 }
 
-                // 5. В броне (нижняя и верхняя границы пользователя входят в диапазон)
+                // 5. В броне
                 if (armorRange && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) {
                     return false;
                 }
 
-                // 6. В МР
-                if (mrVal !== '') {
-                    const itemMR = (item['MR'] || '').toLowerCase();
-                    if (!itemMR.includes(mrVal)) return false;
+                // 6. Выбор в МР
+                if (selectedMR !== '' && (item['MR'] || '').trim() !== selectedMR) {
+                    return false;
                 }
 
                 // 7. Кнопка Ex
@@ -581,9 +666,9 @@
                 const isExRow = exVal.includes('ex');
                 
                 if (isExActive) {
-                    if (!isExRow) return false; // Показывать только Ex
+                    if (!isExRow) return false;
                 } else {
-                    if (isExRow) return false;  // Не отображать строки с Ex
+                    if (isExRow) return false;
                 }
 
                 return true;
@@ -626,19 +711,77 @@
                     cableVal = '<strong>Б</strong>';
                 }
 
+                // Иконки картинок и ссылок
+                const imgUrl = item['IMG'] || '';
+                const linkUrl = item['Link'] || '';
+
+                let iconsHtml = '';
+                if (imgUrl || linkUrl) {
+                    iconsHtml += '<span class="icons-wrapper">';
+                    if (imgUrl) {
+                        iconsHtml += `<a href="${imgUrl}" target="_blank" class="action-icon img-icon" data-img="${imgUrl}" title="Открыть картинку">🖼️</a>`;
+                    }
+                    if (linkUrl) {
+                        iconsHtml += `<a href="${linkUrl}" target="_blank" class="action-icon" title="Перейти на страницу товара">🌐</a>`;
+                    }
+                    iconsHtml += '</span>';
+                }
+
                 return `
                     <tr>
                         <td class="col-mfg"><strong>${item['Manufacturer'] || '-'}</strong></td>
                         <td>${isEx ? `<span class="badge badge-ex">${exText}</span>` : `<span class="badge">${exText}</span>`}</td>
                         <td>${cableVal}</td>
                         <td>${item['MR'] || '-'}</td>
-                        <td>${item['ProjectName'] || '-'}</td>
+                        <td>
+                            <div class="name-cell">
+                                <span class="name-text">${item['ProjectName'] || '-'}</span>
+                                ${iconsHtml}
+                            </div>
+                        </td>
                         <td><code style="font-size:12px; font-weight:600; color:#475569;">${item['PartNumber'] || '-'}</code></td>
                     </tr>
                 `;
             }).join('');
 
             tableBody.innerHTML = html;
+
+            // Навешивание ховера для всплывающей картинки
+            document.querySelectorAll('.img-icon').forEach(icon => {
+                icon.addEventListener('mouseenter', (e) => {
+                    const url = icon.getAttribute('data-img');
+                    if (url) {
+                        tooltipImg.src = url;
+                        imgTooltip.style.display = 'block';
+                        positionTooltip(e);
+                    }
+                });
+
+                icon.addEventListener('mousemove', (e) => {
+                    positionTooltip(e);
+                });
+
+                icon.addEventListener('mouseleave', () => {
+                    imgTooltip.style.display = 'none';
+                    tooltipImg.src = '';
+                });
+            });
+        }
+
+        function positionTooltip(e) {
+            const offset = 15;
+            let x = e.clientX + offset;
+            let y = e.clientY + offset;
+
+            if (x + 220 > window.innerWidth) {
+                x = e.clientX - 220;
+            }
+            if (y + 220 > window.innerHeight) {
+                y = e.clientY - 220;
+            }
+
+            imgTooltip.style.left = x + 'px';
+            imgTooltip.style.top = y + 'px';
         }
 
         // События сортировки по заголовкам таблицы
@@ -670,13 +813,14 @@
         });
 
         functionSelect.addEventListener('change', () => {
-            populateMaterialOptions();
+            populateDynamicSelects();
             applyFilters();
         });
 
         materialSelect.addEventListener('change', applyFilters);
+        mrSelect.addEventListener('change', applyFilters);
 
-        [holeInput, cableDiameterInput, armorInput, mrInput].forEach(input => {
+        [holeInput, cableDiameterInput, armorInput].forEach(input => {
             input.addEventListener('input', applyFilters);
         });
 
@@ -688,12 +832,12 @@
 
         resetBtn.addEventListener('click', () => {
             functionSelect.value = 'all';
-            populateMaterialOptions();
+            populateDynamicSelects();
             materialSelect.value = '';
+            mrSelect.value = '';
             holeInput.value = '';
             cableDiameterInput.value = '';
             armorInput.value = '';
-            mrInput.value = '';
             isExActive = false;
             exBtn.classList.remove('active');
             

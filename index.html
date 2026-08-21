@@ -133,6 +133,7 @@
             align-items: center;
         }
 
+        /* Воздушные iOS кнопки */
         .btn {
             background: var(--gray-bg);
             border: none;
@@ -459,38 +460,9 @@
         .btn-modal-action:active { opacity: 0.8; }
         .btn-site { background: var(--gray-bg); color: var(--blue); }
         .btn-site.disabled { opacity: 0.4; pointer-events: none; }
-        .btn-mk { background: var(--gray-bg); color: var(--blue); }
-        .btn-mk:hover { background: var(--gray-bg-hover); }
+        /* Кнопка Закрыть в том же стиле, что и Сайт */
         .btn-close-modal-footer { background: var(--gray-bg); color: var(--blue); }
         .btn-close-modal-footer:hover { background: var(--gray-bg-hover); }
-
-        /* Стиль таблицы монтажного комплекта (МК) */
-        .mk-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        .mk-table th {
-            text-align: left;
-            padding: 8px 12px;
-            color: var(--label-secondary);
-            font-weight: 600;
-            border-bottom: 1px solid var(--separator);
-            background: rgba(120, 120, 128, 0.05);
-        }
-        .mk-table td {
-            padding: 8px 12px;
-            border-bottom: 0.5px solid var(--separator);
-            vertical-align: middle;
-            word-break: break-word;
-            line-height: 1.3;
-        }
-        .mk-table tr:hover {
-            background: rgba(0, 122, 255, 0.04);
-        }
-        .mk-table tr:last-child td {
-            border-bottom: none;
-        }
 
         /* Оверлей для карточки расшифровки ТСПТ */
         .modal-overlay.decode-overlay {
@@ -510,6 +482,7 @@
             pointer-events: auto;
         }
 
+        /* Карточка расшифровки с фоном как у мини-карточек */
         .decode-modal-content {
             border-radius: 16px;
             max-width: 680px;
@@ -532,6 +505,7 @@
 
         .decode-modal-header::before { display: none; }
 
+        /* Контейнер для блоков заголовка (сжат на 30%) */
         .tspt-header-blocks {
             display: flex;
             flex-wrap: wrap;
@@ -630,6 +604,7 @@
         .decode-table .col-code { width: 18%; font-weight: 700; color: var(--blue); }
         .decode-table .col-desc { width: 50%; }
 
+        /* Боковая панель */
         .side-panel-overlay {
             display: none;
             position: fixed;
@@ -699,6 +674,7 @@
             flex: 1;
         }
 
+        /* Кнопки сортировки с яркой подсветкой при наведении */
         .sort-btn {
             display: block;
             width: 100%;
@@ -724,7 +700,8 @@
             overflow: hidden;
             border: 1px solid var(--separator);
         }
-
+        
+        /* Подсветка кнопок-заголовков фильтров */
         .filter-group-title {
             width: 100%;
             text-align: left;
@@ -773,7 +750,8 @@
             border-top: 0.5px solid transparent;
         }
         .filter-dropdown.open { max-height: 350px; overflow-y: auto; border-top: 0.5px solid var(--separator); }
-
+        
+        /* Подсветка выпадающих списков и уменьшенный на 20% межстрочный интервал */
         .filter-item {
             display: flex;
             align-items: center;
@@ -840,8 +818,8 @@
 
         .loading {
             text-align: center;
-            padding: 40px 20px;
-            font-size: 15px;
+            padding: 50px;
+            font-size: 16px;
             color: var(--label-secondary);
             grid-column: 1 / -1;
         }
@@ -888,34 +866,7 @@
             </div>
             <div class="modal-footer">
                 <a id="btnModalSite" class="btn-modal-action btn-site" href="#" target="_blank">Сайт</a>
-                <button id="btnModalMK" class="btn-modal-action btn-mk" onclick="openMKModal()">МК</button>
                 <button class="btn-modal-action btn-close-modal-footer" onclick="closeModal()">Закрыть</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно Монтажного комплекта (МК) -->
-    <div class="modal-overlay" id="mkModalOverlay" onclick="if(event.target === this) closeMKModal()">
-        <div class="modal-content" style="max-width: 750px;">
-            <div class="modal-header">
-                <h2 class="modal-title" id="mkModalTitle">Монтажный комплект</h2>
-            </div>
-            <div class="modal-body" id="mkModalBody">
-                <table class="mk-table" id="mkTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">Код 1С</th>
-                            <th style="width: 48%;">Полное наименование</th>
-                            <th style="width: 15%; text-align: center;">Кол-во</th>
-                            <th style="width: 15%; text-align: center;">Ед. Изм.</th>
-                        </tr>
-                    </thead>
-                    <tbody id="mkTableBody"></tbody>
-                </table>
-                <div id="mkEmptyMsg" class="loading" style="display: none;">Монтажный комплект не найден</div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal-action btn-close-modal-footer" onclick="closeMKModal()">Закрыть</button>
             </div>
         </div>
     </div>
@@ -1062,8 +1013,6 @@
         ];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
-        const mkCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?sheet=%D0%9A%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%82&output=csv";
-
         let rawData = [];
         let activeFilters = {};
         let currentSort = { key: null, direction: 'asc' };
@@ -1072,12 +1021,6 @@
         let filterOnlyUniquePart = false;
         let tspt101Data = null;
         let isDecodePinned = false;
-
-        // Данные текущей открытой карточки и монтажного комплекта
-        let currentItem = null;
-        let mkRawData = [];
-        let isMkLoaded = false;
-        let isMkLoading = false;
 
         fetch('TSPT.json')
             .then(res => res.json())
@@ -1097,7 +1040,6 @@
             };
         }
 
-        // Загрузка основной таблицы
         Papa.parse(csvUrl, {
             download: true,
             header: true,
@@ -1111,34 +1053,6 @@
                 document.getElementById('cardsGrid').innerHTML = `<div class="loading">Ошибка загрузки: ${err}</div>`;
             }
         });
-
-        // Загрузка листа "Комплект"
-        function loadMKData(callback) {
-            if (isMkLoaded) {
-                if (callback) callback();
-                return;
-            }
-            isMkLoading = true;
-            Papa.parse(mkCsvUrl, {
-                download: true,
-                header: false,
-                skipEmptyLines: false,
-                complete: function(results) {
-                    mkRawData = results.data || [];
-                    isMkLoaded = true;
-                    isMkLoading = false;
-                    if (callback) callback();
-                },
-                error: function(err) {
-                    console.error("Ошибка загрузки листа Комплект:", err);
-                    isMkLoading = false;
-                    if (callback) callback(err);
-                }
-            });
-        }
-
-        // Автоматическая фоновая предзагрузка монтажных комплектов
-        loadMKData();
 
         function toggleStatusFilter() {
             filterStatus = !filterStatus;
@@ -1264,6 +1178,7 @@
                     onmouseleave="unhoverDecodeModal()" 
                     onclick="pinDecodeModal(event, '${escapeHtml(projectName)}')">ℹ️</span>` : '';
 
+                /* Поменяли местами плашку Производитель и Группа */
                 card.innerHTML = `
                     <div class="card-info">
                         <div class="card-badges">
@@ -1355,7 +1270,6 @@
         }
 
         function openModal(item) {
-            currentItem = item;
             const modalTable = document.getElementById('modalTable');
             const modalTitle = document.getElementById('modalTitle');
             const modalBody = document.getElementById('modalBody');
@@ -1397,165 +1311,6 @@
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('active');
             document.body.style.overflow = 'auto';
-        }
-
-        /* --- Логика работы Монтажного Комплекта (МК) --- */
-
-        function findKitForDevice(item) {
-            if (!mkRawData || mkRawData.length === 0) return null;
-
-            const candidates = [
-                (item["PartNumber"] || "").trim(),
-                (item["ProjectName"] || "").trim(),
-                (item["ModelBZ"] || "").trim()
-            ].filter(v => v !== "");
-
-            let foundRow = -1;
-            let matchedSearchValue = "";
-
-            // Поиск точного совпадения наименования или ТЭГа в 1-м столбце листа Комплект
-            for (let cand of candidates) {
-                const candLower = cand.toLowerCase();
-                for (let i = 0; i < mkRawData.length; i++) {
-                    const cellVal = String(mkRawData[i][0] || "").trim().toLowerCase();
-                    if (cellVal && cellVal === candLower) {
-                        foundRow = i;
-                        matchedSearchValue = cand;
-                        break;
-                    }
-                }
-                if (foundRow !== -1) break;
-            }
-
-            // Вспомогательный частичный поиск
-            if (foundRow === -1) {
-                for (let cand of candidates) {
-                    const candLower = cand.toLowerCase();
-                    for (let i = 0; i < mkRawData.length; i++) {
-                        const cellVal = String(mkRawData[i][0] || "").trim().toLowerCase();
-                        if (cellVal && (cellVal.includes(candLower) || candLower.includes(cellVal))) {
-                            foundRow = i;
-                            matchedSearchValue = cand;
-                            break;
-                        }
-                    }
-                    if (foundRow !== -1) break;
-                }
-            }
-
-            if (foundRow === -1) return null;
-
-            // Сбор элементов сгруппированного комплекта
-            const items = [];
-            for (let i = foundRow + 1; i < mkRawData.length; i++) {
-                const row = mkRawData[i];
-                if (!row) break;
-                
-                const col0 = String(row[0] || "").trim(); // Код 1С
-                const col1 = String(row[1] || "").trim(); // Полное наименование
-                const col2 = String(row[2] || "").trim(); // Кол-во
-                const col3 = String(row[3] || "").trim(); // Ед. Изм.
-
-                // Конец группы (пустая строка)
-                if (!col0 && !col1 && !col2 && !col3) {
-                    break;
-                }
-
-                // Пропуск заголовка таблицы если попал в группу
-                if (col0.toLowerCase().includes("код 1с") || col1.toLowerCase().includes("полное наименование")) {
-                    continue;
-                }
-
-                // Встретили следующий заголовок группы
-                if (col0 && !col1 && !col2 && !col3 && items.length > 0) {
-                    break;
-                }
-
-                items.push({
-                    code: col0,
-                    name: col1,
-                    qty: col2,
-                    unit: col3
-                });
-            }
-
-            return {
-                searchValue: matchedSearchValue,
-                items: items
-            };
-        }
-
-        function openMKModal() {
-            if (!currentItem) return;
-
-            const mkTitle = document.getElementById('mkModalTitle');
-            const mkBody = document.getElementById('mkTableBody');
-            const emptyMsg = document.getElementById('mkEmptyMsg');
-            const mkTable = document.getElementById('mkTable');
-
-            const devName = currentItem["ProjectName"] || currentItem["PartNumber"] || "прибора";
-            mkTitle.innerText = `Монтажный комплект: ${devName}`;
-
-            mkBody.innerHTML = '';
-
-            if (!isMkLoaded && isMkLoading) {
-                mkTable.style.display = 'none';
-                emptyMsg.style.display = 'block';
-                emptyMsg.innerText = 'Загрузка данных листа "Комплект"...';
-                document.getElementById('mkModalOverlay').classList.add('active');
-                return;
-            }
-
-            if (!isMkLoaded) {
-                emptyMsg.style.display = 'block';
-                emptyMsg.innerText = 'Загрузка данных листа "Комплект"...';
-                mkTable.style.display = 'none';
-                document.getElementById('mkModalOverlay').classList.add('active');
-                loadMKData(() => {
-                    openMKModal();
-                });
-                return;
-            }
-
-            const kitResult = findKitForDevice(currentItem);
-
-            if (!kitResult || !kitResult.items || kitResult.items.length === 0) {
-                mkTable.style.display = 'none';
-                emptyMsg.style.display = 'block';
-                emptyMsg.innerText = `Монтажный комплект не найден на листе "Комплект"`;
-            } else {
-                mkTable.style.display = 'table';
-                emptyMsg.style.display = 'none';
-
-                kitResult.items.forEach(item => {
-                    const tr = mkBody.insertRow();
-                    
-                    const tdCode = tr.insertCell(0);
-                    const tdName = tr.insertCell(1);
-                    const tdQty = tr.insertCell(2);
-                    const tdUnit = tr.insertCell(3);
-
-                    tdCode.innerText = item.code || '—';
-                    tdCode.style.fontWeight = '600';
-                    tdCode.style.color = 'var(--blue)';
-
-                    tdName.innerText = item.name || '—';
-                    
-                    tdQty.innerText = item.qty || '1';
-                    tdQty.style.textAlign = 'center';
-                    tdQty.style.fontWeight = '500';
-
-                    tdUnit.innerText = item.unit || 'шт.';
-                    tdUnit.style.textAlign = 'center';
-                    tdUnit.style.color = 'var(--label-secondary)';
-                });
-            }
-
-            document.getElementById('mkModalOverlay').classList.add('active');
-        }
-
-        function closeMKModal() {
-            document.getElementById('mkModalOverlay').classList.remove('active');
         }
 
         /* --- Логика всплывающей карточки ТСПТ --- */
@@ -1603,6 +1358,7 @@
             } else {
                 const parsedData = parseTspt101Name(sensorName, tspt101Data);
                 
+                // Рендер блоков в заголовке с номерами
                 parsedData.forEach((item, index) => {
                     const blockId = `tspt-block-${index}`;
                     const rowId = `tspt-row-${index}`;
@@ -1622,6 +1378,7 @@
                     blockDiv.appendChild(textSpan);
                     blockDiv.appendChild(numSpan);
 
+                    // Двусторонняя подсветка: при наведении на блок подсвечивается строка
                     blockDiv.onmouseenter = () => {
                         blockDiv.classList.add('highlighted');
                         const row = document.getElementById(rowId);
@@ -1635,6 +1392,7 @@
 
                     blocksContainer.appendChild(blockDiv);
 
+                    // Разделитель тире между блоками
                     if (index < parsedData.length - 1) {
                         const sep = document.createElement('span');
                         sep.className = 'tspt-block-sep';
@@ -1643,6 +1401,7 @@
                     }
                 });
 
+                // Рендер таблицы расшифровки
                 parsedData.forEach((item, index) => {
                     const blockId = `tspt-block-${index}`;
                     const rowId = `tspt-row-${index}`;
@@ -1661,6 +1420,7 @@
                     tdCode.innerText = item.code;
                     tdDesc.innerText = item.value;
 
+                    // Двусторонняя подсветка: при наведении на строку подсвечивается блок
                     tr.onmouseenter = () => {
                         tr.classList.add('highlighted');
                         const block = document.getElementById(blockId);
@@ -2078,7 +1838,6 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
-                closeMKModal();
                 closeDecodeModal(true);
                 closeImageModal();
                 closePanels();

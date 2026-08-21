@@ -38,7 +38,7 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
         }
 
         .page-title {
@@ -71,11 +71,16 @@
         .filter-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .filter-item.search-item {
+            flex: 1;
+            min-width: 280px;
         }
 
         .filter-item label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-main);
             white-space: nowrap;
@@ -85,7 +90,7 @@
             height: 38px;
             padding: 0 12px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             color: var(--text-main);
             background-color: #fff;
@@ -95,13 +100,18 @@
             transition: all 0.15s ease-in-out;
         }
 
-        .filter-item input {
-            width: 110px;
+        .filter-item input[type="text"] {
+            width: 100px;
+        }
+
+        .filter-item.search-item input {
+            width: 100%;
         }
 
         .filter-item select {
             cursor: pointer;
             padding-right: 28px;
+            max-width: 180px;
         }
 
         .filter-item input:focus, .filter-item select:focus {
@@ -111,9 +121,9 @@
 
         .btn-ex {
             height: 38px;
-            padding: 0 20px;
+            padding: 0 18px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             border: 1.5px solid var(--border-color);
             border-radius: 8px;
@@ -173,7 +183,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 14px;
+            font-size: 13px;
             table-layout: fixed;
         }
 
@@ -181,11 +191,11 @@
             background-color: var(--table-header);
             color: var(--text-muted);
             font-weight: 600;
-            padding: 12px 10px;
+            padding: 10px 8px;
             border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 0.03em;
             cursor: pointer;
             user-select: none;
@@ -199,8 +209,8 @@
 
         .sort-icon {
             display: inline-block;
-            margin-left: 4px;
-            font-size: 10px;
+            margin-left: 2px;
+            font-size: 9px;
             color: #94a3b8;
         }
 
@@ -210,7 +220,7 @@
         }
 
         td {
-            padding: 12px 10px;
+            padding: 10px 8px;
             border-bottom: 1px solid #f1f5f9;
             color: var(--text-main);
             vertical-align: middle;
@@ -220,7 +230,8 @@
 
         .col-mfg {
             hyphens: auto;
-            line-height: 1.25;
+            line-height: 1.2;
+            font-size: 12px;
         }
 
         tbody tr:last-child td {
@@ -233,12 +244,13 @@
 
         .badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 600;
             background-color: #f1f5f9;
             color: #475569;
+            text-align: center;
         }
 
         .badge-ex {
@@ -247,7 +259,6 @@
             border: 1px solid #ffedd5;
         }
 
-        /* Элементы наименования и иконки */
         .name-cell {
             display: flex;
             align-items: center;
@@ -257,12 +268,13 @@
 
         .name-text {
             flex: 1;
+            line-height: 1.35;
         }
 
         .icons-wrapper {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             flex-shrink: 0;
         }
 
@@ -270,11 +282,11 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border-radius: 4px;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: background-color 0.15s ease, transform 0.1s ease;
             user-select: none;
@@ -285,7 +297,6 @@
             transform: scale(1.1);
         }
 
-        /* Всплывающее окно предпросмотра картинки */
         #imgTooltip {
             position: fixed;
             display: none;
@@ -327,8 +338,13 @@
         <h1 class="page-title">Подбор кабельных вводов</h1>
 
         <div class="filter-card">
-            <!-- Первая строка фильтра -->
+            <!-- Первая строка фильтров -->
             <div class="filter-row">
+                <div class="filter-item search-item">
+                    <label for="searchInput">Поиск</label>
+                    <input type="text" id="searchInput" placeholder="Поиск по названию, артикулу, заводу...">
+                </div>
+
                 <div class="filter-item">
                     <label for="functionSelect">Тип изделия</label>
                     <select id="functionSelect">
@@ -347,16 +363,16 @@
                     </select>
                 </div>
 
-                <div class="filter-item">
-                    <label for="holeInput">Посадочное отверстие</label>
-                    <input type="text" id="holeInput" placeholder="20">
-                </div>
-
                 <button type="button" id="exBtn" class="btn-ex">Ex</button>
             </div>
 
-            <!-- Вторая строка фильтра -->
+            <!-- Вторая строка фильтров -->
             <div class="filter-row">
+                <div class="filter-item">
+                    <label for="holeInput">Посадочное</label>
+                    <input type="text" id="holeInput" placeholder="20">
+                </div>
+
                 <div class="filter-item">
                     <label for="cableDiameterInput">Ø кабеля</label>
                     <input type="text" id="cableDiameterInput" placeholder="12-14">
@@ -373,6 +389,13 @@
                         <option value="">Все</option>
                     </select>
                 </div>
+
+                <div class="filter-item">
+                    <label for="mfgSelect">Завод</label>
+                    <select id="mfgSelect">
+                        <option value="">Все заводы</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -381,16 +404,17 @@
             <span id="resetBtn" class="reset-link" style="display: none;">Сбросить фильтры</span>
         </div>
 
+        <!-- Ширина столбцов перераспределена: Наименование забирает 62% -->
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 12%;" data-sort="Manufacturer">Завод <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 10%;" data-sort="Manufacturer">Завод <span class="sort-icon">▲▼</span></th>
                         <th style="width: 8%;" data-sort="Ex">Ex <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 6%;" data-sort="Cable">Броня <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 8%;" data-sort="MR">МР <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 56%;" data-sort="ProjectName">Наименование <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 10%;" data-sort="PartNumber">УПП <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 5%;" data-sort="Cable">Броня <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 6%;" data-sort="MR">МР <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 62%;" data-sort="ProjectName">Наименование <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 9%;" data-sort="PartNumber">УПП <span class="sort-icon">▲▼</span></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -402,7 +426,6 @@
         </div>
     </div>
 
-    <!-- Контейнер превью картинки -->
     <div id="imgTooltip">
         <img id="tooltipImg" src="" alt="Превью">
     </div>
@@ -411,14 +434,16 @@
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
 
-        let rawData = [];
+        let validRawData = []; // Данные исключительно с валидным статусом (!= FALSE)
         let isExActive = false;
         let sortColumn = null;
         let sortDirection = 'asc';
 
+        const searchInput = document.getElementById('searchInput');
         const functionSelect = document.getElementById('functionSelect');
         const materialSelect = document.getElementById('materialSelect');
         const mrSelect = document.getElementById('mrSelect');
+        const mfgSelect = document.getElementById('mfgSelect');
         const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
@@ -497,8 +522,8 @@
                 const csvText = await fetchCSV();
                 const parsed = parseCSV(csvText);
 
-                // Исключаем строки, у которых Status === FALSE
-                rawData = parsed.filter(item => {
+                // Фильтрация Status !== FALSE сразу на входе
+                validRawData = parsed.filter(item => {
                     const statusVal = (item['Status'] || '').trim().toUpperCase();
                     return statusVal !== 'FALSE';
                 });
@@ -515,7 +540,7 @@
         function checkFunctionMatch(itemFunc, selectedFunc) {
             const func = (itemFunc || '').toLowerCase().trim();
             if (selectedFunc === 'all') {
-                return true;
+                return true; // Показывать все типы изделий из столбца Function
             } else if (selectedFunc === 'gland') {
                 return func === 'каб. ввод' || func === 'каб. ввод под мр';
             } else if (selectedFunc === 'plug') {
@@ -532,21 +557,26 @@
             const selectedFunc = functionSelect.value;
             const currentSelectedMat = materialSelect.value;
             const currentSelectedMR = mrSelect.value;
+            const currentSelectedMfg = mfgSelect.value;
             
             const materials = new Set();
             const mrValues = new Set();
+            const mfgs = new Set();
 
-            rawData.forEach(item => {
+            validRawData.forEach(item => {
                 if (checkFunctionMatch(item['Function'], selectedFunc)) {
                     const mat = item['Material'];
                     if (mat) materials.add(mat.trim());
 
                     const mr = item['MR'];
                     if (mr) mrValues.add(mr.trim());
+
+                    const mfg = item['Manufacturer'];
+                    if (mfg) mfgs.add(mfg.trim());
                 }
             });
 
-            // Материалы
+            // Заполнение «Материал»
             materialSelect.innerHTML = '<option value="">Все материалы</option>';
             Array.from(materials).sort().forEach(mat => {
                 const opt = document.createElement('option');
@@ -556,7 +586,7 @@
                 materialSelect.appendChild(opt);
             });
 
-            // в МР
+            // Заполнение «в МР»
             mrSelect.innerHTML = '<option value="">Все</option>';
             Array.from(mrValues).sort().forEach(mr => {
                 const opt = document.createElement('option');
@@ -564,6 +594,16 @@
                 opt.textContent = mr;
                 if (mr === currentSelectedMR) opt.selected = true;
                 mrSelect.appendChild(opt);
+            });
+
+            // Заполнение «Завод / Производитель»
+            mfgSelect.innerHTML = '<option value="">Все заводы</option>';
+            Array.from(mfgs).sort().forEach(mfg => {
+                const opt = document.createElement('option');
+                opt.value = mfg;
+                opt.textContent = mfg;
+                if (mfg === currentSelectedMfg) opt.selected = true;
+                mfgSelect.appendChild(opt);
             });
         }
 
@@ -619,49 +659,62 @@
         }
 
         function applyFilters() {
+            const query = searchInput.value.trim().toLowerCase();
             const selectedFunc = functionSelect.value;
             const selectedMat = materialSelect.value;
             const selectedMR = mrSelect.value;
+            const selectedMfg = mfgSelect.value;
             const holeVal = parseFloat(holeInput.value.replace(',', '.'));
             const cableRange = parseRangeInput(cableDiameterInput.value);
             const armorRange = parseRangeInput(armorInput.value);
 
-            const hasActiveFilters = selectedFunc !== 'all' || selectedMat !== '' || selectedMR !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || isExActive;
+            const hasActiveFilters = query !== '' || selectedFunc !== 'all' || selectedMat !== '' || selectedMR !== '' || selectedMfg !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || isExActive;
             resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
 
-            let filtered = rawData.filter(item => {
-                // 1. Поиск по типу изделия
+            let filtered = validRawData.filter(item => {
+                // Глобальный поиск по всем текстам строки
+                if (query !== '') {
+                    const fullText = `${item['ProjectName'] || ''} ${item['PartNumber'] || ''} ${item['Manufacturer'] || ''} ${item['Size/thread'] || ''}`.toLowerCase();
+                    if (!fullText.includes(query)) return false;
+                }
+
+                // Тип изделия
                 if (!checkFunctionMatch(item['Function'], selectedFunc)) {
                     return false;
                 }
 
-                // 2. Материал
+                // Материал
                 if (selectedMat !== '' && (item['Material'] || '').trim() !== selectedMat) {
                     return false;
                 }
 
-                // 3. Посадочное отверстие
+                // Производитель / Завод
+                if (selectedMfg !== '' && (item['Manufacturer'] || '').trim() !== selectedMfg) {
+                    return false;
+                }
+
+                // Посадочное отверстие
                 if (!isNaN(holeVal)) {
                     const itemHoleNum = extractSizeNumber(item['Size/thread']);
                     if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
                 }
 
-                // 4. Диаметр кабеля
+                // Диаметр кабеля
                 if (cableRange && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) {
                     return false;
                 }
 
-                // 5. В броне
+                // В броне
                 if (armorRange && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) {
                     return false;
                 }
 
-                // 6. Выбор в МР
+                // В МР
                 if (selectedMR !== '' && (item['MR'] || '').trim() !== selectedMR) {
                     return false;
                 }
 
-                // 7. Кнопка Ex
+                // Кнопка Ex
                 const exVal = (item['Ex'] || '').toLowerCase();
                 const isExRow = exVal.includes('ex');
                 
@@ -674,7 +727,7 @@
                 return true;
             });
 
-            // Сортировка по столбцам
+            // Сортировка по колонкам
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valA = a[sortColumn] || '';
@@ -694,7 +747,8 @@
         }
 
         function renderTable(data) {
-            statusInfo.textContent = `Показано позиций: ${data.length} из ${rawData.length}`;
+            // Подсчет позиций без записей со статусом FALSE
+            statusInfo.textContent = `Показано позиций: ${data.length} из ${validRawData.length}`;
 
             if (data.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ничего не найдено по вашему запросу</td></tr>';
@@ -705,13 +759,11 @@
                 const exText = item['Ex'] || item['Explosion protection'] || '-';
                 const isEx = exText.toLowerCase().includes('ex');
 
-                // Обработка столбца Cable ("(для брони)" -> "Б")
                 let cableVal = item['Cable'] || '-';
                 if (cableVal.trim() === '(для брони)') {
                     cableVal = '<strong>Б</strong>';
                 }
 
-                // Иконки картинок и ссылок
                 const imgUrl = item['IMG'] || '';
                 const linkUrl = item['Link'] || '';
 
@@ -731,7 +783,7 @@
                     <tr>
                         <td class="col-mfg"><strong>${item['Manufacturer'] || '-'}</strong></td>
                         <td>${isEx ? `<span class="badge badge-ex">${exText}</span>` : `<span class="badge">${exText}</span>`}</td>
-                        <td>${cableVal}</td>
+                        <td style="text-align: center;">${cableVal}</td>
                         <td>${item['MR'] || '-'}</td>
                         <td>
                             <div class="name-cell">
@@ -739,14 +791,13 @@
                                 ${iconsHtml}
                             </div>
                         </td>
-                        <td><code style="font-size:12px; font-weight:600; color:#475569;">${item['PartNumber'] || '-'}</code></td>
+                        <td><code style="font-size:11px; font-weight:600; color:#475569;">${item['PartNumber'] || '-'}</code></td>
                     </tr>
                 `;
             }).join('');
 
             tableBody.innerHTML = html;
 
-            // Навешивание ховера для всплывающей картинки
             document.querySelectorAll('.img-icon').forEach(icon => {
                 icon.addEventListener('mouseenter', (e) => {
                     const url = icon.getAttribute('data-img');
@@ -784,7 +835,6 @@
             imgTooltip.style.top = y + 'px';
         }
 
-        // События сортировки по заголовкам таблицы
         document.querySelectorAll('th[data-sort]').forEach(th => {
             th.addEventListener('click', () => {
                 const colKey = th.getAttribute('data-sort');
@@ -817,12 +867,13 @@
             applyFilters();
         });
 
-        materialSelect.addEventListener('change', applyFilters);
-        mrSelect.addEventListener('change', applyFilters);
-
-        [holeInput, cableDiameterInput, armorInput].forEach(input => {
+        [searchInput, holeInput, cableDiameterInput, armorInput].forEach(input => {
             input.addEventListener('input', applyFilters);
         });
+
+        materialSelect.addEventListener('change', applyFilters);
+        mrSelect.addEventListener('change', applyFilters);
+        mfgSelect.addEventListener('change', applyFilters);
 
         exBtn.addEventListener('click', () => {
             isExActive = !isExActive;
@@ -831,10 +882,12 @@
         });
 
         resetBtn.addEventListener('click', () => {
+            searchInput.value = '';
             functionSelect.value = 'all';
             populateDynamicSelects();
             materialSelect.value = '';
             mrSelect.value = '';
+            mfgSelect.value = '';
             holeInput.value = '';
             cableDiameterInput.value = '';
             armorInput.value = '';

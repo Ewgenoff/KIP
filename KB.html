@@ -49,7 +49,7 @@
             letter-spacing: -0.01em;
         }
 
-        /* Карточка панели фильтрации по эскизу */
+        /* Карточка фильтрации по эскизу */
         .filter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -239,7 +239,7 @@
             <div class="filter-row">
                 <div class="filter-item">
                     <label for="holeInput">Посадочное отверстие</label>
-                    <input type="text" id="holeInput" placeholder="М20 / 20">
+                    <input type="text" id="holeInput" placeholder="20">
                 </div>
                 <button type="button" id="exBtn" class="btn-ex">Ex</button>
             </div>
@@ -291,7 +291,6 @@
     </div>
 
     <script>
-        // Ссылка с указанием листа "Каб.ввода" (gid=2037989352)
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
 
@@ -307,6 +306,7 @@
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
 
+        // Парсинг CSV с берущимися из 2-й строки заголовками
         function parseCSV(text) {
             let p = '', c = '', r = [];
             let q = false;
@@ -339,17 +339,22 @@
                 r.push(row);
             }
 
+            // Нам нужно минимум 2 строки (1-я пропускается, 2-я — названия столбцов)
             if (r.length < 2) return [];
 
-            const headers = r[0].map(h => h.trim());
+            // Вторая строка (индекс 1) — это заголовки столбцов
+            const headers = r[1].map(h => h.trim());
             const objects = [];
 
-            for (let i = 1; i < r.length; i++) {
+            // Начинаем сбор данных с третьей строки (индекс 2)
+            for (let i = 2; i < r.length; i++) {
                 const current = r[i];
                 if (current.length === 1 && current[0] === '') continue;
                 const obj = {};
                 headers.forEach((header, index) => {
-                    obj[header] = current[index] ? current[index].trim() : '';
+                    if (header) { // привязываемся к заполненой колонке
+                        obj[header] = current[index] ? current[index].trim() : '';
+                    }
                 });
                 objects.push(obj);
             }
@@ -368,28 +373,24 @@
             }
         }
 
-       async function loadData() {
-    try {
-        const csvText = await fetchCSV();
-        const allData = parseCSV(csvText);
+        async function loadData() {
+            try {
+                const csvText = await fetchCSV();
+                const allData = parseCSV(csvText);
 
-        // Отключаем фильтр: берем ВСЕ строки без исключений
-        rawData = allData;
+                // Фильтрация: участвуют только "Каб. ввод" и "Каб. ввод под МР" из столбца Function
+                rawData = allData.filter(item => {
+                    const func = (item['Function'] || '').toLowerCase().trim();
+                    return func === 'каб. ввод' || func === 'каб. ввод под мр' || func.includes('каб. ввод');
+                });
 
-        // Выводим в консоль браузера заголовки и первые 3 строки для отладки
-        if (rawData.length > 0) {
-            console.log('Загружено строк:', rawData.length);
-            console.log('Названия столбцов из CSV:', Object.keys(rawData[0]));
-            console.log('Пример первой строки:', rawData[0]);
+                applyFilters();
+            } catch (error) {
+                console.error('Ошибка:', error);
+                statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV.</td></tr>';
+            }
         }
-
-        applyFilters();
-    } catch (error) {
-        console.error('Ошибка:', error);
-        statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
-        tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV. Убедитесь в наличии интернет-соединения.</td></tr>';
-    }
-}
 
         function extractSizeNumber(str) {
             if (!str) return null;
@@ -424,24 +425,29 @@
             resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
 
             const filtered = rawData.filter(item => {
+                // 1. Посадочное отверстие
                 if (!isNaN(holeVal)) {
                     const itemHoleNum = extractSizeNumber(item['Size/thread']);
                     if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
                 }
 
+                // 2. Диаметр кабеля
                 if (!isNaN(cableVal)) {
                     if (!isNumberInRange(item['Diameter without armor Dк'], cableVal)) return false;
                 }
 
+                // 3. В броне
                 if (!isNaN(armorVal)) {
                     if (!isNumberInRange(item['Outer diameter Dkb'], armorVal)) return false;
                 }
 
+                // 4. В МР
                 if (mrVal !== '') {
                     const itemMR = (item['MR'] || '').toLowerCase();
                     if (!itemMR.includes(mrVal)) return false;
                 }
 
+                // 5. Кнопка Ex
                 if (isExActive) {
                     const exVal = (item['Ex'] || '').toLowerCase();
                     if (!exVal.includes('ex')) return false;

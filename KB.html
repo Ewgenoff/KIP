@@ -49,7 +49,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* Карточка фильтрации по эскизу */
         .filter-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -66,7 +65,7 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 16px;
         }
 
         .filter-item {
@@ -82,9 +81,8 @@
             white-space: nowrap;
         }
 
-        .filter-item input {
+        .filter-item input, .filter-item select {
             height: 38px;
-            width: 100px;
             padding: 0 12px;
             font-family: inherit;
             font-size: 14px;
@@ -97,7 +95,16 @@
             transition: all 0.15s ease-in-out;
         }
 
-        .filter-item input:focus {
+        .filter-item input {
+            width: 110px;
+        }
+
+        .filter-item select {
+            cursor: pointer;
+            padding-right: 28px;
+        }
+
+        .filter-item input:focus, .filter-item select:focus {
             border-color: var(--border-focus);
             box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
         }
@@ -154,7 +161,6 @@
             text-decoration: underline;
         }
 
-        /* Таблица */
         .table-wrapper {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -168,13 +174,14 @@
             border-collapse: collapse;
             text-align: left;
             font-size: 14px;
+            table-layout: fixed;
         }
 
         th {
             background-color: var(--table-header);
             color: var(--text-muted);
             font-weight: 600;
-            padding: 14px 16px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
             text-transform: uppercase;
@@ -183,10 +190,17 @@
         }
 
         td {
-            padding: 14px 16px;
+            padding: 12px 10px;
             border-bottom: 1px solid #f1f5f9;
             color: var(--text-main);
             vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .col-mfg {
+            hyphens: auto;
+            line-height: 1.25;
         }
 
         tbody tr:last-child td {
@@ -233,27 +247,45 @@
     <div class="container">
         <h1 class="page-title">Подбор кабельных вводов</h1>
 
-        <!-- Панель фильтрации -->
         <div class="filter-card">
-            <!-- Первая строка эскиза -->
+            <!-- Первая строка фильтра -->
             <div class="filter-row">
+                <div class="filter-item">
+                    <label for="functionSelect">Тип изделия</label>
+                    <select id="functionSelect">
+                        <option value="all">Все (Каб. ввод)</option>
+                        <option value="gland">Каб. ввод</option>
+                        <option value="plug">Заглушка</option>
+                        <option value="coupler">Муфта</option>
+                        <option value="adapter">Переходник</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="materialSelect">Материал</label>
+                    <select id="materialSelect">
+                        <option value="">Все материалы</option>
+                    </select>
+                </div>
+
                 <div class="filter-item">
                     <label for="holeInput">Посадочное отверстие</label>
                     <input type="text" id="holeInput" placeholder="20">
                 </div>
+
                 <button type="button" id="exBtn" class="btn-ex">Ex</button>
             </div>
 
-            <!-- Вторая строка эскиза -->
+            <!-- Вторая строка фильтра -->
             <div class="filter-row">
                 <div class="filter-item">
                     <label for="cableDiameterInput">Ø кабеля</label>
-                    <input type="text" id="cableDiameterInput" placeholder="12">
+                    <input type="text" id="cableDiameterInput" placeholder="12-14">
                 </div>
 
                 <div class="filter-item">
                     <label for="armorInput">в броне</label>
-                    <input type="text" id="armorInput" placeholder="15">
+                    <input type="text" id="armorInput" placeholder="15,5-17">
                 </div>
 
                 <div class="filter-item">
@@ -268,17 +300,16 @@
             <span id="resetBtn" class="reset-link" style="display: none;">Сбросить фильтры</span>
         </div>
 
-        <!-- Таблица по эскизу: Пр-ль | Ex | Броня | МР | Наименование | УПП -->
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 15%;">Пр-ль</th>
-                        <th style="width: 10%;">Ex</th>
-                        <th style="width: 10%;">Броня</th>
-                        <th style="width: 10%;">МР</th>
-                        <th style="width: 40%;">Наименование</th>
-                        <th style="width: 15%;">УПП</th>
+                        <th style="width: 12%;">Пр-ль</th>
+                        <th style="width: 8%;">Ex</th>
+                        <th style="width: 6%;">Броня</th>
+                        <th style="width: 8%;">МР</th>
+                        <th style="width: 56%;">Наименование</th>
+                        <th style="width: 10%;">УПП</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -297,6 +328,8 @@
         let rawData = [];
         let isExActive = false;
 
+        const functionSelect = document.getElementById('functionSelect');
+        const materialSelect = document.getElementById('materialSelect');
         const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
@@ -306,7 +339,6 @@
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
 
-        // Парсинг CSV с берущимися из 2-й строки заголовками
         function parseCSV(text) {
             let p = '', c = '', r = [];
             let q = false;
@@ -339,20 +371,17 @@
                 r.push(row);
             }
 
-            // Нам нужно минимум 2 строки (1-я пропускается, 2-я — названия столбцов)
             if (r.length < 2) return [];
 
-            // Вторая строка (индекс 1) — это заголовки столбцов
             const headers = r[1].map(h => h.trim());
             const objects = [];
 
-            // Начинаем сбор данных с третьей строки (индекс 2)
             for (let i = 2; i < r.length; i++) {
                 const current = r[i];
                 if (current.length === 1 && current[0] === '') continue;
                 const obj = {};
                 headers.forEach((header, index) => {
-                    if (header) { // привязываемся к заполненой колонке
+                    if (header) {
                         obj[header] = current[index] ? current[index].trim() : '';
                     }
                 });
@@ -376,20 +405,75 @@
         async function loadData() {
             try {
                 const csvText = await fetchCSV();
-                const allData = parseCSV(csvText);
+                rawData = parseCSV(csvText);
 
-                // Фильтрация: участвуют только "Каб. ввод" и "Каб. ввод под МР" из столбца Function
-                rawData = allData.filter(item => {
-                    const func = (item['Function'] || '').toLowerCase().trim();
-                    return func === 'каб. ввод' || func === 'каб. ввод под мр' || func.includes('каб. ввод');
-                });
-
+                populateMaterialOptions();
                 applyFilters();
             } catch (error) {
                 console.error('Ошибка:', error);
                 statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
                 tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV.</td></tr>';
             }
+        }
+
+        function populateMaterialOptions() {
+            const materials = new Set();
+            rawData.forEach(item => {
+                const mat = item['Material'];
+                if (mat) materials.add(mat.trim());
+            });
+
+            const sortedMaterials = Array.from(materials).sort();
+            sortedMaterials.forEach(mat => {
+                const opt = document.createElement('option');
+                opt.value = mat;
+                opt.textContent = mat;
+                materialSelect.appendChild(opt);
+            });
+        }
+
+        function parseRangeInput(str) {
+            if (!str) return null;
+            const clean = str.replace(',', '.').trim();
+            const parts = clean.split(/[-—–]/);
+            
+            if (parts.length === 2) {
+                const min = parseFloat(parts[0]);
+                const max = parseFloat(parts[1]);
+                if (!isNaN(min) && !isNaN(max)) {
+                    return { min: Math.min(min, max), max: Math.max(min, max) };
+                }
+            } else if (parts.length === 1) {
+                const num = parseFloat(parts[0]);
+                if (!isNaN(num)) {
+                    return { min: num, max: num };
+                }
+            }
+            return null;
+        }
+
+        function extractDataRange(valStr) {
+            if (!valStr) return null;
+            const cleanStr = valStr.replace(',', '.').trim();
+            const match = cleanStr.match(/([\d.]+)\s*[-—–]\s*([\d.]+)/);
+
+            if (match) {
+                return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
+            } else {
+                const singleNum = parseFloat(cleanStr);
+                if (!isNaN(singleNum)) {
+                    return { min: singleNum, max: singleNum };
+                }
+            }
+            return null;
+        }
+
+        function isRangeIntersecting(inputRange, dataValueStr) {
+            if (!inputRange) return true;
+            const dataRange = extractDataRange(dataValueStr);
+            if (!dataRange) return false;
+
+            return inputRange.min <= dataRange.max && inputRange.max >= dataRange.min;
         }
 
         function extractSizeNumber(str) {
@@ -399,55 +483,61 @@
             return match ? parseFloat(match[1]) : null;
         }
 
-        function isNumberInRange(valStr, targetNum) {
-            if (!valStr || isNaN(targetNum)) return false;
-
-            const cleanStr = valStr.replace(',', '.');
-            const match = cleanStr.match(/([\d.]+)\s*[-—–]\s*([\d.]+)/);
-
-            if (match) {
-                const min = parseFloat(match[1]);
-                const max = parseFloat(match[2]);
-                return targetNum >= min && targetNum <= max;
-            } else {
-                const singleNum = parseFloat(cleanStr);
-                return !isNaN(singleNum) && singleNum === targetNum;
-            }
-        }
-
         function applyFilters() {
+            const selectedFunc = functionSelect.value;
+            const selectedMat = materialSelect.value;
             const holeVal = parseFloat(holeInput.value.replace(',', '.'));
-            const cableVal = parseFloat(cableDiameterInput.value.replace(',', '.'));
-            const armorVal = parseFloat(armorInput.value.replace(',', '.'));
+            const cableRange = parseRangeInput(cableDiameterInput.value);
+            const armorRange = parseRangeInput(armorInput.value);
             const mrVal = mrInput.value.trim().toLowerCase();
 
-            const hasActiveFilters = !isNaN(holeVal) || !isNaN(cableVal) || !isNaN(armorVal) || mrVal !== '' || isExActive;
+            const hasActiveFilters = selectedFunc !== 'all' || selectedMat !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || mrVal !== '' || isExActive;
             resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
 
             const filtered = rawData.filter(item => {
-                // 1. Посадочное отверстие
+                const func = (item['Function'] || '').toLowerCase().trim();
+
+                // 1. Поиск по столбцу Function
+                if (selectedFunc === 'all') {
+                    if (!(func === 'каб. ввод' || func === 'каб. ввод под мр' || func.includes('каб. ввод'))) return false;
+                } else if (selectedFunc === 'gland') {
+                    if (!(func === 'каб. ввод' || func === 'каб. ввод под мр')) return false;
+                } else if (selectedFunc === 'plug') {
+                    if (!func.includes('заглушка')) return false;
+                } else if (selectedFunc === 'coupler') {
+                    if (!func.includes('муфта вводная')) return false;
+                } else if (selectedFunc === 'adapter') {
+                    if (!func.includes('переходник')) return false;
+                }
+
+                // 2. Материал
+                if (selectedMat !== '' && (item['Material'] || '').trim() !== selectedMat) {
+                    return false;
+                }
+
+                // 3. Посадочное отверстие
                 if (!isNaN(holeVal)) {
                     const itemHoleNum = extractSizeNumber(item['Size/thread']);
                     if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
                 }
 
-                // 2. Диаметр кабеля
-                if (!isNaN(cableVal)) {
-                    if (!isNumberInRange(item['Diameter without armor Dк'], cableVal)) return false;
+                // 4. Диаметр кабеля (с поддержкой диапазонов)
+                if (cableRange && !isRangeIntersecting(cableRange, item['Diameter without armor Dк'])) {
+                    return false;
                 }
 
-                // 3. В броне
-                if (!isNaN(armorVal)) {
-                    if (!isNumberInRange(item['Outer diameter Dkb'], armorVal)) return false;
+                // 5. В броне (с поддержкой диапазонов)
+                if (armorRange && !isRangeIntersecting(armorRange, item['Outer diameter Dkb'])) {
+                    return false;
                 }
 
-                // 4. В МР
+                // 6. В МР
                 if (mrVal !== '') {
                     const itemMR = (item['MR'] || '').toLowerCase();
                     if (!itemMR.includes(mrVal)) return false;
                 }
 
-                // 5. Кнопка Ex
+                // 7. Кнопка Ex
                 if (isExActive) {
                     const exVal = (item['Ex'] || '').toLowerCase();
                     if (!exVal.includes('ex')) return false;
@@ -471,11 +561,17 @@
                 const exText = item['Ex'] || item['Explosion protection'] || '-';
                 const isEx = exText.toLowerCase().includes('ex');
 
+                // Обработка столбца Cable ("(для брони)" -> "Б")
+                let cableVal = item['Cable'] || '-';
+                if (cableVal.trim() === '(для брони)') {
+                    cableVal = '<strong>Б</strong>';
+                }
+
                 return `
                     <tr>
-                        <td><strong>${item['Manufacturer'] || '-'}</strong></td>
+                        <td class="col-mfg"><strong>${item['Manufacturer'] || '-'}</strong></td>
                         <td>${isEx ? `<span class="badge badge-ex">${exText}</span>` : `<span class="badge">${exText}</span>`}</td>
-                        <td>${item['Cable'] || '-'}</td>
+                        <td>${cableVal}</td>
                         <td>${item['MR'] || '-'}</td>
                         <td>${item['ProjectName'] || '-'}</td>
                         <td><code style="font-size:12px; font-weight:600; color:#475569;">${item['PartNumber'] || '-'}</code></td>
@@ -490,6 +586,9 @@
             input.addEventListener('input', applyFilters);
         });
 
+        functionSelect.addEventListener('change', applyFilters);
+        materialSelect.addEventListener('change', applyFilters);
+
         exBtn.addEventListener('click', () => {
             isExActive = !isExActive;
             exBtn.classList.toggle('active', isExActive);
@@ -497,6 +596,8 @@
         });
 
         resetBtn.addEventListener('click', () => {
+            functionSelect.value = 'all';
+            materialSelect.value = '';
             holeInput.value = '';
             cableDiameterInput.value = '';
             armorInput.value = '';

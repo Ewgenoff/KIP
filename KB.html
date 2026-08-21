@@ -368,24 +368,28 @@
             }
         }
 
-        async function loadData() {
-            try {
-                const csvText = await fetchCSV();
-                const allData = parseCSV(csvText);
+       async function loadData() {
+    try {
+        const csvText = await fetchCSV();
+        const allData = parseCSV(csvText);
 
-                // Отфильтровываем позиции по значению столбца Function
-                rawData = allData.filter(item => {
-                    const func = (item['Function'] || '').toLowerCase().trim();
-                    return func === 'каб. ввод' || func === 'каб. ввод под мр' || func.includes('каб. ввод');
-                });
+        // Отключаем фильтр: берем ВСЕ строки без исключений
+        rawData = allData;
 
-                applyFilters();
-            } catch (error) {
-                console.error('Ошибка:', error);
-                statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
-                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV.</td></tr>';
-            }
+        // Выводим в консоль браузера заголовки и первые 3 строки для отладки
+        if (rawData.length > 0) {
+            console.log('Загружено строк:', rawData.length);
+            console.log('Названия столбцов из CSV:', Object.keys(rawData[0]));
+            console.log('Пример первой строки:', rawData[0]);
         }
+
+        applyFilters();
+    } catch (error) {
+        console.error('Ошибка:', error);
+        statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
+        tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV. Убедитесь в наличии интернет-соединения.</td></tr>';
+    }
+}
 
         function extractSizeNumber(str) {
             if (!str) return null;

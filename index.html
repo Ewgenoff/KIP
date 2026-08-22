@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #eef5fc 0%, #e3edfa 100%);
+            --bg-gradient: #f2f2f7;
             --card-bg: #ffffff;
             --separator: #c6c6c8;
             --label-primary: #1c1c1e;
@@ -41,7 +41,7 @@
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 900;
-            background: rgba(238, 245, 252, 0.85);
+            background: rgba(242, 242, 247, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             padding: 15px 20px 10px 20px;
@@ -599,12 +599,11 @@
         .decode-table .col-code { width: 18%; font-weight: 700; color: var(--blue); }
         .decode-table .col-desc { width: 50%; }
 
-        /* ИЗМЕНЕНИЯ 1: Убран backdrop-filter для размытия */
+        /* ИЗМЕНЕНИЯ: Убрано затемнение фона при активной панели */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.2);
             z-index: 998;
         }
         .side-panel-overlay.active { display: block; }
@@ -635,7 +634,6 @@
             align-items: center;
         }
 
-        /* ИЗМЕНЕНИЯ 2: Расширена ширина блока вкладок для кнопки с линейкой */
         .panel-tabs {
             display: flex;
             background: rgba(120, 120, 128, 0.12);
@@ -894,7 +892,8 @@
             <div class="toolbar">
                 <div class="counter" id="counter">0 из 0</div>
                 <div class="toolbar-buttons">
-                    <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">!</button>
+                    <!-- ИЗМЕНЕНИЕ: Символ ! заменен на ⧉ -->
+                    <button class="btn btn-circle btn-exclamation" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">⧉</button>
                     <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
                     <button class="btn" onclick="openCombinedPanel()">Фильтр</button>
                     <button class="btn btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
@@ -952,7 +951,6 @@
 
     <div class="side-panel" id="combinedPanel">
         <div class="panel-header">
-            <!-- ИЗМЕНЕНИЯ 3: Добавлена новая вкладка с кнопкой 📐 между фильтром и сортировкой -->
             <div class="panel-tabs">
                 <button class="tab-btn active" id="tabFilter" onclick="switchTab('filter')">Фильтр</button>
                 <button class="tab-btn" id="tabCalc" onclick="switchTab('calc')">📐</button>
@@ -966,7 +964,6 @@
             <div id="filterPanelContent"></div>
         </div>
 
-        <!-- ИЗМЕНЕНИЯ 4: Разметка содержимого для новой вкладки расчета длины штока -->
         <div class="panel-body" id="tabContentCalc" style="display: none;">
             <div class="calc-box">
                 <div class="calc-field">
@@ -1097,7 +1094,6 @@
         let tspt101Data = null;
         let isDecodePinned = false;
 
-        /* Переменные для расчета длины штока */
         let selectedBoss = 50;
         let stemMinLength = null;
         let stemMaxLength = null;
@@ -1152,7 +1148,6 @@
             renderCards();
         }
 
-        /* ИЗМЕНЕНИЯ 5: В расчете длины штока производится фильтрация по полю Characteristic */
         function renderCards() {
             const grid = document.getElementById('cardsGrid');
             const counter = document.getElementById('counter');
@@ -1177,11 +1172,9 @@
                 }
             }
 
-            // Фильтрация по длине штока на основе поля Characteristic
             if (stemMinLength !== null && stemMaxLength !== null) {
                 dataToRender = dataToRender.filter(item => {
                     const charStr = (item["Characteristic"] || "").toString();
-                    // Извлекаем числа из строки длиной 2, 3 или 4 цифры
                     const matches = charStr.match(/\b\d{2,4}\b/g);
                     if (!matches) return false;
                     
@@ -1733,7 +1726,6 @@
             document.getElementById('combinedPanel').classList.add('active');
         }
 
-        /* ИЗМЕНЕНИЯ 6: Логика переключения между 3 вкладками */
         function switchTab(tab) {
             const tabFilter = document.getElementById('tabFilter');
             const tabCalc = document.getElementById('tabCalc');
@@ -1763,7 +1755,6 @@
             }
         }
 
-        /* ИЗМЕНЕНИЯ 7: Функции расчета длины штока и применения фильтра */
         function selectBoss(size) {
             selectedBoss = size;
             document.getElementById('boss50').classList.toggle('active', size === 50);
@@ -1784,7 +1775,6 @@
                 return;
             }
 
-            // Глубина погружения от 1/3 до 2/3 от сечения + размер бобышки
             stemMinLength = Math.round((inputVal / 3) + selectedBoss);
             stemMaxLength = Math.round(((2 * inputVal) / 3) + selectedBoss);
 
@@ -1962,7 +1952,6 @@
             clearInput('searchGlobal', 'clearGlobal');
             currentSort = { key: null, direction: 'asc' };
             
-            // ИЗМЕНЕНИЯ 8: Сброс параметров расчета штока при общем сбросе
             resetStemFilter();
 
             updateFilterButtonState();

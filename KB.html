@@ -42,7 +42,7 @@
         }
 
         .page-title {
-            font-size: 22px;
+            font-size: 15px;
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: -0.4px;
@@ -193,7 +193,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
         }
 
-        /* Чередование заливки строк таблицы */
+        /* Чередование заливки строк только для общей таблицы */
         tbody tr:nth-child(odd) {
             background-color: #ffffff;
         }
@@ -462,6 +462,7 @@
             font-weight: 700;
             margin-bottom: 12px;
             cursor: pointer;
+            text-align: center;
         }
 
         .modal-table-scroll {
@@ -481,6 +482,11 @@
         .detail-table td {
             padding: 8px 10px;
             border-bottom: 1px solid var(--ios-gray-light);
+            background-color: #ffffff !important;
+        }
+
+        .detail-table tr:last-child td {
+            border-bottom: none;
         }
 
         .detail-table td:first-child {
@@ -488,7 +494,7 @@
             text-align: right;
             font-weight: 600;
             color: var(--ios-gray);
-            background: #FAFAFC;
+            background: #FAFAFC !important;
             padding-right: 12px;
         }
 
@@ -619,7 +625,7 @@
             </div>
 
             <div id="mrGroup" class="form-group">
-                <label for="mrSelect">Типоразмер МР</label>
+                <label for="mrSelect">Металлорукав</label>
                 <select id="mrSelect" class="form-control"><option value="">Все</option></select>
             </div>
 
@@ -689,7 +695,9 @@
             'Diameter without armor Dк': 'Ø кабеля без брони',
             'Outer diameter Dkb': 'Ø кабеля по броне',
             'Material': 'Материал',
-            'Function': 'Тип изделия'
+            'Function': 'Тип изделия',
+            'Comment': 'Комментарий',
+            'Комментарий': 'Комментарий'
         };
 
         const MFG_COLORS = {
@@ -836,8 +844,8 @@
             holeGroup.style.display = 'none';
             podKvGroup.style.display = 'none';
 
-            // Управление типом поля "Посадочное отв." (Input без placeholder на вкладке Все, Select на остальных)
-            if (func === 'all') {
+            // Поле Посадочное с вводом на вкладках "all" и "accessory"
+            if (func === 'all' || func === 'accessory') {
                 holeContainer.innerHTML = '<input type="text" id="holeSelect" class="form-control">';
             } else {
                 holeContainer.innerHTML = '<select id="holeSelect" class="form-control"><option value="">Все</option></select>';
@@ -861,7 +869,6 @@
             } else if (func === 'coupler') {
                 mrGroup.style.display = 'flex';
             } else if (func === 'accessory') {
-                // Скрыты поля Диаметр кабеля и в броне для Аксессуаров
                 exGroup.style.display = 'block';
                 holeGroup.style.display = 'flex';
             } else {
@@ -881,7 +888,6 @@
             if (selectedFunc === 'coupler') return func.includes('муфта вводная');
             if (selectedFunc === 'adapter') return func.includes('переходник');
             if (selectedFunc === 'accessory') {
-                // Элементы, не вошедшие в другие основные категории
                 const isGland = func === 'каб. ввод' || func === 'каб. ввод под мр' || func === 'кабельный ввод';
                 const isPlug = func.includes('заглушка');
                 const isCoupler = func.includes('муфта вводная');
@@ -966,7 +972,14 @@
                 if (parsed.pod !== podKvSelect.value) return false;
             }
 
-            if (excludeField !== 'mr' && selectedFunc !== 'accessory' && mrSelect.value && (item['MR'] || '').trim() !== mrSelect.value) return false;
+            if (excludeField !== 'mr' && selectedFunc !== 'accessory' && mrSelect.value) {
+                const itemMr = (item['MR'] || '').trim();
+                if (mrSelect.value === '__NO_MR__') {
+                    if (itemMr !== '') return false;
+                } else if (itemMr !== mrSelect.value) {
+                    return false;
+                }
+            }
             if (excludeField !== 'mfg' && mfgSelect.value && (item['Manufacturer'] || '').trim() !== mfgSelect.value) return false;
             if (excludeField !== 'material' && materialSelect.value && (item['Material'] || '').trim() !== materialSelect.value) return false;
 
@@ -1007,12 +1020,12 @@
                 fillSelect(holeSelect, holes, holeSelect.value);
             }
             fillSelect(podKvSelect, podKvs, podKvSelect.value);
-            fillSelect(mrSelect, mrValues, mrSelect.value);
+            fillSelect(mrSelect, mrValues, mrSelect.value, true);
             fillSelect(mfgSelect, mfgs, mfgSelect.value);
             fillSelect(materialSelect, materials, materialSelect.value);
         }
 
-        function fillSelect(selectEl, setValues, currentValue) {
+        function fillSelect(selectEl, setValues, currentValue, addNoMrOption = false) {
             if (!selectEl || selectEl.tagName !== 'SELECT') return;
             const firstOpt = selectEl.options[0];
             selectEl.innerHTML = '';
@@ -1025,6 +1038,14 @@
                 if (val === currentValue) opt.selected = true;
                 selectEl.appendChild(opt);
             });
+
+            if (addNoMrOption) {
+                const optNoMr = document.createElement('option');
+                optNoMr.value = '__NO_MR__';
+                optNoMr.textContent = 'без МР';
+                if (currentValue === '__NO_MR__') optNoMr.selected = true;
+                selectEl.appendChild(optNoMr);
+            }
         }
 
         function applyFilters() {
@@ -1082,7 +1103,6 @@
                     exHtml = `<span class="badge">${exText}</span>`;
                 }
 
-                // Замена треугольной линейки на Шток
                 let mfgName = (item['Manufacturer'] || '').trim();
                 if (mfgName === '📐' || mfgName.includes('📐')) {
                     mfgName = 'Шток';
@@ -1133,7 +1153,15 @@
             modalTitle.textContent = item['ProjectName'] || 'Детали изделия';
 
             modalTableBody.innerHTML = '';
+
+            let commentKey = null;
+
             Object.keys(item).forEach(key => {
+                const lowerKey = key.toLowerCase().trim();
+                if (lowerKey === 'comment' || lowerKey === 'комментарий') {
+                    commentKey = key;
+                    return;
+                }
                 const val = item[key];
                 if (val && val !== '-' && val.trim() !== '' && key !== 'IMG' && key !== 'Link' && key !== 'Status') {
                     const tr = document.createElement('tr');
@@ -1142,6 +1170,14 @@
                     modalTableBody.appendChild(tr);
                 }
             });
+
+            if (commentKey && item[commentKey] && item[commentKey].trim() !== '' && item[commentKey] !== '-') {
+                const commentVal = item[commentKey];
+                const tr = document.createElement('tr');
+                const label = FIELD_LABELS[commentKey] || 'Комментарий';
+                tr.innerHTML = `<td>${label}</td><td onclick="copyToClipboard('${commentVal.replace(/'/g, "\\'")}', 'Комментарий скопирован')">${commentVal}</td>`;
+                modalTableBody.appendChild(tr);
+            }
 
             if (item['Link']) {
                 modalSiteBtn.href = item['Link'];

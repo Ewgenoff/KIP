@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ios-bg: #F2F2F7;
+            --ios-bg: #f2f2f7;
             --ios-card: #FFFFFF;
             --ios-blue: #007AFF;
             --ios-orange: #FF9500;
@@ -28,7 +28,7 @@
         }
 
         body {
-            font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", 'Inter', sans-serif;
             background-color: var(--ios-bg);
             color: var(--text-main);
             padding: 12px;
@@ -54,6 +54,7 @@
             gap: 8px;
             margin-bottom: 14px;
             align-items: center;
+            background-color: var(--ios-bg);
         }
 
         .search-container {
@@ -66,6 +67,7 @@
             height: 40px;
             padding: 0 32px 0 36px;
             font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             background-color: var(--ios-gray-bg);
             border: none;
             border-radius: 10px;
@@ -110,6 +112,7 @@
             border-radius: 10px;
             font-weight: 600;
             font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             color: var(--text-main);
             cursor: pointer;
             display: flex;
@@ -157,16 +160,18 @@
             text-align: left;
             font-size: 13px;
             table-layout: fixed;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
         }
 
         th {
-            background-color: #FAFAFC;
+            background-color: var(--ios-bg);
             color: var(--ios-gray);
             font-weight: 600;
             padding: 10px 4px;
             border-bottom: 1px solid var(--ios-gray-light);
             white-space: nowrap;
             font-size: 11px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             text-transform: uppercase;
             cursor: pointer;
         }
@@ -185,6 +190,16 @@
             border-bottom: 1px solid var(--ios-gray-light);
             vertical-align: middle;
             user-select: text;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
+        }
+
+        /* Чередование заливки строк таблицы */
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #e6f2ff;
         }
 
         tbody tr:last-child td { border-bottom: none; }
@@ -344,6 +359,7 @@
             border: 1px solid var(--ios-border);
             background: var(--ios-card);
             font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             outline: none;
         }
 
@@ -362,6 +378,7 @@
             color: var(--ios-gray);
             font-weight: 700;
             font-size: 11px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             cursor: pointer;
             white-space: nowrap;
         }
@@ -458,6 +475,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
         }
 
         .detail-table td {
@@ -682,17 +700,6 @@
             'КОРТЕМ': '#8E24AA'
         };
 
-        // Пастельные цвета для строк таблицы по производителям
-        const MFG_ROW_BG = {
-            'ЗЭТА': '#FFEBEE',
-            'ВЕЛАН': '#E3F2FD',
-            'РЕЗЕДА': '#E8F5E9',
-            'ПРОМТЕЛ': '#FFF3E0',
-            'КОРТЕМ': '#F3E5F5',
-            'ШТОК': '#E0F7FA',
-            'SHTOK': '#E0F7FA'
-        };
-
         let validRawData = [];
         let sortColumn = null;
         let sortDirection = 'asc';
@@ -854,9 +861,8 @@
             } else if (func === 'coupler') {
                 mrGroup.style.display = 'flex';
             } else if (func === 'accessory') {
-                // Доступны все поля как у "Все", кроме "Типоразмер МР"
+                // Скрыты поля Диаметр кабеля и в броне для Аксессуаров
                 exGroup.style.display = 'block';
-                cableAndArmorRow.style.display = 'flex';
                 holeGroup.style.display = 'flex';
             } else {
                 // 'all'
@@ -1082,10 +1088,6 @@
                     mfgName = 'Шток';
                 }
 
-                // Заливка строк пастельными тонами в зависимости от производителя
-                const mfgUpper = mfgName.toUpperCase();
-                const rowBg = MFG_ROW_BG[mfgUpper] || 'transparent';
-                
                 const cableRaw = (item['Cable'] || '').toLowerCase().trim();
                 let cableHtml = '-';
                 if (cableRaw.includes('без') && cableRaw.includes('брони')) {
@@ -1097,7 +1099,7 @@
                 const uppCode = item['PartNumber'] || '-';
 
                 return `
-                    <tr style="background-color: ${rowBg};">
+                    <tr>
                         <td><strong>${mfgName || '-'}</strong></td>
                         <td>${exHtml}</td>
                         <td>${cableHtml}</td>

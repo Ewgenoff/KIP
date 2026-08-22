@@ -2,36 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Подбор кабельных вводов</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff6b00;
-            --primary-hover: #e56000;
-            --bg-main: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
-            --border-focus: #ff6b00;
-            --table-header: #f8fafc;
-            --table-row-hover: #f1f5f9;
+            --ios-bg: #F2F2F7;
+            --ios-card: #FFFFFF;
+            --ios-blue: #007AFF;
+            --ios-orange: #FF9500;
+            --ios-gray: #8E8E93;
+            --ios-gray-light: #E5E5EA;
+            --ios-gray-bg: #7676801F;
+            --ios-border: #C6C6C8;
+            --text-main: #000000;
+            --text-muted: #3C3C4399;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-main);
+            font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+            background-color: var(--ios-bg);
             color: var(--text-main);
-            padding: 24px;
+            padding: 12px;
             display: flex;
             justify-content: center;
         }
@@ -42,141 +43,106 @@
         }
 
         .page-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-main);
-            letter-spacing: -0.01em;
+            margin-bottom: 12px;
+            letter-spacing: -0.4px;
         }
 
-        .filter-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        /* Шапка: Поиск и Фильтр */
+        .top-bar {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .filter-row {
-            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
         }
 
-        .filter-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .filter-item.search-item {
+        .search-container {
+            position: relative;
             flex: 1;
-            min-width: 280px;
         }
 
-        .filter-item label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-main);
-            white-space: nowrap;
-        }
-
-        .filter-item input, .filter-item select {
-            height: 38px;
-            padding: 0 12px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-main);
-            background-color: #fff;
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            outline: none;
-            transition: all 0.15s ease-in-out;
-        }
-
-        .filter-item input[type="text"] {
-            width: 100px;
-        }
-
-        .filter-item.search-item input {
+        .search-container input {
             width: 100%;
+            height: 40px;
+            padding: 0 32px 0 36px;
+            font-size: 15px;
+            background-color: var(--ios-gray-bg);
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            color: var(--text-main);
         }
 
-        .filter-item select {
-            cursor: pointer;
-            padding-right: 28px;
-            max-width: 180px;
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--ios-gray);
+            font-size: 14px;
+            pointer-events: none;
         }
 
-        .filter-item input:focus, .filter-item select:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
-        }
-
-        .btn-ex {
-            height: 38px;
-            padding: 0 18px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #f1f5f9;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            display: inline-flex;
+        .clear-search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #8E8E93;
+            color: #FFF;
+            border: none;
+            font-size: 12px;
+            display: none;
             align-items: center;
             justify-content: center;
-            user-select: none;
+            cursor: pointer;
+            line-height: 1;
         }
 
-        .btn-ex:hover {
-            border-color: #94a3b8;
+        .btn-filter-trigger {
+            height: 40px;
+            padding: 0 16px;
+            background-color: var(--ios-card);
+            border: 1px solid var(--ios-border);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
             color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
 
-        .btn-ex.active {
-            background-color: var(--primary);
-            color: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(255, 107, 0, 0.35);
+        .btn-filter-trigger.active {
+            background-color: var(--ios-blue);
+            color: #FFFFFF;
+            border-color: var(--ios-blue);
         }
 
         .meta-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             padding: 0 4px;
             font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
+            color: var(--ios-gray);
         }
 
-        .reset-link {
-            color: #ef4444;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .reset-link:hover {
-            text-decoration: underline;
-        }
-
+        /* Таблица */
         .table-wrapper {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background-color: var(--ios-card);
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--ios-gray-light);
         }
 
         table {
@@ -184,151 +150,311 @@
             border-collapse: collapse;
             text-align: left;
             font-size: 13px;
-            table-layout: fixed;
+            min-width: 600px;
         }
 
         th {
-            background-color: var(--table-header);
-            color: var(--text-muted);
+            background-color: #FAFAFC;
+            color: var(--ios-gray);
             font-weight: 600;
             padding: 10px 8px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--ios-gray-light);
             white-space: nowrap;
-            text-transform: uppercase;
             font-size: 11px;
-            letter-spacing: 0.03em;
+            text-transform: uppercase;
             cursor: pointer;
-            user-select: none;
-            transition: background-color 0.15s ease;
-        }
-
-        th:hover {
-            background-color: #e2e8f0;
-            color: var(--text-main);
-        }
-
-        .sort-icon {
-            display: inline-block;
-            margin-left: 2px;
-            font-size: 9px;
-            color: #94a3b8;
-        }
-
-        th.sorted .sort-icon {
-            color: var(--primary);
-            font-weight: bold;
         }
 
         td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #f1f5f9;
-            color: var(--text-main);
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--ios-gray-light);
             vertical-align: middle;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
         }
 
-        .col-mfg {
-            hyphens: auto;
-            line-height: 1.2;
-            font-size: 12px;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:hover {
-            background-color: var(--table-row-hover);
-        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr { cursor: pointer; transition: background 0.15s; }
+        tbody tr:active { background-color: var(--ios-gray-bg); }
 
         .badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 3px 6px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
-            background-color: #f1f5f9;
-            color: #475569;
-            text-align: center;
+            background-color: var(--ios-gray-bg);
+            color: var(--text-main);
         }
 
         .badge-ex {
-            background-color: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #ffedd5;
+            background-color: #FFF3E0;
+            color: #E65100;
         }
 
-        .name-cell {
+        /* Боковая панель (Drawer) - не более 2/3 экрана */
+        .drawer-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0; right: 0; bottom: 0;
+            width: 66.666vw;
+            max-width: 380px;
+            min-width: 280px;
+            background: var(--ios-bg);
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            box-shadow: -4px 0 25px rgba(0,0,0,0.15);
+        }
+
+        .drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            padding: 14px 16px;
+            background: var(--ios-card);
+            border-bottom: 1px solid var(--ios-gray-light);
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        .drawer-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .reset-btn-drawer {
+            background: none;
+            border: none;
+            color: var(--ios-blue);
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .drawer-body {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ios-gray);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            height: 38px;
+            padding: 0 10px;
+            border-radius: 8px;
+            border: 1px solid var(--ios-border);
+            background: var(--ios-card);
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Переключатели Ex / O */
+        .toggle-pair {
+            display: flex;
             gap: 8px;
         }
 
-        .name-text {
+        .toggle-item {
             flex: 1;
-            line-height: 1.35;
-        }
-
-        .icons-wrapper {
-            display: inline-flex;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 4px;
-            flex-shrink: 0;
         }
 
-        .action-icon {
-            display: inline-flex;
+        .toggle-item span {
+            font-size: 10px;
+            color: var(--ios-gray);
+            font-weight: 500;
+        }
+
+        .btn-toggle {
+            width: 100%;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--ios-border);
+            background-color: var(--ios-gray-light);
+            color: var(--ios-gray);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-toggle.ex-btn.active {
+            background-color: var(--ios-orange);
+            color: #FFF;
+            border-color: var(--ios-orange);
+        }
+
+        .btn-toggle.o-btn.active {
+            background-color: var(--ios-blue);
+            color: #FFF;
+            border-color: var(--ios-blue);
+        }
+
+        /* Модальное окно (Большая карточка iOS) */
+        .modal-overlay {
+            position: fixed;
+            top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
             align-items: center;
             justify-content: center;
-            width: 22px;
-            height: 22px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.15s ease, transform 0.1s ease;
-            user-select: none;
+            padding: 16px;
         }
 
-        .action-icon:hover {
-            background-color: #e2e8f0;
-            transform: scale(1.1);
+        .modal-overlay.open {
+            display: flex;
         }
 
-        #imgTooltip {
-            position: fixed;
-            display: none;
-            z-index: 1000;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-            pointer-events: none;
+        .modal-card {
+            background: var(--ios-card);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: modalUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        #imgTooltip img {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 4px;
-            display: block;
+        @keyframes modalUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-image-container {
+            width: 100%;
+            height: 220px;
+            background: #FAFAFC;
+            border-bottom: 1px solid var(--ios-gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .modal-image-container img {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
         }
 
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-            font-size: 15px;
+        .modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
         }
 
-        .loader {
-            text-align: center;
-            padding: 40px;
-            color: var(--primary);
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .modal-table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            border: 1px solid var(--ios-gray-light);
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 400px;
+        }
+
+        .detail-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--ios-gray-light);
+        }
+
+        .detail-table td:first-child {
             font-weight: 600;
+            color: var(--ios-gray);
+            width: 40%;
+            background: #FAFAFC;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--ios-gray-light);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            background: var(--ios-card);
+        }
+
+        .btn-modal {
+            flex: 1;
+            height: 42px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn-modal-site {
+            background: var(--ios-blue);
+            color: #FFF;
+        }
+
+        .btn-modal-close {
+            background: var(--ios-gray-bg);
+            color: var(--text-main);
+        }
+
+        .no-data, .loader {
+            text-align: center;
+            padding: 30px;
+            color: var(--ios-gray);
         }
     </style>
 </head>
@@ -337,183 +463,229 @@
     <div class="container">
         <h1 class="page-title">Подбор кабельных вводов</h1>
 
-        <div class="filter-card">
-            <!-- Первая строка фильтров -->
-            <div class="filter-row">
-                <div class="filter-item search-item">
-                    <label for="searchInput">Поиск</label>
-                    <input type="text" id="searchInput" placeholder="Поиск по названию, артикулу, заводу...">
-                </div>
-
-                <div class="filter-item">
-                    <label for="functionSelect">Тип изделия</label>
-                    <select id="functionSelect">
-                        <option value="all">Все</option>
-                        <option value="gland">Каб. ввод</option>
-                        <option value="plug">Заглушка</option>
-                        <option value="coupler">Муфта</option>
-                        <option value="adapter">Переходник</option>
-                    </select>
-                </div>
-
-                <div class="filter-item">
-                    <label for="materialSelect">Материал</label>
-                    <select id="materialSelect">
-                        <option value="">Все материалы</option>
-                    </select>
-                </div>
-
-                <button type="button" id="exBtn" class="btn-ex">Ex</button>
+        <!-- Шапка: Поиск и Фильтр -->
+        <div class="top-bar">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Поиск...">
+                <button type="button" id="clearSearchBtn" class="clear-search-btn">✕</button>
             </div>
-
-            <!-- Вторая строка фильтров -->
-            <div class="filter-row">
-                <div class="filter-item">
-                    <label for="holeInput">Посадочное</label>
-                    <input type="text" id="holeInput" placeholder="20">
-                </div>
-
-                <div class="filter-item">
-                    <label for="cableDiameterInput">Ø кабеля</label>
-                    <input type="text" id="cableDiameterInput" placeholder="12-14">
-                </div>
-
-                <div class="filter-item">
-                    <label for="armorInput">в броне</label>
-                    <input type="text" id="armorInput" placeholder="15,5-17">
-                </div>
-
-                <div class="filter-item">
-                    <label for="mrSelect">в МР</label>
-                    <select id="mrSelect">
-                        <option value="">Все</option>
-                    </select>
-                </div>
-
-                <div class="filter-item">
-                    <label for="mfgSelect">Завод</label>
-                    <select id="mfgSelect">
-                        <option value="">Все заводы</option>
-                    </select>
-                </div>
-            </div>
+            <button type="button" id="openDrawerBtn" class="btn-filter-trigger">
+                <span>Фильтр</span>
+            </button>
         </div>
 
         <div class="meta-bar">
             <span id="statusInfo">Загрузка данных...</span>
-            <span id="resetBtn" class="reset-link" style="display: none;">Сбросить фильтры</span>
         </div>
 
-        <!-- Ширина столбцов перераспределена: Наименование забирает 62% -->
+        <!-- Основная таблица -->
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;" data-sort="Manufacturer">Завод <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 8%;" data-sort="Ex">Ex <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 5%;" data-sort="Cable">Броня <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 6%;" data-sort="MR">МР <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 62%;" data-sort="ProjectName">Наименование <span class="sort-icon">▲▼</span></th>
-                        <th style="width: 9%;" data-sort="PartNumber">УПП <span class="sort-icon">▲▼</span></th>
+                        <th style="width: 15%;" data-sort="Manufacturer">Завод</th>
+                        <th style="width: 12%;" data-sort="Ex">Ex</th>
+                        <th style="width: 10%;" data-sort="Cable">Броня</th>
+                        <th style="width: 10%;" data-sort="MR">МР</th>
+                        <th style="width: 38%;" data-sort="ProjectName">Наименование</th>
+                        <th style="width: 15%;" data-sort="PartNumber">УПП</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     <tr>
-                        <td colspan="6" class="loader">Инициализация и получение таблицы...</td>
+                        <td colspan="6" class="loader">Инициализация...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="imgTooltip">
-        <img id="tooltipImg" src="" alt="Превью">
+    <!-- Боковая панель фильтров (Drawer) -->
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <div id="drawer" class="drawer">
+        <div class="drawer-header">
+            <h2>Фильтры</h2>
+            <button type="button" id="resetFiltersBtn" class="reset-link reset-btn-drawer">Сброс фильтра</button>
+        </div>
+        <div class="drawer-body">
+            <!-- Кнопка-заголовок: Тип изделия -->
+            <div class="form-group">
+                <label for="functionSelect">Тип изделия</label>
+                <select id="functionSelect" class="form-control">
+                    <option value="gland">Каб. ввод</option>
+                    <option value="adapter">Переходник</option>
+                    <option value="plug">Заглушка</option>
+                    <option value="coupler">Муфта</option>
+                    <option value="all">Все</option>
+                </select>
+            </div>
+
+            <!-- Блок кнопок Ex / O -->
+            <div id="exGroup" class="form-group">
+                <div class="toggle-pair">
+                    <div class="toggle-item">
+                        <span>Взрывозащ.</span>
+                        <button type="button" id="btnEx" class="btn-toggle ex-btn active">Ex</button>
+                    </div>
+                    <div class="toggle-item">
+                        <span>Общепром.</span>
+                        <button type="button" id="btnO" class="btn-toggle o-btn active">О</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Динамические поля -->
+            <div id="cableDiamGroup" class="form-group">
+                <label for="cableDiameterInput">Диаметр кабеля</label>
+                <input type="text" id="cableDiameterInput" class="form-control" placeholder="12-14">
+            </div>
+
+            <div id="armorGroup" class="form-group">
+                <label for="armorInput">в броне</label>
+                <input type="text" id="armorInput" class="form-control" placeholder="15,5-17">
+            </div>
+
+            <div id="mrGroup" class="form-group">
+                <label for="mrSelect">в МР</label>
+                <select id="mrSelect" class="form-control">
+                    <option value="">Все</option>
+                </select>
+            </div>
+
+            <div id="holeGroup" class="form-group">
+                <label for="holeInput">Посадочное</label>
+                <input type="text" id="holeInput" class="form-control" placeholder="20">
+            </div>
+
+            <div id="mfgGroup" class="form-group">
+                <label for="mfgSelect">Завод</label>
+                <select id="mfgSelect" class="form-control">
+                    <option value="">Все заводы</option>
+                </select>
+            </div>
+
+            <div id="materialGroup" class="form-group">
+                <label for="materialSelect">Материал</label>
+                <select id="materialSelect" class="form-control">
+                    <option value="">Все материалы</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Большая карточка товара (Modal) -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-image-container">
+                <img id="modalImg" src="" alt="Изображение отсутствует">
+            </div>
+            <div class="modal-body">
+                <div id="modalTitle" class="modal-title"></div>
+                <div class="modal-table-scroll">
+                    <table class="detail-table">
+                        <tbody id="modalTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="modalSiteBtn" href="#" target="_blank" class="btn-modal btn-modal-site">Сайт</a>
+                <button type="button" id="modalCloseBtn" class="btn-modal btn-modal-close">Закрыть</button>
+            </div>
+        </div>
     </div>
 
     <script>
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
 
-        let validRawData = []; // Данные исключительно с валидным статусом (!= FALSE)
-        let isExActive = false;
+        let validRawData = [];
         let sortColumn = null;
         let sortDirection = 'asc';
 
+        // Состояние Ex / O
+        let stateEx = true;
+        let stateO = true;
+
+        // Элементы UI
         const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const openDrawerBtn = document.getElementById('openDrawerBtn');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const drawer = document.getElementById('drawer');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
         const functionSelect = document.getElementById('functionSelect');
+        const btnEx = document.getElementById('btnEx');
+        const btnO = document.getElementById('btnO');
+
+        const exGroup = document.getElementById('exGroup');
+        const cableDiamGroup = document.getElementById('cableDiamGroup');
+        const armorGroup = document.getElementById('armorGroup');
+        const mrGroup = document.getElementById('mrGroup');
+        const holeGroup = document.getElementById('holeGroup');
+        const mfgGroup = document.getElementById('mfgGroup');
+        const materialGroup = document.getElementById('materialGroup');
+
         const materialSelect = document.getElementById('materialSelect');
         const mrSelect = document.getElementById('mrSelect');
         const mfgSelect = document.getElementById('mfgSelect');
         const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
-        const exBtn = document.getElementById('exBtn');
-        const resetBtn = document.getElementById('resetBtn');
+
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
-        const imgTooltip = document.getElementById('imgTooltip');
-        const tooltipImg = document.getElementById('tooltipImg');
 
+        // Модальное окно
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalTableBody = document.getElementById('modalTableBody');
+        const modalSiteBtn = document.getElementById('modalSiteBtn');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+        // Парсинг CSV
         function parseCSV(text) {
             let p = '', c = '', r = [];
             let q = false;
             let row = [''];
-            
             for (let i = 0; i < text.length; i++) {
-                c = text[i];
-                p = text[i - 1];
-                
+                c = text[i]; p = text[i - 1];
                 if (c === '"') {
-                    if (q && text[i + 1] === '"') {
-                        row[row.length - 1] += '"';
-                        i++;
-                    } else {
-                        q = !q;
-                    }
-                } else if (c === ',' && !q) {
-                    row.push('');
-                } else if ((c === '\r' || c === '\n') && !q) {
-                    if (c === '\r' && text[i + 1] === '\n') {
-                        i++;
-                    }
-                    r.push(row);
-                    row = [''];
-                } else {
-                    row[row.length - 1] += c;
-                }
+                    if (q && text[i + 1] === '"') { row[row.length - 1] += '"'; i++; } 
+                    else { q = !q; }
+                } else if (c === ',' && !q) { row.push(''); }
+                else if ((c === '\r' || c === '\n') && !q) {
+                    if (c === '\r' && text[i + 1] === '\n') { i++; }
+                    r.push(row); row = [''];
+                } else { row[row.length - 1] += c; }
             }
-            if (row.length > 1 || row[0] !== '') {
-                r.push(row);
-            }
-
+            if (row.length > 1 || row[0] !== '') r.push(row);
             if (r.length < 2) return [];
 
             const headers = r[1].map(h => h.trim());
             const objects = [];
-
             for (let i = 2; i < r.length; i++) {
                 const current = r[i];
                 if (current.length === 1 && current[0] === '') continue;
                 const obj = {};
                 headers.forEach((header, index) => {
-                    if (header) {
-                        obj[header] = current[index] ? current[index].trim() : '';
-                    }
+                    if (header) obj[header] = current[index] ? current[index].trim() : '';
                 });
                 objects.push(obj);
             }
-
             return objects;
         }
 
         async function fetchCSV() {
             try {
-                let response = await fetch(PRIMARY_CSV_URL);
-                if (!response.ok) throw new Error('Primary failed');
-                return await response.text();
+                let res = await fetch(PRIMARY_CSV_URL);
+                if (!res.ok) throw new Error();
+                return await res.text();
             } catch (err) {
-                let response = await fetch(PROXY_CSV_URL);
-                return await response.text();
+                let res = await fetch(PROXY_CSV_URL);
+                return await res.text();
             }
         }
 
@@ -521,35 +693,54 @@
             try {
                 const csvText = await fetchCSV();
                 const parsed = parseCSV(csvText);
-
-                // Фильтрация Status !== FALSE сразу на входе
-                validRawData = parsed.filter(item => {
-                    const statusVal = (item['Status'] || '').trim().toUpperCase();
-                    return statusVal !== 'FALSE';
-                });
-
+                validRawData = parsed.filter(item => (item['Status'] || '').trim().toUpperCase() !== 'FALSE');
+                updateLayoutByFunction();
                 populateDynamicSelects();
                 applyFilters();
             } catch (error) {
-                console.error('Ошибка:', error);
-                statusInfo.textContent = 'Ошибка загрузки данных из таблицы.';
-                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Не удалось получить данные CSV.</td></tr>';
+                statusInfo.textContent = 'Ошибка загрузки данных.';
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ошибка загрузки CSV.</td></tr>';
+            }
+        }
+
+        // Переключение отображения полей в зависимости от типа изделия
+        function updateLayoutByFunction() {
+            const func = functionSelect.value;
+            
+            // Скрываем все поля по умолчанию
+            exGroup.style.display = 'none';
+            cableDiamGroup.style.display = 'none';
+            armorGroup.style.display = 'none';
+            mrGroup.style.display = 'none';
+            holeGroup.style.display = 'none';
+
+            if (func === 'gland') { // Каб. ввод
+                exGroup.style.display = 'block';
+                cableDiamGroup.style.display = 'flex';
+                armorGroup.style.display = 'flex';
+                mrGroup.style.display = 'flex';
+                holeGroup.style.display = 'flex';
+            } else if (func === 'adapter' || func === 'plug') { // Переходник или Заглушка
+                exGroup.style.display = 'block';
+                holeGroup.style.display = 'flex';
+            } else if (func === 'coupler') { // Муфта
+                mrGroup.style.display = 'flex';
+            } else { // Все
+                exGroup.style.display = 'block';
+                cableDiamGroup.style.display = 'flex';
+                armorGroup.style.display = 'flex';
+                mrGroup.style.display = 'flex';
+                holeGroup.style.display = 'flex';
             }
         }
 
         function checkFunctionMatch(itemFunc, selectedFunc) {
             const func = (itemFunc || '').toLowerCase().trim();
-            if (selectedFunc === 'all') {
-                return true; // Показывать все типы изделий из столбца Function
-            } else if (selectedFunc === 'gland') {
-                return func === 'каб. ввод' || func === 'каб. ввод под мр';
-            } else if (selectedFunc === 'plug') {
-                return func.includes('заглушка');
-            } else if (selectedFunc === 'coupler') {
-                return func.includes('муфта вводная');
-            } else if (selectedFunc === 'adapter') {
-                return func.includes('переходник');
-            }
+            if (selectedFunc === 'all') return true;
+            if (selectedFunc === 'gland') return func === 'каб. ввод' || func === 'каб. ввод под мр';
+            if (selectedFunc === 'plug') return func.includes('заглушка');
+            if (selectedFunc === 'coupler') return func.includes('муфта вводная');
+            if (selectedFunc === 'adapter') return func.includes('переходник');
             return true;
         }
 
@@ -565,43 +756,32 @@
 
             validRawData.forEach(item => {
                 if (checkFunctionMatch(item['Function'], selectedFunc)) {
-                    const mat = item['Material'];
-                    if (mat) materials.add(mat.trim());
-
-                    const mr = item['MR'];
-                    if (mr) mrValues.add(mr.trim());
-
-                    const mfg = item['Manufacturer'];
-                    if (mfg) mfgs.add(mfg.trim());
+                    if (item['Material']) materials.add(item['Material'].trim());
+                    if (item['MR']) mrValues.add(item['MR'].trim());
+                    if (item['Manufacturer']) mfgs.add(item['Manufacturer'].trim());
                 }
             });
 
-            // Заполнение «Материал»
             materialSelect.innerHTML = '<option value="">Все материалы</option>';
             Array.from(materials).sort().forEach(mat => {
                 const opt = document.createElement('option');
-                opt.value = mat;
-                opt.textContent = mat;
+                opt.value = mat; opt.textContent = mat;
                 if (mat === currentSelectedMat) opt.selected = true;
                 materialSelect.appendChild(opt);
             });
 
-            // Заполнение «в МР»
             mrSelect.innerHTML = '<option value="">Все</option>';
             Array.from(mrValues).sort().forEach(mr => {
                 const opt = document.createElement('option');
-                opt.value = mr;
-                opt.textContent = mr;
+                opt.value = mr; opt.textContent = mr;
                 if (mr === currentSelectedMR) opt.selected = true;
                 mrSelect.appendChild(opt);
             });
 
-            // Заполнение «Завод / Производитель»
             mfgSelect.innerHTML = '<option value="">Все заводы</option>';
             Array.from(mfgs).sort().forEach(mfg => {
                 const opt = document.createElement('option');
-                opt.value = mfg;
-                opt.textContent = mfg;
+                opt.value = mfg; opt.textContent = mfg;
                 if (mfg === currentSelectedMfg) opt.selected = true;
                 mfgSelect.appendChild(opt);
             });
@@ -611,18 +791,12 @@
             if (!str) return null;
             const clean = str.replace(',', '.').replace(/мм/gi, '').trim();
             const parts = clean.split(/[-—–]/);
-            
             if (parts.length === 2) {
-                const min = parseFloat(parts[0]);
-                const max = parseFloat(parts[1]);
-                if (!isNaN(min) && !isNaN(max)) {
-                    return { min: Math.min(min, max), max: Math.max(min, max) };
-                }
+                const min = parseFloat(parts[0]), max = parseFloat(parts[1]);
+                if (!isNaN(min) && !isNaN(max)) return { min: Math.min(min, max), max: Math.max(min, max) };
             } else if (parts.length === 1) {
                 const num = parseFloat(parts[0]);
-                if (!isNaN(num)) {
-                    return { min: num, max: num };
-                }
+                if (!isNaN(num)) return { min: num, max: num };
             }
             return null;
         }
@@ -631,15 +805,9 @@
             if (!valStr) return null;
             const cleanStr = valStr.replace(',', '.').trim();
             const match = cleanStr.match(/([\d.]+)\s*[-—–]\s*([\d.]+)/);
-
-            if (match) {
-                return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
-            } else {
-                const singleNum = parseFloat(cleanStr);
-                if (!isNaN(singleNum)) {
-                    return { min: singleNum, max: singleNum };
-                }
-            }
+            if (match) return { min: parseFloat(match[1]), max: parseFloat(match[2]) };
+            const singleNum = parseFloat(cleanStr);
+            if (!isNaN(singleNum)) return { min: singleNum, max: singleNum };
             return null;
         }
 
@@ -647,18 +815,32 @@
             if (!inputRange) return true;
             const dataRange = extractDataRange(dataValueStr);
             if (!dataRange) return false;
-
             return dataRange.min <= inputRange.min && dataRange.max >= inputRange.max;
         }
 
         function extractSizeNumber(str) {
             if (!str) return null;
-            const clean = str.replace(',', '.');
-            const match = clean.match(/M?\s*(\d+(?:\.\d+)?)/i);
+            const match = str.replace(',', '.').match(/M?\s*(\d+(?:\.\d+)?)/i);
             return match ? parseFloat(match[1]) : null;
         }
 
+        function checkIsFilterActive() {
+            const isDefaultFunc = functionSelect.value === 'gland';
+            const hasTextSearch = searchInput.value.trim() !== '';
+            const hasMat = materialSelect.value !== '';
+            const hasMR = mrSelect.value !== '';
+            const hasMfg = mfgSelect.value !== '';
+            const hasHole = holeInput.value.trim() !== '';
+            const hasCable = cableDiameterInput.value.trim() !== '';
+            const hasArmor = armorInput.value.trim() !== '';
+            const hasExChanged = !stateEx || !stateO;
+
+            const isFiltered = !isDefaultFunc || hasTextSearch || hasMat || hasMR || hasMfg || hasHole || hasCable || hasArmor || hasExChanged;
+            openDrawerBtn.classList.toggle('active', isFiltered);
+        }
+
         function applyFilters() {
+            checkIsFilterActive();
             const query = searchInput.value.trim().toLowerCase();
             const selectedFunc = functionSelect.value;
             const selectedMat = materialSelect.value;
@@ -668,76 +850,40 @@
             const cableRange = parseRangeInput(cableDiameterInput.value);
             const armorRange = parseRangeInput(armorInput.value);
 
-            const hasActiveFilters = query !== '' || selectedFunc !== 'all' || selectedMat !== '' || selectedMR !== '' || selectedMfg !== '' || !isNaN(holeVal) || cableRange !== null || armorRange !== null || isExActive;
-            resetBtn.style.display = hasActiveFilters ? 'inline' : 'none';
-
             let filtered = validRawData.filter(item => {
-                // Глобальный поиск по всем текстам строки
                 if (query !== '') {
                     const fullText = `${item['ProjectName'] || ''} ${item['PartNumber'] || ''} ${item['Manufacturer'] || ''} ${item['Size/thread'] || ''}`.toLowerCase();
                     if (!fullText.includes(query)) return false;
                 }
 
-                // Тип изделия
-                if (!checkFunctionMatch(item['Function'], selectedFunc)) {
-                    return false;
-                }
+                if (!checkFunctionMatch(item['Function'], selectedFunc)) return false;
+                if (selectedMat !== '' && (item['Material'] || '').trim() !== selectedMat) return false;
+                if (selectedMfg !== '' && (item['Manufacturer'] || '').trim() !== selectedMfg) return false;
 
-                // Материал
-                if (selectedMat !== '' && (item['Material'] || '').trim() !== selectedMat) {
-                    return false;
-                }
-
-                // Производитель / Завод
-                if (selectedMfg !== '' && (item['Manufacturer'] || '').trim() !== selectedMfg) {
-                    return false;
-                }
-
-                // Посадочное отверстие
-                if (!isNaN(holeVal)) {
+                if (!isNaN(holeVal) && (selectedFunc === 'gland' || selectedFunc === 'adapter' || selectedFunc === 'plug' || selectedFunc === 'all')) {
                     const itemHoleNum = extractSizeNumber(item['Size/thread']);
                     if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
                 }
 
-                // Диаметр кабеля
-                if (cableRange && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) {
-                    return false;
-                }
+                if (cableRange && (selectedFunc === 'gland' || selectedFunc === 'all') && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) return false;
+                if (armorRange && (selectedFunc === 'gland' || selectedFunc === 'all') && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) return false;
+                if (selectedMR !== '' && (selectedFunc === 'gland' || selectedFunc === 'coupler' || selectedFunc === 'all') && (item['MR'] || '').trim() !== selectedMR) return false;
 
-                // В броне
-                if (armorRange && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) {
-                    return false;
-                }
-
-                // В МР
-                if (selectedMR !== '' && (item['MR'] || '').trim() !== selectedMR) {
-                    return false;
-                }
-
-                // Кнопка Ex
-                const exVal = (item['Ex'] || '').toLowerCase();
-                const isExRow = exVal.includes('ex');
-                
-                if (isExActive) {
-                    if (!isExRow) return false;
-                } else {
-                    if (isExRow) return false;
+                // Фильтрация Ex / O
+                if (selectedFunc !== 'coupler') {
+                    const exVal = (item['Ex'] || '').toLowerCase();
+                    const isExRow = exVal.includes('ex');
+                    if (isExRow && !stateEx) return false;
+                    if (!isExRow && !stateO) return false;
                 }
 
                 return true;
             });
 
-            // Сортировка по колонкам
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valA = a[sortColumn] || '';
                     let valB = b[sortColumn] || '';
-
-                    if (sortColumn === 'Cable') {
-                        if (valA.trim() === '(для брони)') valA = 'Б';
-                        if (valB.trim() === '(для брони)') valB = 'Б';
-                    }
-
                     const comp = valA.localeCompare(valB, 'ru', { numeric: true, sensitivity: 'base' });
                     return sortDirection === 'asc' ? comp : -comp;
                 });
@@ -747,160 +893,133 @@
         }
 
         function renderTable(data) {
-            // Подсчет позиций без записей со статусом FALSE
             statusInfo.textContent = `Показано позиций: ${data.length} из ${validRawData.length}`;
-
             if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ничего не найдено по вашему запросу</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ничего не найдено</td></tr>';
                 return;
             }
 
-            const html = data.map(item => {
+            tableBody.innerHTML = data.map((item, index) => {
                 const exText = item['Ex'] || item['Explosion protection'] || '-';
                 const isEx = exText.toLowerCase().includes('ex');
-
                 let cableVal = item['Cable'] || '-';
-                if (cableVal.trim() === '(для брони)') {
-                    cableVal = '<strong>Б</strong>';
-                }
-
-                const imgUrl = item['IMG'] || '';
-                const linkUrl = item['Link'] || '';
-
-                let iconsHtml = '';
-                if (imgUrl || linkUrl) {
-                    iconsHtml += '<span class="icons-wrapper">';
-                    if (imgUrl) {
-                        iconsHtml += `<a href="${imgUrl}" target="_blank" class="action-icon img-icon" data-img="${imgUrl}" title="Открыть картинку">🖼️</a>`;
-                    }
-                    if (linkUrl) {
-                        iconsHtml += `<a href="${linkUrl}" target="_blank" class="action-icon" title="Перейти на страницу товара">🌐</a>`;
-                    }
-                    iconsHtml += '</span>';
-                }
+                if (cableVal.trim() === '(для брони)') cableVal = '<strong>Б</strong>';
 
                 return `
-                    <tr>
-                        <td class="col-mfg"><strong>${item['Manufacturer'] || '-'}</strong></td>
+                    <tr onclick="openModal(${index})" data-index="${index}">
+                        <td><strong>${item['Manufacturer'] || '-'}</strong></td>
                         <td>${isEx ? `<span class="badge badge-ex">${exText}</span>` : `<span class="badge">${exText}</span>`}</td>
                         <td style="text-align: center;">${cableVal}</td>
                         <td>${item['MR'] || '-'}</td>
-                        <td>
-                            <div class="name-cell">
-                                <span class="name-text">${item['ProjectName'] || '-'}</span>
-                                ${iconsHtml}
-                            </div>
-                        </td>
-                        <td><code style="font-size:11px; font-weight:600; color:#475569;">${item['PartNumber'] || '-'}</code></td>
+                        <td>${item['ProjectName'] || '-'}</td>
+                        <td><code style="font-size:11px; font-weight:600;">${item['PartNumber'] || '-'}</code></td>
                     </tr>
                 `;
             }).join('');
 
-            tableBody.innerHTML = html;
-
-            document.querySelectorAll('.img-icon').forEach(icon => {
-                icon.addEventListener('mouseenter', (e) => {
-                    const url = icon.getAttribute('data-img');
-                    if (url) {
-                        tooltipImg.src = url;
-                        imgTooltip.style.display = 'block';
-                        positionTooltip(e);
-                    }
-                });
-
-                icon.addEventListener('mousemove', (e) => {
-                    positionTooltip(e);
-                });
-
-                icon.addEventListener('mouseleave', () => {
-                    imgTooltip.style.display = 'none';
-                    tooltipImg.src = '';
-                });
-            });
+            // Привязка открытий карточек к отфильтрованным объектам
+            window.currentFilteredData = data;
         }
 
-        function positionTooltip(e) {
-            const offset = 15;
-            let x = e.clientX + offset;
-            let y = e.clientY + offset;
+        // Открытие карточки
+        window.openModal = function(index) {
+            const item = window.currentFilteredData[index];
+            if (!item) return;
 
-            if (x + 220 > window.innerWidth) {
-                x = e.clientX - 220;
-            }
-            if (y + 220 > window.innerHeight) {
-                y = e.clientY - 220;
-            }
+            modalImg.src = item['IMG'] || '';
+            modalImg.style.display = item['IMG'] ? 'block' : 'none';
+            modalTitle.textContent = item['ProjectName'] || 'Детали изделия';
 
-            imgTooltip.style.left = x + 'px';
-            imgTooltip.style.top = y + 'px';
-        }
-
-        document.querySelectorAll('th[data-sort]').forEach(th => {
-            th.addEventListener('click', () => {
-                const colKey = th.getAttribute('data-sort');
-                
-                if (sortColumn === colKey) {
-                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    sortColumn = colKey;
-                    sortDirection = 'asc';
+            modalTableBody.innerHTML = '';
+            Object.keys(item).forEach(key => {
+                const val = item[key];
+                if (val && val !== '-' && val.trim() !== '' && key !== 'IMG' && key !== 'Link' && key !== 'Status') {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${key}</td><td>${val}</td>`;
+                    modalTableBody.appendChild(tr);
                 }
-
-                document.querySelectorAll('th').forEach(header => {
-                    header.classList.remove('sorted');
-                    const icon = header.querySelector('.sort-icon');
-                    if (icon) icon.textContent = '▲▼';
-                });
-
-                th.classList.add('sorted');
-                const activeIcon = th.querySelector('.sort-icon');
-                if (activeIcon) {
-                    activeIcon.textContent = sortDirection === 'asc' ? '▲' : '▼';
-                }
-
-                applyFilters();
             });
+
+            if (item['Link']) {
+                modalSiteBtn.href = item['Link'];
+                modalSiteBtn.style.display = 'flex';
+            } else {
+                modalSiteBtn.style.display = 'none';
+            }
+
+            modalOverlay.classList.add('open');
+        };
+
+        modalCloseBtn.addEventListener('click', () => modalOverlay.classList.remove('open'));
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) modalOverlay.classList.remove('open');
         });
 
-        functionSelect.addEventListener('change', () => {
-            populateDynamicSelects();
+        // Управление Drawer
+        openDrawerBtn.addEventListener('click', () => {
+            drawerOverlay.classList.add('open');
+            drawer.classList.add('open');
+        });
+
+        function closeDrawer() {
+            drawerOverlay.classList.remove('open');
+            drawer.classList.remove('open');
+        }
+
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        // Логика Ex / O
+        btnEx.addEventListener('click', () => {
+            stateEx = !stateEx;
+            btnEx.classList.toggle('active', stateEx);
             applyFilters();
         });
 
-        [searchInput, holeInput, cableDiameterInput, armorInput].forEach(input => {
-            input.addEventListener('input', applyFilters);
-        });
-
-        materialSelect.addEventListener('change', applyFilters);
-        mrSelect.addEventListener('change', applyFilters);
-        mfgSelect.addEventListener('change', applyFilters);
-
-        exBtn.addEventListener('click', () => {
-            isExActive = !isExActive;
-            exBtn.classList.toggle('active', isExActive);
+        btnO.addEventListener('click', () => {
+            stateO = !stateO;
+            btnO.classList.toggle('active', stateO);
             applyFilters();
         });
 
-        resetBtn.addEventListener('click', () => {
+        // Поиск с крестиком
+        searchInput.addEventListener('input', () => {
+            clearSearchBtn.style.display = searchInput.value ? 'flex' : 'none';
+            applyFilters();
+        });
+
+        clearSearchBtn.addEventListener('click', () => {
             searchInput.value = '';
-            functionSelect.value = 'all';
+            clearSearchBtn.style.display = 'none';
+            applyFilters();
+        });
+
+        // Тип изделия
+        functionSelect.addEventListener('change', () => {
+            updateLayoutByFunction();
             populateDynamicSelects();
+            applyFilters();
+        });
+
+        [holeInput, cableDiameterInput, armorInput].forEach(input => input.addEventListener('input', applyFilters));
+        [materialSelect, mrSelect, mfgSelect].forEach(select => select.addEventListener('change', applyFilters));
+
+        // Сброс фильтров
+        resetFiltersBtn.addEventListener('click', () => {
+            functionSelect.value = 'gland';
+            updateLayoutByFunction();
+            populateDynamicSelects();
+
             materialSelect.value = '';
             mrSelect.value = '';
             mfgSelect.value = '';
             holeInput.value = '';
             cableDiameterInput.value = '';
             armorInput.value = '';
-            isExActive = false;
-            exBtn.classList.remove('active');
-            
-            sortColumn = null;
-            sortDirection = 'asc';
-            document.querySelectorAll('th').forEach(header => {
-                header.classList.remove('sorted');
-                const icon = header.querySelector('.sort-icon');
-                if (icon) icon.textContent = '▲▼';
-            });
+
+            stateEx = true;
+            stateO = true;
+            btnEx.classList.add('active');
+            btnO.classList.add('active');
 
             applyFilters();
         });

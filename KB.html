@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0038)https://ewgenoff.github.io/KIP/KB.html -->
+<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Подбор кабельных вводов</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./Подбор кабельных вводов_files/css2" rel="stylesheet">
     <style>
         :root {
             --ios-bg: #f2f2f7;
@@ -549,17 +549,17 @@
         <div class="top-bar">
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Поиск по всем параметрам...">
-                <button type="button" id="clearSearchBtn" class="clear-search-btn">✕</button>
+                <input type="text" id="searchInput" placeholder="Поиск по всем параметрам..." wfd-id="id0">
+                <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display: none;">✕</button>
             </div>
-            <button type="button" id="openDrawerBtn" class="btn-top">
+            <button type="button" id="openDrawerBtn" class="btn-top active">
                 <span>Фильтр</span>
             </button>
-            <button type="button" id="resetTopBtn" class="btn-top btn-reset-top">Сброс</button>
+            <button type="button" id="resetTopBtn" class="btn-top btn-reset-top" style="display: flex;">Сброс</button>
         </div>
 
         <div class="meta-bar">
-            <span id="statusInfo">Загрузка данных...</span>
+            <span id="statusInfo">213 из 213</span>
         </div>
 
         <div class="table-wrapper">
@@ -567,7 +567,7 @@
                 <thead>
                     <tr>
                         <th style="width: 8%;" data-sort="Manufacturer">Завод</th>
-                        <th style="width: 5%;" data-sort="Ex" title="Исполнение КВ Взрывозащищенное или Общепромышенное">Ex/O</th>
+                        <th style="width: 5%;" data-sort="Ex" title="Исполнение КВ Взрывозащищ. или Общепром.">Ex/O</th>
                         <th style="width: 5%;" data-sort="Cable" title="Оболочка кабеля (Б - для кабелей в броне, У - универсальный, в броне и без)">Кабель</th>
                         <th style="width: 5%;" data-sort="MR" title="Типоразмер металлорукава">МР</th>
                         <th style="width: 67%;" data-sort="ProjectName">Наименование</th>
@@ -575,7 +575,2348 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr><td colspan="6" class="loader">Инициализация...</td></tr>
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(0)" style="cursor:pointer; font-weight:500;">Адаптер АВЭМ-2 М20/М25 ник. латунь Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000065564&#39;, &#39;УПП скопирован&#39;)">УП000065564</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(1)" style="cursor:pointer; font-weight:500;">Адаптер АВЭМ-2 G1/2"/М20 ник. латунь Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000062182&#39;, &#39;УПП скопирован&#39;)">УП000062182</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Феррум</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(2)" style="cursor:pointer; font-weight:500;">Втулка под металлорукав  Ду15 цинк Феррум</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000008771&#39;, &#39;УПП скопирован&#39;)">УП000008771</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Мир РТИ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(3)" style="cursor:pointer; font-weight:500;">Втулка электротехническая закруг. 10, резина (Dk=10; Dотв=15; Dнар=22; Паз=2) Мир РТИ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000127475&#39;, &#39;УПП скопирован&#39;)">УП000127475</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Мир РТИ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(4)" style="cursor:pointer; font-weight:500;">Втулка электротехническая закруг. 12, резина (Dk=12; Dотв=16; Dнар=22; Паз=1,8) Мир РТИ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000127476&#39;, &#39;УПП скопирован&#39;)">УП000127476</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Мир РТИ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(5)" style="cursor:pointer; font-weight:500;">Втулка электротехническая закруг. 14, резина (Dk=14; Dотв=18; Dнар=24; Паз=2) Мир РТИ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000127477&#39;, &#39;УПП скопирован&#39;)">УП000127477</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Мир РТИ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(6)" style="cursor:pointer; font-weight:500;">Втулка электротехническая закруг. 8, резина (Dk=8; Dотв=12; Dнар=18; Паз=2) Мир РТИ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000127474&#39;, &#39;УПП скопирован&#39;)">УП000127474</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(7)" style="cursor:pointer; font-weight:500;">Гайка заземляющая Г32Л-М 20х1,5 ник. латунь zeta33327 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221286&#39;, &#39;УПП скопирован&#39;)">УП000221286</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(8)" style="cursor:pointer; font-weight:500;">Гайка заземляющая Г32Л-М 25х1,5 ник. латунь zeta33330 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221287&#39;, &#39;УПП скопирован&#39;)">УП000221287</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(9)" style="cursor:pointer; font-weight:500;">Гайка заземляющая Г32Л-М 32х1,5 ник. латунь zeta33333 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221288&#39;, &#39;УПП скопирован&#39;)">УП000221288</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(10)" style="cursor:pointer; font-weight:500;">Гайка заземляющая Г32Л-М 50х1,5 ник. латунь zeta33341 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225262&#39;, &#39;УПП скопирован&#39;)">УП000225262</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(11)" style="cursor:pointer; font-weight:500;">Заглушка ВЗН1МНК М20х1,5 круглая, ник. латунь, 1Ex db IIC Gb/1Ex e IIC Gb... (D=20мм GL=17мм) IP68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000030811&#39;, &#39;УПП скопирован&#39;)">УП000030811</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(12)" style="cursor:pointer; font-weight:500;">Заглушка ВЗНП2М М25х1,5 круглая, полиамид (D=25мм GL=15мм), Ех е, IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000193639&#39;, &#39;УПП скопирован&#39;)">УП000193639</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(13)" style="cursor:pointer; font-weight:500;">Заглушка ATELEX 16Т Ni (ник. латунь), М16х1,5 6g, Ex db IIC Gb U/Ex eb IIC Gb U, IP66/67/68 (арт. 16T 05)</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283915&#39;, &#39;УПП скопирован&#39;)">УП000283915</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(14)" style="cursor:pointer; font-weight:500;">Заглушка ATELEX 20Т Ni (ник. латунь), М20х1,5 6g, Ex db IIC Gb U/Ex eb IIC Gb U, IP66/67/68 (арт. 20T 05)</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283916&#39;, &#39;УПП скопирован&#39;)">УП000283916</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(15)" style="cursor:pointer; font-weight:500;">Заглушка ATELEX 25Т Ni (ник. латунь), М25х1,5 6g, Ex db IIC Gb U/Ex eb IIC Gb U, IP66/67/68 (арт. 25T 05)</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283917&#39;, &#39;УПП скопирован&#39;)">УП000283917</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(16)" style="cursor:pointer; font-weight:500;">Заглушка М16х1,5 круглая, ник. латунь (D=16мм GL=6мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000214549&#39;, &#39;УПП скопирован&#39;)">УП000214549</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(17)" style="cursor:pointer; font-weight:500;">Заглушка М25х1,5 круглая, ник. латунь (D=25мм GL=6.5мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139304&#39;, &#39;УПП скопирован&#39;)">УП000139304</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(18)" style="cursor:pointer; font-weight:500;">Заглушка М32х1,5 круглая, ник. латунь (D=32мм GL=7мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000178009&#39;, &#39;УПП скопирован&#39;)">УП000178009</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(19)" style="cursor:pointer; font-weight:500;">Заглушка М40х1,5 круглая, ник. латунь (D=40мм GL=8 мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000271721&#39;, &#39;УПП скопирован&#39;)">УП000271721</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(20)" style="cursor:pointer; font-weight:500;">Заглушка М50х1,5 круглая, ник. латунь (D=50мм GL=13мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000271722&#39;, &#39;УПП скопирован&#39;)">УП000271722</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(21)" style="cursor:pointer; font-weight:500;">Заглушка М50х1,5 круглая, полиамид (D=50мм GL=13мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156503&#39;, &#39;УПП скопирован&#39;)">УП000156503</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(22)" style="cursor:pointer; font-weight:500;">Заглушка М63х1,5 круглая, полиамид (D=63мм GL=13мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156504&#39;, &#39;УПП скопирован&#39;)">УП000156504</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(23)" style="cursor:pointer; font-weight:500;">Заглушка М20х1,5 шестигранная, ник. латунь (D=20мм GL=6 мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000214932&#39;, &#39;УПП скопирован&#39;)">УП000214932</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(24)" style="cursor:pointer; font-weight:500;">Заглушка М40х1,5 шестигранная, ник. латунь (D=40мм GL=8 мм) IP68 Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235571&#39;, &#39;УПП скопирован&#39;)">УП000235571</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>-</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(25)" style="cursor:pointer; font-weight:500;">Заглушка MG20 чёрный пластик (D=20мм)</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000043103&#39;, &#39;УПП скопирован&#39;)">00000043103</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(26)" style="cursor:pointer; font-weight:500;">Защитный колпачок ЗК38-110 ПВХ Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;F0000007533&#39;, &#39;УПП скопирован&#39;)">F0000007533</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>38</td>
+                        <td onclick="openModal(27)" style="cursor:pointer; font-weight:500;">Каб. ввод КОВТВ3M4GНК/P + AB-5GВ-4GН + РКН38 ник. латунь (Dk=12-25, Dkб=15-31), 1Ex db IIC Gb IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153532&#39;, &#39;УПП скопирован&#39;)">УП000153532</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(28)" style="cursor:pointer; font-weight:500;">Каб. ввод М16х1,5 ник. латунь (DK=4-8мм GL=7мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153733&#39;, &#39;УПП скопирован&#39;)">УП000153733</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(29)" style="cursor:pointer; font-weight:500;">Каб. ввод М16х1,5 ник. латунь (DK=5-10мм GL=7мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000113756&#39;, &#39;УПП скопирован&#39;)">00000113756</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(30)" style="cursor:pointer; font-weight:500;">Каб. ввод М19х1,5 ник. латунь (DK=6-12мм GL=7мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000104484&#39;, &#39;УПП скопирован&#39;)">00000104484</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(31)" style="cursor:pointer; font-weight:500;">Каб. ввод М20х1,5 ник. латунь (DK=6-12мм GL=7мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000112833&#39;, &#39;УПП скопирован&#39;)">00000112833</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(32)" style="cursor:pointer; font-weight:500;">Каб. ввод М25х1,5 ник. латунь (DK=12-16мм GL=9мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000113757&#39;, &#39;УПП скопирован&#39;)">00000113757</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(33)" style="cursor:pointer; font-weight:500;">Каб. ввод М27х1,5 ник. латунь (DK=13-18мм GL=9мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000238036&#39;, &#39;УПП скопирован&#39;)">УП000238036</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(34)" style="cursor:pointer; font-weight:500;">Каб. ввод М32х1,5 ник. латунь (DK=15-22мм GL=10мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000112903&#39;, &#39;УПП скопирован&#39;)">00000112903</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(35)" style="cursor:pointer; font-weight:500;">Каб. ввод М40х1,5 ник. латунь (DK=22-30мм GL=15мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000113758&#39;, &#39;УПП скопирован&#39;)">00000113758</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(36)" style="cursor:pointer; font-weight:500;">Каб. ввод М50х1,5 ник. латунь (DK=32-38мм GL=15мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000113755&#39;, &#39;УПП скопирован&#39;)">00000113755</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(37)" style="cursor:pointer; font-weight:500;">Каб. ввод М63х1,5 ник. латунь (DK=37-44мм GL=13мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000103152&#39;, &#39;УПП скопирован&#39;)">00000103152</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(38)" style="cursor:pointer; font-weight:500;">Каб. ввод М72х1,5 ник. латунь (DK=42-52мм GL=15мм) Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235265&#39;, &#39;УПП скопирован&#39;)">УП000235265</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>EKF</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(39)" style="cursor:pointer; font-weight:500;">Каб. ввод МG50х1,5 полиамид (DK=30-42мм GL=23мм) IP68 plc-mg-50 EKF</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156599&#39;, &#39;УПП скопирован&#39;)">УП000156599</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>EKF</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(40)" style="cursor:pointer; font-weight:500;">Каб. ввод МG63х1,5 полиамид (DK=40-52мм GL=24мм) IP68 plc-mg-63 EKF</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156600&#39;, &#39;УПП скопирован&#39;)">УП000156600</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(41)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. 20AK Ni ник. латунь (Dk=6,5-13,9, Dkб=12,5-20,9) IP66/67/68 20AK 05 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225443&#39;, &#39;УПП скопирован&#39;)">УП000225443</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(42)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. 25AK ник. латунь (Dk=11,1-19,9, Dkб=18,2-26,2) IP66/67/68 25AK 05 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000241711&#39;, &#39;УПП скопирован&#39;)">УП000241711</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(43)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. 32AK ник. латунь (Dk=17-25,9, Dkб=23,7-33,9) IP66/67/68 32AK 05 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225444&#39;, &#39;УПП скопирован&#39;)">УП000225444</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(44)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. 50sAK Ni ник. латунь (Dk=31-38,2, Dkб=35,2-46,7) IP66/67/68 50sAK 05 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225445&#39;, &#39;УПП скопирован&#39;)">УП000225445</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(45)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. 63sAK Ni ник. латунь (Dk=45,6-59,4, Dkб=41,6-59,9) IP66/67/68 63sAK 05 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000279837&#39;, &#39;УПП скопирован&#39;)">УП000279837</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(46)" style="cursor:pointer; font-weight:500;">Каб. ввод М20х1,5 ник. латунь (DK=10-14мм GL=9мм) zeta30122 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000284226&#39;, &#39;УПП скопирован&#39;)">УП000284226</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(47)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. ВКБ3-ЛС-M20-14-20 ник. латунь (Dk=14, Dkб=12-20) IP68,  без контргайки zeta34502 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000220962&#39;, &#39;УПП скопирован&#39;)">УП000220962</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(48)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. ВКБ3-ЛС-M25-20-26 ник. латунь (Dk=20, Dkб=18-26) IP68,  без контргайки zeta34504 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000220963&#39;, &#39;УПП скопирован&#39;)">УП000220963</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(49)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. ВКБ3-ЛС-M32-20-26 ник. латунь (Dk=20, Dkб=18-26) IP68,  без контргайки zeta34505 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221285&#39;, &#39;УПП скопирован&#39;)">УП000221285</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(50)" style="cursor:pointer; font-weight:500;">Каб. ввод под бронир. ВКБ3-ЛС-M50-33-38 ник. латунь (Dk=33, Dkб=30-38) IP68,  без контргайки zeta34509 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225261&#39;, &#39;УПП скопирован&#39;)">УП000225261</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(51)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М16-12-МР15 ник. латунь (Dk=6-12; Dмр=21; Dотв=16,7) IP66/IP67/IP68 zeta30011 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000102718&#39;, &#39;УПП скопирован&#39;)">00000102718</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(52)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М20-12-МР15 ник. латунь (Dk=6-12; Dмр=21; Dотв=20,7) IP66/IP67/IP68 zeta30012 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000105976&#39;, &#39;УПП скопирован&#39;)">00000105976</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(53)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М20-16-МР20 ник. латунь (Dk=8-16; Dмр=26,5; Dотв=20,7) IP66/IP67/IP68 zeta30013 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000103212&#39;, &#39;УПП скопирован&#39;)">00000103212</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(54)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М25-16-МР20 ник. латунь (Dk=8-16; Dмр=26,5; Dотв=25,7) IP66/IP67/IP68 zeta30014 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125802&#39;, &#39;УПП скопирован&#39;)">УП000125802</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(55)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М25-18-МР20 ник. латунь (Dk=13-18; Dмр=26,5; Dотв=25,7) IP66/IP67/IP68 zeta30015 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000104534&#39;, &#39;УПП скопирован&#39;)">00000104534</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(56)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М25-18-МР25 ник. латунь (Dk=13-18; Dмр=33,5; Dотв=25,7) IP66/IP67/IP68 zeta30016 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000102719&#39;, &#39;УПП скопирован&#39;)">00000102719</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(57)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М32-16-МР20 ник. латунь (Dk=8-16; Dмр=26,5; Dотв=32,7) IP66/IP67/IP68 zeta30021 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139625&#39;, &#39;УПП скопирован&#39;)">УП000139625</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(58)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М32-18-МР25 ник. латунь (Dk=13-18; Dмр=33,5; Dотв=32,7) IP66/IP67/IP68 zeta30017 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125803&#39;, &#39;УПП скопирован&#39;)">УП000125803</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(59)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М32-25-МР25 ник. латунь (Dk=16-25; Dмр=33,5; Dотв=32,7) IP66/IP67/IP68 zeta30018 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000080957&#39;, &#39;УПП скопирован&#39;)">УП000080957</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>32</td>
+                        <td onclick="openModal(60)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М32-25-МР32 ник. латунь (Dk=16-25; Dмр=41; Dотв=32,7) IP66/IP67/IP68 zeta30019 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000103211&#39;, &#39;УПП скопирован&#39;)">00000103211</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>32</td>
+                        <td onclick="openModal(61)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М40-25-МР32 ник. латунь (Dk=16-25; Dмр=41; Dотв=40,7) IP66/IP67/IP68 zeta30022 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000065061&#39;, &#39;УПП скопирован&#39;)">УП000065061</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(62)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М40-25-МР38 ник. латунь (Dk=16-25; Dмр=46,8; Dотв=40,7) IP66/IP67/IP68 zeta30023 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139309&#39;, &#39;УПП скопирован&#39;)">УП000139309</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(63)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М40-30-МР38 ник. латунь (Dk=22-30; Dмр=46,8; Dотв=40,7) IP66/IP67/IP68 zeta30024 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000065062&#39;, &#39;УПП скопирован&#39;)">УП000065062</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>50</td>
+                        <td onclick="openModal(64)" style="cursor:pointer; font-weight:500;">Каб. ввод под металлорукав ВК-М50-38-МР50 ник. латунь (Dk=30-38; Dмр=59; Dотв=50,7) IP66/IP67/IP68 zeta30033 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000067223&#39;, &#39;УПП скопирован&#39;)">УП000067223</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(65)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВ01МНК/Р/КГ М16х1,5 ник. латунь (Dk=3-8) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000181682&#39;, &#39;УПП скопирован&#39;)">УП000181682</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(66)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВ1МНК/Р М20х1,5 ник. латунь (Dk=6-12) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000023175&#39;, &#39;УПП скопирован&#39;)">УП000023175</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(67)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВ4МНК/Р М40х1,5 ник. латунь (Dk=18-31) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000239830&#39;, &#39;УПП скопирован&#39;)">УП000239830</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(68)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ1М-15НК/Р М20х1,5 ник. латунь (Dk=6-12) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000065563&#39;, &#39;УПП скопирован&#39;)">УП000065563</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(69)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ1М-20НК/Р М20х1,5 ник. латунь (Dk=3-12) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000252904&#39;, &#39;УПП скопирован&#39;)">УП000252904</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(70)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ2М-20НК/Р/УКФ ник. латунь (М25х1,5; Dk=6-17; МР20) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000240590&#39;, &#39;УПП скопирован&#39;)">УП000240590</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(71)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ2М-25НК/Р/УКФ ник. латунь (М25х1,5; Dk=6-17; МР25) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000254644&#39;, &#39;УПП скопирован&#39;)">УП000254644</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(72)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ2M-25HK/Р ник. латунь (Dk=6-17; Dмр=33,5; Dотв=25,7) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000256795&#39;, &#39;УПП скопирован&#39;)">УП000256795</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>32</td>
+                        <td onclick="openModal(73)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ3М-32НК/Р/УКФ ник. латунь (М32х1,5; Dk=12-22; МР32) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000250223&#39;, &#39;УПП скопирован&#39;)">УП000250223</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(74)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ4М-38НК/Р/УКФ ник. латунь (М40х1,5; Dk=16-29; МР38) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255982&#39;, &#39;УПП скопирован&#39;)">УП000255982</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>50</td>
+                        <td onclick="openModal(75)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВМ5М-50НК/Р/УКФ ник. латунь (М50х1,5; Dk=31-39; МР50) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000250224&#39;, &#39;УПП скопирован&#39;)">УП000250224</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(76)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВТВ1MGHK/Р/A31+РКН15 ник. латунь (Dk=6-12) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000239222&#39;, &#39;УПП скопирован&#39;)">УП000239222</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(77)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВТВ2MGHK/Р/A31+РКН20 ник. латунь (Dk=6-18) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235579&#39;, &#39;УПП скопирован&#39;)">УП000235579</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(78)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd КНВТВ4M5GHK/Р+РКН38 ник. латунь (Dk=18-31) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255983&#39;, &#39;УПП скопирован&#39;)">УП000255983</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(79)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. АВВКм-25м М20 ник. латунь (Dk=5-14, Dkб=10-21) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000054159&#39;, &#39;УПП скопирован&#39;)">УП000054159</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(80)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. АВВКу-20 ник. латунь (Dk=5,5-14, Dkб=10-19) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000043052&#39;, &#39;УПП скопирован&#39;)">00000043052</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(81)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. АВВКу-25 ник. латунь (Dk=8-18, Dkб=15-24) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000132995&#39;, &#39;УПП скопирован&#39;)">УП000132995</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Норд-Инжиниринг</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>50</td>
+                        <td onclick="openModal(82)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КВБ 50-МТН2G + РКв50 ник. латунь (Dk=31-39, Dkб=36-46) IP66/67/68 Норд-Инжиниринг</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156159&#39;, &#39;УПП скопирован&#39;)">УП000156159</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Спектрон</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(83)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КВБ-18/12-М цинк (Dквн=14-18; Dпр=8-12, М20х1,5) IP68 Спектрон</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000126070&#39;, &#39;УПП скопирован&#39;)">УП000126070</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(84)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВ01MHK ник. латунь (Dk=3-8, Dkб=8-12) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000212460&#39;, &#39;УПП скопирован&#39;)">УП000212460</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(85)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВ1МНК/Р М20х1,5 ник. латунь (Dk=3-12, Dkб=9-17) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;F0000000797&#39;, &#39;УПП скопирован&#39;)">F0000000797</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(86)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВ2MHK/Р ник. латунь (Dk=6-18, Dkб=9-25) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000212459&#39;, &#39;УПП скопирован&#39;)">УП000212459</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(87)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВ3MHK/Р ник. латунь (Dk=12-25, Dkб=15-31) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000212458&#39;, &#39;УПП скопирован&#39;)">УП000212458</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(88)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВ4MHK/Р ник. латунь (Dk=18-31, Dkб=24-37) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000212457&#39;, &#39;УПП скопирован&#39;)">УП000212457</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>20</td>
+                        <td onclick="openModal(89)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ1M2GНК/Р/УКФ/А31+РКн20 ник. латунь (М20х1,5; Dk=3-12/9-17; МР20) IP66/IP67 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156170&#39;, &#39;УПП скопирован&#39;)">УП000156170</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>20</td>
+                        <td onclick="openModal(90)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ1M2GНК/P + РКН20 ник. латунь (Dk=3-12, Dkб=9-17) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153478&#39;, &#39;УПП скопирован&#39;)">УП000153478</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>25</td>
+                        <td onclick="openModal(91)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ1M2GНК/P + РКН25+AB-3GВ-2GН ник. латунь (Dk=3-12, Dkб=9-17) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000252905&#39;, &#39;УПП скопирован&#39;)">УП000252905</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>20</td>
+                        <td onclick="openModal(92)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ1M2GНК+РКН20 ник. латунь (Dk=6-12, Dkб=9-17) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000146609&#39;, &#39;УПП скопирован&#39;)">УП000146609</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>25</td>
+                        <td onclick="openModal(93)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ2M3GНК/P + РКН25 ник. латунь (Dk=6-18, Dkб=9-25) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153479&#39;, &#39;УПП скопирован&#39;)">УП000153479</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>32</td>
+                        <td onclick="openModal(94)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ2M3GНК/P + РКН32+AB-4GВ-3GН ник. латунь (Dk=6-18, Dkб=9-25) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000250225&#39;, &#39;УПП скопирован&#39;)">УП000250225</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>25</td>
+                        <td onclick="openModal(95)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ2M3GНК/P/УКФ/КГ/A31 + РКН25 ник. латунь (Dk=6-18, Dkб=9-25) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156110&#39;, &#39;УПП скопирован&#39;)">УП000156110</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>32</td>
+                        <td onclick="openModal(96)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ3M4GНК/P + РКН32 ник. латунь (Dk=12-25, Dkб=15-31) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153480&#39;, &#39;УПП скопирован&#39;)">УП000153480</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>38</td>
+                        <td onclick="openModal(97)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ4M5GНК/P + РКН38 ник. латунь (Dk=18-31, Dkб=24-37) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153481&#39;, &#39;УПП скопирован&#39;)">УП000153481</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>50</td>
+                        <td onclick="openModal(98)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВ5M6GНК/P + РКН50 ник. латунь (Dk=31-39, Dkб=36-46) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156433&#39;, &#39;УПП скопирован&#39;)">УП000156433</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle b-ub" title="У - универсальный, в броне и без">У</span></td>
+                        <td>15</td>
+                        <td onclick="openModal(99)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВЛ1MGHK+РКН15+АВ-1MВ-01MН-НК ник. латунь (Dk=5-14, Dkб=8-18) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000270959&#39;, &#39;УПП скопирован&#39;)">УП000270959</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle b-ub" title="У - универсальный, в броне и без">У</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(100)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВЛ2MGHK ник. латунь (Dk=9-18, Dkб=12-23) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000250132&#39;, &#39;УПП скопирован&#39;)">УП000250132</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle b-ub" title="У - универсальный, в броне и без">У</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(101)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВЛ3MGHK/P ник. латунь (Dk=8-23, Dkб=17-29) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000262927&#39;, &#39;УПП скопирован&#39;)">УП000262927</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle b-ub" title="У - универсальный, в броне и без">У</span></td>
+                        <td>38</td>
+                        <td onclick="openModal(102)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВЛ4MGНК/Р + РКН38 ник. латунь (Dk=17-31, Dkб=25-37) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255858&#39;, &#39;УПП скопирован&#39;)">УП000255858</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle b-ub" title="У - универсальный, в броне и без">У</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(103)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. КОВТВЛ5MGНК/Р/УКФ/А31 ник. латунь (Dk=21-41, Dkб=24-44) IP66/67/68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000239805&#39;, &#39;УПП скопирован&#39;)">УП000239805</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>-</td>
+                        <td onclick="openModal(104)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd под бронир. ТАВВКу-20 М20х1,5 ник. латунь (DK=5,5-14мм DKб=10-17мм) IP66/67/68 Эксэл</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000110577&#39;, &#39;УПП скопирован&#39;)">00000110577</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(105)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd СВВКм-20 (МР20) ник. латунь (Dk=6-14) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000062631&#39;, &#39;УПП скопирован&#39;)">УП000062631</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(106)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd СВВКм-20м (МР15) ник. латунь (Dk=3-9) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000100866&#39;, &#39;УПП скопирован&#39;)">00000100866</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(107)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd СВВКм-25 (МР25) ник. латунь (Dk=12,6-18) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000199328&#39;, &#39;УПП скопирован&#39;)">УП000199328</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(108)" style="cursor:pointer; font-weight:500;">Каб. ввод Exd СВВКм-Н-20 (МР20) нерж. (Dk=6-14) IP66/67/68 Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000140307&#39;, &#39;УПП скопирован&#39;)">УП000140307</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(109)" style="cursor:pointer; font-weight:500;">Каб. ввод MG16 чёрный пластик (DK=6-10мм) IP68 YSA10-10-16-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;F0000001065&#39;, &#39;УПП скопирован&#39;)">F0000001065</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(110)" style="cursor:pointer; font-weight:500;">Каб. ввод MG20 чёрный пластик (DK=10-14мм) IP68 YSA10-14-20-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000114202&#39;, &#39;УПП скопирован&#39;)">00000114202</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(111)" style="cursor:pointer; font-weight:500;">Каб. ввод MG25 чёрный пластик (DK=13-18мм) IP68 YSA10-18-25-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000114203&#39;, &#39;УПП скопирован&#39;)">00000114203</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(112)" style="cursor:pointer; font-weight:500;">Каб. ввод MG32 чёрный пластик (DK=16-24мм) IP68 YSA10-25-32-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000114204&#39;, &#39;УПП скопирован&#39;)">00000114204</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(113)" style="cursor:pointer; font-weight:500;">Каб. ввод MG40 чёрный пластик (DK=20-29мм) IP68 YSA10-30-40-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000045532&#39;, &#39;УПП скопирован&#39;)">00000045532</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(114)" style="cursor:pointer; font-weight:500;">Каб. ввод MG50 чёрный пластик (DK=30-41мм) IP68 YSA10-39-50-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000045534&#39;, &#39;УПП скопирован&#39;)">00000045534</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(115)" style="cursor:pointer; font-weight:500;">Каб. ввод MG63 чёрный пластик (DK=44-54мм) IP68 YSA10-52-63-68-K02 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125795&#39;, &#39;УПП скопирован&#39;)">УП000125795</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(116)" style="cursor:pointer; font-weight:500;">Каб. ввод PG16 серый пластик (DK=7-14мм) IP54 YSA20-14-16-54-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000007027&#39;, &#39;УПП скопирован&#39;)">00000007027</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(117)" style="cursor:pointer; font-weight:500;">Каб. ввод PG9 серый пластик (DK=4-8мм) IP54 YSA20-08-09-54-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000111392&#39;, &#39;УПП скопирован&#39;)">00000111392</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td><span class="b-circle" title="Б - для кабелей в броне">Б</span></td>
+                        <td>25</td>
+                        <td onclick="openModal(118)" style="cursor:pointer; font-weight:500;">Каб.ввод КОВТВ2M3GНК/Р/УКФ/КГ/А31+Ркн25 ник. латунь (М25х1,5; Dk=6-18/9-25; МР25) IP66/IP67/IP69 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000198031&#39;, &#39;УПП скопирован&#39;)">УП000198031</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZTM-ELECTRO</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(119)" style="cursor:pointer; font-weight:500;">Каб.ввод ZRS M20B, резина, черный (Dk=8-13) IP67, ZTM-ELECTRO</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000152192&#39;, &#39;УПП скопирован&#39;)">УП000152192</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZTM-ELECTRO</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(120)" style="cursor:pointer; font-weight:500;">Каб.ввод ZRS M20G, резина, серый (Dk=8-13) IP67, ZTM-ELECTRO</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000152191&#39;, &#39;УПП скопирован&#39;)">УП000152191</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZTM-ELECTRO</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(121)" style="cursor:pointer; font-weight:500;">Каб.ввод ZRS M20W, резина, белый (Dk=8-13) IP67, ZTM-ELECTRO</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000084404&#39;, &#39;УПП скопирован&#39;)">УП000084404</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Норд-Инжиниринг</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(122)" style="cursor:pointer; font-weight:500;">Кольцо заземления КЗ 50  ник. латунь (М50) Норд-Инжиниринг</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156161&#39;, &#39;УПП скопирован&#39;)">УП000156161</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(123)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ∅23 эластомер (d внутр. 22 мм) PAR23 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000147267&#39;, &#39;УПП скопирован&#39;)">УП000147267</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(124)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ∅29 эластомер (d внутр. 28 мм) PAR29 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000147268&#39;, &#39;УПП скопирован&#39;)">УП000147268</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(125)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ∅36 эластомер (d внутр. 30 мм) PAR36 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000147269&#39;, &#39;УПП скопирован&#39;)">УП000147269</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(126)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ФТ 20 фторопласт (d внутр. 19,9 мм) Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000199326&#39;, &#39;УПП скопирован&#39;)">УП000199326</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Exel</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(127)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ФТ 25 фторопласт (d внутр. 24,9 мм) Exel</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000199327&#39;, &#39;УПП скопирован&#39;)">УП000199327</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(128)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ATELEX 16YK, нейлон, М16</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283982&#39;, &#39;УПП скопирован&#39;)">УП000283982</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(129)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ATELEX 20YK, нейлон, М20</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283983&#39;, &#39;УПП скопирован&#39;)">УП000283983</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(130)" style="cursor:pointer; font-weight:500;">Кольцо уплотнительное ATELEX 25YK, нейлон, М25</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283984&#39;, &#39;УПП скопирован&#39;)">УП000283984</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(131)" style="cursor:pointer; font-weight:500;">Уплотнительное кольцо ATELEX 40YK, нейлон, М40, ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000269354&#39;, &#39;УПП скопирован&#39;)">УП000269354</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(132)" style="cursor:pointer; font-weight:500;">Контргайка 40KK Ni ник. латунь (М40х1,5) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255991&#39;, &#39;УПП скопирован&#39;)">УП000255991</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Норд-Инжиниринг</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(133)" style="cursor:pointer; font-weight:500;">Контргайка КГ 50 ник. латунь (М50х1,5) Норд-Инжиниринг</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156162&#39;, &#39;УПП скопирован&#39;)">УП000156162</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(134)" style="cursor:pointer; font-weight:500;">Контргайка М16х1,5 ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235839&#39;, &#39;УПП скопирован&#39;)">УП000235839</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(135)" style="cursor:pointer; font-weight:500;">Контргайка М20х1,5 ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00022638&#39;, &#39;УПП скопирован&#39;)">БП-00022638</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(136)" style="cursor:pointer; font-weight:500;">Контргайка М20х1,5-EMC ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000234276&#39;, &#39;УПП скопирован&#39;)">УП000234276</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(137)" style="cursor:pointer; font-weight:500;">Контргайка М25х1,5 ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153482&#39;, &#39;УПП скопирован&#39;)">УП000153482</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(138)" style="cursor:pointer; font-weight:500;">Контргайка М32х1,5 ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000178010&#39;, &#39;УПП скопирован&#39;)">УП000178010</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(139)" style="cursor:pointer; font-weight:500;">Контргайка М40х1,5 ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153533&#39;, &#39;УПП скопирован&#39;)">УП000153533</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(140)" style="cursor:pointer; font-weight:500;">Контргайка ATELEX 40KK Ni, М40х1,5 ник. латунь, ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000269355&#39;, &#39;УПП скопирован&#39;)">УП000269355</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>10</td>
+                        <td onclick="openModal(141)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-10 цинк (Dk=9,8; Dмр=15,6; Dотв=15,8) IP54 61367 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000102923&#39;, &#39;УПП скопирован&#39;)">00000102923</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>12</td>
+                        <td onclick="openModal(142)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-12 цинк (Dk=11,4; Dмр=18,5; Dотв=20,7) IP54 61368 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125804&#39;, &#39;УПП скопирован&#39;)">УП000125804</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(143)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-15 цинк (Dk=14,6; Dмр=21,8; Dотв=20,7) IP54 61369 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000099709&#39;, &#39;УПП скопирован&#39;)">00000099709</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(144)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-20 цинк (Dk=19,4; Dмр=27,4; Dотв=26,4) IP54 61370 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000099710&#39;, &#39;УПП скопирован&#39;)">00000099710</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(145)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-25 цинк (Dk=24,5; Dмр=33,8; Dотв=33) IP54 61371 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000099711&#39;, &#39;УПП скопирован&#39;)">00000099711</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>32</td>
+                        <td onclick="openModal(146)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-32 цинк (Dk=31,8; Dмр=43,5; Dотв=41,7) IP54 61372 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000099712&#39;, &#39;УПП скопирован&#39;)">00000099712</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(147)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-38 цинк (Dk=37,5; Dмр=49,5; Dотв=47,3) IP54 61374 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000065064&#39;, &#39;УПП скопирован&#39;)">УП000065064</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>50</td>
+                        <td onclick="openModal(148)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-50 цинк (Dk=48,8; Dмр=62,4; Dотв=59) IP54 61375 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000096556&#39;, &#39;УПП скопирован&#39;)">УП000096556</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>60</td>
+                        <td onclick="openModal(149)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ-60 цинк (Dk=61,5; Dмр=75; Dотв=75,1) IP54 61376 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000138492&#39;, &#39;УПП скопирован&#39;)">УП000138492</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>15</td>
+                        <td onclick="openModal(150)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-15 цинк (Dk=14,6; Dмр=21,8; Dотв=20,7) IP54 61379 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000112049&#39;, &#39;УПП скопирован&#39;)">00000112049</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>20</td>
+                        <td onclick="openModal(151)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-20 цинк (Dk=19,4; Dмр=27,4; Dотв=26,4) IP54 61380 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;00000112050&#39;, &#39;УПП скопирован&#39;)">00000112050</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(152)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-25 цинк (Dk=24,5; Dмр=33,8; Dотв=33) IP54 61381 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00014512&#39;, &#39;УПП скопирован&#39;)">БП-00014512</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>32</td>
+                        <td onclick="openModal(153)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-32 цинк (Dk=31,8; Dмр=43,5; Dотв=41,7) IP54 61382 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125805&#39;, &#39;УПП скопирован&#39;)">УП000125805</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>38</td>
+                        <td onclick="openModal(154)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-38 цинк (Dk=37,5; Dмр=49,5; Dотв=47,3) IP54 61383 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00030458&#39;, &#39;УПП скопирован&#39;)">БП-00030458</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>КВТ</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>50</td>
+                        <td onclick="openModal(155)" style="cursor:pointer; font-weight:500;">Муфта вводная ВМ(90)-50 цинк (Dk=48,8; Dмр=62,4; Dотв=59) IP54 61384 КВТ</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125806&#39;, &#39;УПП скопирован&#39;)">УП000125806</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>25</td>
+                        <td onclick="openModal(156)" style="cursor:pointer; font-weight:500;">Муфта вводная МВН-ЛС-М25-МР25 ник. латунь (Dk=24; Dмр=33,5; Dотв=25), -60...180 С, IP67,  без контргайки, zeta45045 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000182112&#39;, &#39;УПП скопирован&#39;)">УП000182112</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(157)" style="cursor:pointer; font-weight:500;">Муфта металлорукав-коробка DN 20, М20х1,5 наружная резьба ник. латунь (Dk=8) IP40/44/66/67 6014-2020 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000061832&#39;, &#39;УПП скопирован&#39;)">УП000061832</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(158)" style="cursor:pointer; font-weight:500;">Переходник "арм.труба-коробка" d=10 мм, полипропилен, IP65, 55110 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000084403&#39;, &#39;УПП скопирован&#39;)">УП000084403</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(159)" style="cursor:pointer; font-weight:500;">Переходник "арм.труба-коробка" d=12 мм, полипропилен, IP65, 55112 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00033919&#39;, &#39;УПП скопирован&#39;)">БП-00033919</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(160)" style="cursor:pointer; font-weight:500;">Переходник "арм.труба-коробка" d=16 мм, полипропилен, IP65, 55116 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00041040&#39;, &#39;УПП скопирован&#39;)">БП-00041040</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(161)" style="cursor:pointer; font-weight:500;">Переходник АВ-1MВ-01MH-НК/УКФ  ник. латунь (с М16 наруж. резьба на М20 внутр.), 1Ex db IIC Gb IP68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000153545&#39;, &#39;УПП скопирован&#39;)">УП000153545</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(162)" style="cursor:pointer; font-weight:500;">Переходник АВ-2NH-1MВ-НК/УКФ  ник. латунь (с G3/4 наруж. резьба на М20х1,5 внутр.), 1Ex db IIC Gb IP68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000156171&#39;, &#39;УПП скопирован&#39;)">УП000156171</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(163)" style="cursor:pointer; font-weight:500;">Переходник АВ-4MВ-3MH-Н/УКФ нерж. (с М32 наруж. резьба на М40х1,5 внутр.), 1Ex db IIC Gb IP68 Горэлтех</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000239829&#39;, &#39;УПП скопирован&#39;)">УП000239829</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>CMD</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(164)" style="cursor:pointer; font-weight:500;">Переходник КВ М32-М20 R ник. латунь, 1Ex d IIC Gb / 1Ex e IIC Gb  (наружн. М32х1,5, внутр. М20х1,5) CMD</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139595&#39;, &#39;УПП скопирован&#39;)">УП000139595</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>CMD</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(165)" style="cursor:pointer; font-weight:500;">Переходник КВ М40-М20 R ник. латунь, 1Ex d IIC Gb / 1Ex e IIC Gb  (наружн. М40х1,5, внутр. М20х1,5) CMD</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139596&#39;, &#39;УПП скопирован&#39;)">УП000139596</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>CMD</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(166)" style="cursor:pointer; font-weight:500;">Переходник КВ М50-М20 R ник. латунь, 1Ex d IIC Gb / 1Ex e IIC Gb  (наружн. М50х1,5, внутр. М20х1,5) CMD</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139597&#39;, &#39;УПП скопирован&#39;)">УП000139597</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>CMD</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(167)" style="cursor:pointer; font-weight:500;">Переходник КВ М63-М20 R ник. латунь, 1Ex d IIC Gb / 1Ex e IIC Gb  (наружн. М63х1,5, внутр. М20х1,5) CMD</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000139598&#39;, &#39;УПП скопирован&#39;)">УП000139598</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(168)" style="cursor:pointer; font-weight:500;">Переходник М16х1,5 наружн./М20х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000233505&#39;, &#39;УПП скопирован&#39;)">УП000233505</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(169)" style="cursor:pointer; font-weight:500;">Переходник М20х1,5 наружн./М25х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000236828&#39;, &#39;УПП скопирован&#39;)">УП000236828</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(170)" style="cursor:pointer; font-weight:500;">Переходник М25х1,5 наружн./М32х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000236829&#39;, &#39;УПП скопирован&#39;)">УП000236829</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(171)" style="cursor:pointer; font-weight:500;">Переходник М32х1,5 наружн./М40х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000236830&#39;, &#39;УПП скопирован&#39;)">УП000236830</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(172)" style="cursor:pointer; font-weight:500;">Переходник М40х1,5 наружн./М50х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000236831&#39;, &#39;УПП скопирован&#39;)">УП000236831</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(173)" style="cursor:pointer; font-weight:500;">Переходник М25х1,5 наружн./М20х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000133007&#39;, &#39;УПП скопирован&#39;)">УП000133007</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(174)" style="cursor:pointer; font-weight:500;">Переходник М32х1,5 наружн./М25х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000133008&#39;, &#39;УПП скопирован&#39;)">УП000133008</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(175)" style="cursor:pointer; font-weight:500;">Переходник М40х1,5 наружн./М32х1,5 внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000138891&#39;, &#39;УПП скопирован&#39;)">УП000138891</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(176)" style="cursor:pointer; font-weight:500;">Переходник М50х1,5 наружн./М40х1,5  внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000138892&#39;, &#39;УПП скопирован&#39;)">УП000138892</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Ferrol</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(177)" style="cursor:pointer; font-weight:500;">Переходник М63х1,5 наружн./М50х1,5  внутр. ник. латунь Ferrol</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000138893&#39;, &#39;УПП скопирован&#39;)">УП000138893</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>FORTISFLEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(178)" style="cursor:pointer; font-weight:500;">Переходник МПЛ М16х1,5 наружн./М20х1,5 внутр. ник. латунь FORTISFLEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255984&#39;, &#39;УПП скопирован&#39;)">УП000255984</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>FORTISFLEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(179)" style="cursor:pointer; font-weight:500;">Переходник МПЛ М20х1,5 наружн./М25х1,5 внутр. ник. латунь FORTISFLEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255985&#39;, &#39;УПП скопирован&#39;)">УП000255985</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>FORTISFLEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(180)" style="cursor:pointer; font-weight:500;">Переходник МПЛ М25х1,5 наружн./М20х1,5 внутр. ник. латунь FORTISFLEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000155148&#39;, &#39;УПП скопирован&#39;)">УП000155148</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>FORTISFLEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(181)" style="cursor:pointer; font-weight:500;">Переходник МПЛ М32х1,5 наружн./М25х1,5 внутр. ник. латунь FORTISFLEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255986&#39;, &#39;УПП скопирован&#39;)">УП000255986</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>FORTISFLEX</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(182)" style="cursor:pointer; font-weight:500;">Переходник МПЛ М40х1,5 наружн./М32х1,5 внутр. ник. латунь FORTISFLEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255987&#39;, &#39;УПП скопирован&#39;)">УП000255987</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(183)" style="cursor:pointer; font-weight:500;">Переходник ATELEX BA ник. латунь (с М16 наруж. резьба на М20х1,5 внутр.) Ex db IIC Gb U IP66/67/68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000245006&#39;, &#39;УПП скопирован&#39;)">УП000245006</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(184)" style="cursor:pointer; font-weight:500;">Переходник ATELEX BA ник. латунь (с G1 наруж. резьба на М25х1,5 внутр.) Ex db IIC Gb U IP66/67/68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000239223&#39;, &#39;УПП скопирован&#39;)">УП000239223</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(185)" style="cursor:pointer; font-weight:500;">Переходник Exd М20х1,5 наружн./М25х1,5 внутр. ник. латунь Ex db IIC Gb U IP66/IP67/IP68 (BA20-25 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000254645&#39;, &#39;УПП скопирован&#39;)">УП000254645</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(186)" style="cursor:pointer; font-weight:500;">Переходник Exd М25х1,5 наружн./М20х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 (BA25-20 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255988&#39;, &#39;УПП скопирован&#39;)">УП000255988</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(187)" style="cursor:pointer; font-weight:500;">Переходник Exd М25х1,5 наружн./М32х1,5 внутр. ник. латунь Ex db IIC Gb U IP66/IP67/IP68 (BA25-32 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000252906&#39;, &#39;УПП скопирован&#39;)">УП000252906</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(188)" style="cursor:pointer; font-weight:500;">Переходник Exd М32х1,5 наружн./М20х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235061&#39;, &#39;УПП скопирован&#39;)">УП000235061</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(189)" style="cursor:pointer; font-weight:500;">Переходник Exd М32х1,5 наружн./М25х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 (BA32-25 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255989&#39;, &#39;УПП скопирован&#39;)">УП000255989</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(190)" style="cursor:pointer; font-weight:500;">Переходник Exd М32х1,5 наружн./М40х1,5 внутр. ник. латунь Ex db IIC Gb U IP66/IP67/IP68 (BA32-40 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000252907&#39;, &#39;УПП скопирован&#39;)">УП000252907</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(191)" style="cursor:pointer; font-weight:500;">Переходник Exd М40х1,5 наружн./М20х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235062&#39;, &#39;УПП скопирован&#39;)">УП000235062</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(192)" style="cursor:pointer; font-weight:500;">Переходник Exd М40х1,5 наружн./М25х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000235063&#39;, &#39;УПП скопирован&#39;)">УП000235063</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(193)" style="cursor:pointer; font-weight:500;">Переходник Exd М40х1,5 наружн./М32х1,5 внутр. ник. латунь Ex db IIC Gb U ATELEX BA IP66/IP67/IP68 ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255990&#39;, &#39;УПП скопирован&#39;)">УП000255990</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ATELEX</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(194)" style="cursor:pointer; font-weight:500;">Переходник Exd М40х1,5 наружн./М50х1,5 внутр. ник. латунь Ex db IIC Gb U IP66/IP67/IP68 (BA40-50 05) ATELEX</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000252908&#39;, &#39;УПП скопирован&#39;)">УП000252908</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Норд-Инжиниринг</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(195)" style="cursor:pointer; font-weight:500;">Переходник Exd NИ AK50-40 М50х1,5 наружн./М40х1,5 внутр. ник. латунь Ex d IIC Gb U IP66/IP68 Норд-Инжиниринг</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000256775&#39;, &#39;УПП скопирован&#39;)">УП000256775</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Норд-Инжиниринг</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(196)" style="cursor:pointer; font-weight:500;">Переходник Exd NИ AK63-50 М63х1,5 наружн./М50х1,5 внутр. ник. латунь Ex d IIC Gb U IP66/IP68 Норд-Инжиниринг</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000256776&#39;, &#39;УПП скопирован&#39;)">УП000256776</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(197)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 16 zeta33515 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000255612&#39;, &#39;УПП скопирован&#39;)">УП000255612</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(198)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 20,4 zeta33518 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221433&#39;, &#39;УПП скопирован&#39;)">УП000221433</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(199)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 25 zeta33522 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221434&#39;, &#39;УПП скопирован&#39;)">УП000221434</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(200)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 32 zeta33526 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000221435&#39;, &#39;УПП скопирован&#39;)">УП000221435</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(201)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 40 zeta33531 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000260783&#39;, &#39;УПП скопирован&#39;)">УП000260783</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>ZETA</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(202)" style="cursor:pointer; font-weight:500;">Прокладка фторопластовая ПФ 50 zeta33534 ZETA</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000225263&#39;, &#39;УПП скопирован&#39;)">УП000225263</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(203)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 20 светло-серый (Dотв.=25 мм) IP55 54520 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;F0000003289&#39;, &#39;УПП скопирован&#39;)">F0000003289</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(204)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 20 серый (Dотв.=22 мм) IP68 YSA40-20-22-68-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125796&#39;, &#39;УПП скопирован&#39;)">УП000125796</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(205)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 25 светло-серый (Dотв.=32 мм) IP55 54525 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;F0000003122&#39;, &#39;УПП скопирован&#39;)">F0000003122</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(206)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 25 серый (Dотв.=27 мм) IP68 YSA40-25-27-68-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125797&#39;, &#39;УПП скопирован&#39;)">УП000125797</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(207)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 25 серый (Dотв.=32 мм) IP68 YSA40-25-32-68-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125798&#39;, &#39;УПП скопирован&#39;)">УП000125798</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(208)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 32 светло-серый (Dотв.=40 мм) IP55 54532 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;БП-00019651&#39;, &#39;УПП скопирован&#39;)">БП-00019651</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(209)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 32 серый (Dотв.=37 мм) IP68 YSA40-32-37-68-K41-050 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125799&#39;, &#39;УПП скопирован&#39;)">УП000125799</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>DKC</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(210)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 40 светло-серый (Dотв.=50 мм) IP55 54540 DKC</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125801&#39;, &#39;УПП скопирован&#39;)">УП000125801</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>IEK</strong></td>
+                        <td><span class="badge badge-o">О</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(211)" style="cursor:pointer; font-weight:500;">Сальник ступенчатый 40 серый (Dотв.=49 мм) IP68 YSA40-40-49-68-K41 IEK</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000125800&#39;, &#39;УПП скопирован&#39;)">УП000125800</span>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td><strong>Горэлтех</strong></td>
+                        <td><span class="badge badge-ex">Ex</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td onclick="openModal(212)" style="cursor:pointer; font-weight:500;">Адаптер угловой 90 градусов АДП-Н-M20х1,5(M)-M20х1,5(F), Ex db/Ex eb, IP66</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard(&#39;УП000283511&#39;, &#39;УПП скопирован&#39;)">УП000283511</span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -600,34 +2941,32 @@
                 </select>
             </div>
 
-            <div id="exGroup" class="form-group">
+            <div id="exGroup" class="form-group" style="display: block;">
                 <div class="toggle-pair">
-                    <button type="button" id="btnEx" class="btn-toggle ex-btn">Ex-взрывозащ.</button>
+                    <button type="button" id="btnEx" class="btn-toggle ex-btn active">Ex-взрывозащ.</button>
                     <button type="button" id="btnO" class="btn-toggle o-btn active">О-общепром.</button>
                 </div>
             </div>
 
-            <div id="cableAndArmorRow" class="form-row-2">
+            <div id="cableAndArmorRow" class="form-row-2" style="display: flex;">
                 <div id="cableDiamGroup" class="form-group">
                     <label for="cableDiameterInput">Диаметр кабеля</label>
-                    <input type="text" id="cableDiameterInput" class="form-control">
+                    <input type="text" id="cableDiameterInput" class="form-control" wfd-id="id1">
                 </div>
                 <div id="armorGroup" class="form-group">
                     <label for="armorInput">в броне</label>
-                    <input type="text" id="armorInput" class="form-control">
+                    <input type="text" id="armorInput" class="form-control" wfd-id="id2">
                 </div>
             </div>
 
-            <div id="mrGroup" class="form-group">
+            <div id="mrGroup" class="form-group" style="display: flex;">
                 <label for="mrSelect">Типоразмер МР</label>
-                <select id="mrSelect" class="form-control"><option value="">Все</option></select>
+                <select id="mrSelect" class="form-control"><option value="">Все</option><option value="10">10</option><option value="12">12</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="32">32</option><option value="38">38</option><option value="50">50</option><option value="60">60</option></select>
             </div>
 
-            <div id="holeGroup" class="form-group">
+            <div id="holeGroup" class="form-group" style="display: flex;">
                 <label for="holeSelect">Посадочное отв.</label>
-                <div id="holeContainer">
-                    <select id="holeSelect" class="form-control"><option value="">Все</option></select>
-                </div>
+                <div id="holeContainer"><input type="text" id="holeSelect" class="form-control" wfd-id="id3"></div>
             </div>
 
             <div id="podKvGroup" class="form-group" style="display: none;">
@@ -637,12 +2976,12 @@
 
             <div id="mfgGroup" class="form-group">
                 <label for="mfgSelect">Завод</label>
-                <select id="mfgSelect" class="form-control"><option value="">Все заводы</option></select>
+                <select id="mfgSelect" class="form-control"><option value="">Все заводы</option><option value="ATELEX">ATELEX</option><option value="CMD">CMD</option><option value="DKC">DKC</option><option value="EKF">EKF</option><option value="Exel">Exel</option><option value="FORTISFLEX">FORTISFLEX</option><option value="Ferrol">Ferrol</option><option value="IEK">IEK</option><option value="ZETA">ZETA</option><option value="ZTM-ELECTRO">ZTM-ELECTRO</option><option value="Горэлтех">Горэлтех</option><option value="КВТ">КВТ</option><option value="Мир РТИ">Мир РТИ</option><option value="Норд-Инжиниринг">Норд-Инжиниринг</option><option value="Спектрон">Спектрон</option><option value="Феррум">Феррум</option></select>
             </div>
 
             <div id="materialGroup" class="form-group">
                 <label for="materialSelect">Материал</label>
-                <select id="materialSelect" class="form-control"><option value="">Все материалы</option></select>
+                <select id="materialSelect" class="form-control"><option value="">Все материалы</option><option value="ПВХ">ПВХ</option><option value="нейлон">нейлон</option><option value="нерж.">нерж.</option><option value="ник. латунь">ник. латунь</option><option value="полиамид">полиамид</option><option value="полипропилен,">полипропилен,</option><option value="резина">резина</option><option value="резина, белый">резина, белый</option><option value="резина, серый">резина, серый</option><option value="резина, черный">резина, черный</option><option value="светло-серый">светло-серый</option><option value="серый">серый</option><option value="серый пластик">серый пластик</option><option value="фторопласт">фторопласт</option><option value="фторопласт.">фторопласт.</option><option value="цинк">цинк</option><option value="чёрный пластик">чёрный пластик</option><option value="эластомер">эластомер</option></select>
             </div>
         </div>
         <div class="drawer-footer">
@@ -654,11 +2993,11 @@
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-image-container">
-                <img id="modalImg" src="" alt="Изображение">
+                <img id="modalImg" src="https://ewgenoff.github.io/KIP/KB.html" alt="Изображение">
                 <div id="modalMfgBadge" class="mfg-badge"></div>
             </div>
             <div class="modal-body">
-                <div id="modalTitle" class="modal-title" onclick="copyToClipboard(this.textContent, 'Наименование скопировано')"></div>
+                <div id="modalTitle" class="modal-title" onclick="copyToClipboard(this.textContent, &#39;Наименование скопировано&#39;)"></div>
                 <div class="modal-table-scroll">
                     <table class="detail-table">
                         <tbody id="modalTableBody"></tbody>
@@ -666,7 +3005,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a id="modalSiteBtn" href="#" target="_blank" class="btn-modal">Сайт</a>
+                <a id="modalSiteBtn" href="https://ewgenoff.github.io/KIP/KB.html#" target="_blank" class="btn-modal">Сайт</a>
                 <button type="button" id="modalCloseBtn" class="btn-modal">Закрыть</button>
             </div>
         </div>
@@ -1233,5 +3572,6 @@
 
         loadData();
     </script>
-</body>
-</html>
+
+
+</body></html>

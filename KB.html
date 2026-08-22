@@ -49,10 +49,10 @@
             letter-spacing: -0.4px;
         }
 
-        /* Шапка: Поиск и Фильтр */
+        /* Шапка */
         .top-bar {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 14px;
             align-items: center;
         }
@@ -103,26 +103,32 @@
             line-height: 1;
         }
 
-        .btn-filter-trigger {
+        .btn-top {
             height: 40px;
-            padding: 0 16px;
+            padding: 0 14px;
             background-color: var(--ios-card);
             border: 1px solid var(--ios-border);
             border-radius: 10px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-main);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
-        .btn-filter-trigger.active {
+        .btn-top.active {
             background-color: var(--ios-blue);
             color: #FFFFFF;
             border-color: var(--ios-blue);
+        }
+
+        .btn-reset-top {
+            color: #FF3B30;
+            border-color: #FF3B30;
+            display: none;
         }
 
         .meta-bar {
@@ -150,14 +156,14 @@
             border-collapse: collapse;
             text-align: left;
             font-size: 13px;
-            min-width: 600px;
+            table-layout: fixed;
         }
 
         th {
             background-color: #FAFAFC;
             color: var(--ios-gray);
             font-weight: 600;
-            padding: 10px 8px;
+            padding: 10px 4px;
             border-bottom: 1px solid var(--ios-gray-light);
             white-space: nowrap;
             font-size: 11px;
@@ -165,19 +171,27 @@
             cursor: pointer;
         }
 
+        /* Выравнивание по центру столбцов 2, 3, 4, 6 */
+        th:nth-child(2), td:nth-child(2),
+        th:nth-child(3), td:nth-child(3),
+        th:nth-child(4), td:nth-child(4),
+        th:nth-child(6), td:nth-child(6) {
+            text-align: center;
+        }
+
         td {
-            padding: 12px 8px;
+            padding: 10px 4px;
             border-bottom: 1px solid var(--ios-gray-light);
             vertical-align: middle;
+            user-select: text;
         }
 
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr { cursor: pointer; transition: background 0.15s; }
-        tbody tr:active { background-color: var(--ios-gray-bg); }
+        tbody tr:hover { background-color: rgba(0,0,0,0.02); }
 
         .badge {
             display: inline-block;
-            padding: 3px 6px;
+            padding: 2px 5px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
@@ -190,28 +204,45 @@
             color: #E65100;
         }
 
-        /* Боковая панель (Drawer) - не более 2/3 экрана */
-        .drawer-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+        /* Значки Броня */
+        .b-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: #E5E5EA;
+            border: 1.5px solid #000;
+            font-weight: 700;
+            font-size: 11px;
+            color: #000;
+            cursor: help;
         }
 
-        .drawer-overlay.open {
-            opacity: 1;
-            visibility: visible;
+        .b-circle.b-ub {
+            color: var(--ios-blue);
         }
 
+        .clickable-code {
+            cursor: pointer;
+            font-weight: 600;
+            font-family: monospace;
+            background: var(--ios-gray-bg);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .clickable-code:hover {
+            background: var(--ios-gray-light);
+        }
+
+        /* Боковая панель без затемнения/блюра */
         .drawer {
             position: fixed;
             top: 0; right: 0; bottom: 0;
             width: 66.666vw;
-            max-width: 380px;
+            max-width: 360px;
             min-width: 280px;
             background: var(--ios-bg);
             z-index: 1001;
@@ -219,7 +250,8 @@
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
-            box-shadow: -4px 0 25px rgba(0,0,0,0.15);
+            box-shadow: -6px 0 20px rgba(0,0,0,0.15);
+            border-left: 1px solid var(--ios-border);
         }
 
         .drawer.open {
@@ -255,17 +287,17 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .form-group label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--ios-gray);
             text-transform: uppercase;
@@ -281,7 +313,6 @@
             outline: none;
         }
 
-        /* Переключатели Ex / O */
         .toggle-pair {
             display: flex;
             gap: 8px;
@@ -311,7 +342,6 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .btn-toggle.ex-btn.active {
@@ -326,12 +356,11 @@
             border-color: var(--ios-blue);
         }
 
-        /* Модальное окно (Большая карточка iOS) */
+        /* Карточка товара */
         .modal-overlay {
             position: fixed;
             top:0; left:0; right:0; bottom:0;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
             z-index: 2000;
             display: none;
             align-items: center;
@@ -339,9 +368,7 @@
             padding: 16px;
         }
 
-        .modal-overlay.open {
-            display: flex;
-        }
+        .modal-overlay.open { display: flex; }
 
         .modal-card {
             background: var(--ios-card);
@@ -353,29 +380,36 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            animation: modalUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes modalUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-image-container {
             width: 100%;
-            height: 220px;
+            height: 200px;
             background: #FAFAFC;
             border-bottom: 1px solid var(--ios-gray-light);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 12px;
+            position: relative;
         }
 
         .modal-image-container img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+        }
+
+        .mfg-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFF;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
         .modal-body {
@@ -388,7 +422,7 @@
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 12px;
-            line-height: 1.3;
+            cursor: pointer;
         }
 
         .modal-table-scroll {
@@ -403,7 +437,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            min-width: 400px;
+            min-width: 350px;
         }
 
         .detail-table td {
@@ -414,7 +448,7 @@
         .detail-table td:first-child {
             font-weight: 600;
             color: var(--ios-gray);
-            width: 40%;
+            width: 45%;
             background: #FAFAFC;
         }
 
@@ -424,7 +458,6 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            background: var(--ios-card);
         }
 
         .btn-modal {
@@ -439,23 +472,26 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-        }
-
-        .btn-modal-site {
-            background: var(--ios-blue);
-            color: #FFF;
-        }
-
-        .btn-modal-close {
             background: var(--ios-gray-bg);
             color: var(--text-main);
         }
 
-        .no-data, .loader {
-            text-align: center;
-            padding: 30px;
-            color: var(--ios-gray);
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #FFF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 3000;
+            display: none;
         }
+
+        .no-data, .loader { text-align: center; padding: 30px; color: var(--ios-gray); }
     </style>
 </head>
 <body>
@@ -463,53 +499,48 @@
     <div class="container">
         <h1 class="page-title">Подбор кабельных вводов</h1>
 
-        <!-- Шапка: Поиск и Фильтр -->
         <div class="top-bar">
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="Поиск...">
                 <button type="button" id="clearSearchBtn" class="clear-search-btn">✕</button>
             </div>
-            <button type="button" id="openDrawerBtn" class="btn-filter-trigger">
+            <button type="button" id="openDrawerBtn" class="btn-top">
                 <span>Фильтр</span>
             </button>
+            <button type="button" id="resetTopBtn" class="btn-top btn-reset-top">Сброс</button>
         </div>
 
         <div class="meta-bar">
             <span id="statusInfo">Загрузка данных...</span>
         </div>
 
-        <!-- Основная таблица -->
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 15%;" data-sort="Manufacturer">Завод</th>
-                        <th style="width: 12%;" data-sort="Ex">Ex</th>
-                        <th style="width: 10%;" data-sort="Cable">Броня</th>
-                        <th style="width: 10%;" data-sort="MR">МР</th>
-                        <th style="width: 38%;" data-sort="ProjectName">Наименование</th>
-                        <th style="width: 15%;" data-sort="PartNumber">УПП</th>
+                        <th style="width: 10%;" data-sort="Manufacturer">Завод</th>
+                        <th style="width: 8%;" data-sort="Ex" title="Исполнение КВ Взрывозащищенное или Общепромышенное">Ex/O</th>
+                        <th style="width: 7%;" data-sort="Cable" title="Оболочка кабеля (Б черная - для кабелей в броне, Б синяя - для кабелей в броне и без)">Кабель</th>
+                        <th style="width: 8%;" data-sort="MR" title="Типоразмер металлорукава">МР</th>
+                        <th style="width: 53%;" data-sort="ProjectName">Наименование</th>
+                        <th style="width: 14%;" data-sort="PartNumber">УПП</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr>
-                        <td colspan="6" class="loader">Инициализация...</td>
-                    </tr>
+                    <tr><td colspan="6" class="loader">Инициализация...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Боковая панель фильтров (Drawer) -->
-    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <!-- Боковая панель -->
     <div id="drawer" class="drawer">
         <div class="drawer-header">
             <h2>Фильтры</h2>
-            <button type="button" id="resetFiltersBtn" class="reset-link reset-btn-drawer">Сброс фильтра</button>
+            <button type="button" id="resetFiltersBtn" class="reset-btn-drawer">Сбросить все</button>
         </div>
         <div class="drawer-body">
-            <!-- Кнопка-заголовок: Тип изделия -->
             <div class="form-group">
                 <label for="functionSelect">Тип изделия</label>
                 <select id="functionSelect" class="form-control">
@@ -521,7 +552,6 @@
                 </select>
             </div>
 
-            <!-- Блок кнопок Ex / O -->
             <div id="exGroup" class="form-group">
                 <div class="toggle-pair">
                     <div class="toggle-item">
@@ -535,53 +565,52 @@
                 </div>
             </div>
 
-            <!-- Динамические поля -->
             <div id="cableDiamGroup" class="form-group">
                 <label for="cableDiameterInput">Диаметр кабеля</label>
-                <input type="text" id="cableDiameterInput" class="form-control" placeholder="12-14">
+                <input type="text" id="cableDiameterInput" class="form-control">
             </div>
 
             <div id="armorGroup" class="form-group">
                 <label for="armorInput">в броне</label>
-                <input type="text" id="armorInput" class="form-control" placeholder="15,5-17">
+                <input type="text" id="armorInput" class="form-control">
             </div>
 
             <div id="mrGroup" class="form-group">
                 <label for="mrSelect">в МР</label>
-                <select id="mrSelect" class="form-control">
-                    <option value="">Все</option>
-                </select>
+                <select id="mrSelect" class="form-control"><option value="">Все</option></select>
             </div>
 
             <div id="holeGroup" class="form-group">
-                <label for="holeInput">Посадочное</label>
-                <input type="text" id="holeInput" class="form-control" placeholder="20">
+                <label for="holeSelect">Посадочное</label>
+                <select id="holeSelect" class="form-control"><option value="">Все</option></select>
+            </div>
+
+            <div id="podKvGroup" class="form-group" style="display: none;">
+                <label for="podKvSelect">Под КВ</label>
+                <select id="podKvSelect" class="form-control"><option value="">Все</option></select>
             </div>
 
             <div id="mfgGroup" class="form-group">
                 <label for="mfgSelect">Завод</label>
-                <select id="mfgSelect" class="form-control">
-                    <option value="">Все заводы</option>
-                </select>
+                <select id="mfgSelect" class="form-control"><option value="">Все заводы</option></select>
             </div>
 
             <div id="materialGroup" class="form-group">
                 <label for="materialSelect">Материал</label>
-                <select id="materialSelect" class="form-control">
-                    <option value="">Все материалы</option>
-                </select>
+                <select id="materialSelect" class="form-control"><option value="">Все материалы</option></select>
             </div>
         </div>
     </div>
 
-    <!-- Большая карточка товара (Modal) -->
+    <!-- Модальная карточка -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-image-container">
-                <img id="modalImg" src="" alt="Изображение отсутствует">
+                <img id="modalImg" src="" alt="Изображение">
+                <div id="modalMfgBadge" class="mfg-badge"></div>
             </div>
             <div class="modal-body">
-                <div id="modalTitle" class="modal-title"></div>
+                <div id="modalTitle" class="modal-title" onclick="copyToClipboard(this.textContent, 'Наименование скопировано')"></div>
                 <div class="modal-table-scroll">
                     <table class="detail-table">
                         <tbody id="modalTableBody"></tbody>
@@ -589,29 +618,51 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a id="modalSiteBtn" href="#" target="_blank" class="btn-modal btn-modal-site">Сайт</a>
-                <button type="button" id="modalCloseBtn" class="btn-modal btn-modal-close">Закрыть</button>
+                <a id="modalSiteBtn" href="#" target="_blank" class="btn-modal">Сайт</a>
+                <button type="button" id="modalCloseBtn" class="btn-modal">Закрыть</button>
             </div>
         </div>
     </div>
+
+    <div id="toast" class="toast">Скопировано</div>
 
     <script>
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
 
+        // Словарь названий для карточки
+        const FIELD_LABELS = {
+            'Manufacturer': 'Завод',
+            'Ex': 'Взрывозащита',
+            'Cable': 'Тип кабеля',
+            'MR': 'Металлорукав',
+            'ProjectName': 'Наименование',
+            'PartNumber': 'Код УПП',
+            'Size/thread': 'Резьба / Посадочное',
+            'Diameter without armor Dк': 'Ø кабеля без брони',
+            'Outer diameter Dkb': 'Ø кабеля по броне',
+            'Material': 'Материал',
+            'Function': 'Тип изделия'
+        };
+
+        const MFG_COLORS = {
+            'ЗЭТА': '#E53935',
+            'ВЕЛАН': '#1E88E5',
+            'РЕЗЕДА': '#43A047',
+            'ПРОМТЕЛ': '#FB8C00',
+            'КОРТЕМ': '#8E24AA'
+        };
+
         let validRawData = [];
         let sortColumn = null;
         let sortDirection = 'asc';
-
-        // Состояние Ex / O
         let stateEx = true;
         let stateO = true;
 
-        // Элементы UI
         const searchInput = document.getElementById('searchInput');
         const clearSearchBtn = document.getElementById('clearSearchBtn');
         const openDrawerBtn = document.getElementById('openDrawerBtn');
-        const drawerOverlay = document.getElementById('drawerOverlay');
+        const resetTopBtn = document.getElementById('resetTopBtn');
         const drawer = document.getElementById('drawer');
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
@@ -624,28 +675,43 @@
         const armorGroup = document.getElementById('armorGroup');
         const mrGroup = document.getElementById('mrGroup');
         const holeGroup = document.getElementById('holeGroup');
+        const podKvGroup = document.getElementById('podKvGroup');
         const mfgGroup = document.getElementById('mfgGroup');
         const materialGroup = document.getElementById('materialGroup');
 
+        const holeSelect = document.getElementById('holeSelect');
+        const podKvSelect = document.getElementById('podKvSelect');
         const materialSelect = document.getElementById('materialSelect');
         const mrSelect = document.getElementById('mrSelect');
         const mfgSelect = document.getElementById('mfgSelect');
-        const holeInput = document.getElementById('holeInput');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
 
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
 
-        // Модальное окно
         const modalOverlay = document.getElementById('modalOverlay');
         const modalImg = document.getElementById('modalImg');
+        const modalMfgBadge = document.getElementById('modalMfgBadge');
         const modalTitle = document.getElementById('modalTitle');
         const modalTableBody = document.getElementById('modalTableBody');
         const modalSiteBtn = document.getElementById('modalSiteBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const toast = document.getElementById('toast');
 
-        // Парсинг CSV
+        function showToast(text) {
+            toast.textContent = text;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        function copyToClipboard(text, msg) {
+            if (!text || text === '-') return;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(msg || 'Скопировано в буфер');
+            });
+        }
+
         function parseCSV(text) {
             let p = '', c = '', r = [];
             let q = false;
@@ -692,10 +758,9 @@
         async function loadData() {
             try {
                 const csvText = await fetchCSV();
-                const parsed = parseCSV(csvText);
-                validRawData = parsed.filter(item => (item['Status'] || '').trim().toUpperCase() !== 'FALSE');
+                validRawData = parseCSV(csvText).filter(item => (item['Status'] || '').trim().toUpperCase() !== 'FALSE');
                 updateLayoutByFunction();
-                populateDynamicSelects();
+                updateDynamicOptions();
                 applyFilters();
             } catch (error) {
                 statusInfo.textContent = 'Ошибка загрузки данных.';
@@ -703,29 +768,45 @@
             }
         }
 
-        // Переключение отображения полей в зависимости от типа изделия
+        function resetFilterFields() {
+            holeSelect.value = '';
+            podKvSelect.value = '';
+            materialSelect.value = '';
+            mrSelect.value = '';
+            mfgSelect.value = '';
+            cableDiameterInput.value = '';
+            armorInput.value = '';
+            stateEx = true;
+            stateO = true;
+            btnEx.classList.add('active');
+            btnO.classList.add('active');
+        }
+
         function updateLayoutByFunction() {
             const func = functionSelect.value;
-            
-            // Скрываем все поля по умолчанию
             exGroup.style.display = 'none';
             cableDiamGroup.style.display = 'none';
             armorGroup.style.display = 'none';
             mrGroup.style.display = 'none';
             holeGroup.style.display = 'none';
+            podKvGroup.style.display = 'none';
 
-            if (func === 'gland') { // Каб. ввод
+            if (func === 'gland') {
                 exGroup.style.display = 'block';
                 cableDiamGroup.style.display = 'flex';
                 armorGroup.style.display = 'flex';
                 mrGroup.style.display = 'flex';
                 holeGroup.style.display = 'flex';
-            } else if (func === 'adapter' || func === 'plug') { // Переходник или Заглушка
+            } else if (func === 'adapter') {
                 exGroup.style.display = 'block';
                 holeGroup.style.display = 'flex';
-            } else if (func === 'coupler') { // Муфта
+                podKvGroup.style.display = 'flex';
+            } else if (func === 'plug') {
+                exGroup.style.display = 'block';
+                holeGroup.style.display = 'flex';
+            } else if (func === 'coupler') {
                 mrGroup.style.display = 'flex';
-            } else { // Все
+            } else {
                 exGroup.style.display = 'block';
                 cableDiamGroup.style.display = 'flex';
                 armorGroup.style.display = 'flex';
@@ -744,46 +825,65 @@
             return true;
         }
 
-        function populateDynamicSelects() {
+        function parseAdapterSizes(sizeStr) {
+            if (!sizeStr) return { pos: '', pod: '' };
+            const parts = sizeStr.split('/');
+            return {
+                pos: parts[0] ? parts[0].trim() : '',
+                pod: parts[1] ? parts[1].trim() : ''
+            };
+        }
+
+        /* Заполнение фильтров только теми значениями, которые существуют при текущих выбранных соседних параметрах */
+        function updateDynamicOptions() {
             const selectedFunc = functionSelect.value;
-            const currentSelectedMat = materialSelect.value;
-            const currentSelectedMR = mrSelect.value;
-            const currentSelectedMfg = mfgSelect.value;
-            
+            const curHole = holeSelect.value;
+            const curPod = podKvSelect.value;
+            const curMat = materialSelect.value;
+            const curMR = mrSelect.value;
+            const curMfg = mfgSelect.value;
+
+            const holes = new Set();
+            const podKvs = new Set();
             const materials = new Set();
             const mrValues = new Set();
             const mfgs = new Set();
 
             validRawData.forEach(item => {
-                if (checkFunctionMatch(item['Function'], selectedFunc)) {
-                    if (item['Material']) materials.add(item['Material'].trim());
-                    if (item['MR']) mrValues.add(item['MR'].trim());
-                    if (item['Manufacturer']) mfgs.add(item['Manufacturer'].trim());
+                if (!checkFunctionMatch(item['Function'], selectedFunc)) return;
+
+                const sizeVal = item['Size/thread'] || '';
+                if (selectedFunc === 'adapter') {
+                    const parsed = parseAdapterSizes(sizeVal);
+                    if (parsed.pos) holes.add(parsed.pos);
+                    if (parsed.pod) podKvs.add(parsed.pod);
+                } else {
+                    if (sizeVal) holes.add(sizeVal.trim());
                 }
+
+                if (item['Material']) materials.add(item['Material'].trim());
+                if (item['MR']) mrValues.add(item['MR'].trim());
+                if (item['Manufacturer']) mfgs.add(item['Manufacturer'].trim());
             });
 
-            materialSelect.innerHTML = '<option value="">Все материалы</option>';
-            Array.from(materials).sort().forEach(mat => {
-                const opt = document.createElement('option');
-                opt.value = mat; opt.textContent = mat;
-                if (mat === currentSelectedMat) opt.selected = true;
-                materialSelect.appendChild(opt);
-            });
+            fillSelect(holeSelect, holes, curHole);
+            fillSelect(podKvSelect, podKvs, curPod);
+            fillSelect(materialSelect, materials, curMat);
+            fillSelect(mrSelect, mrValues, curMR);
+            fillSelect(mfgSelect, mfgs, curMfg);
+        }
 
-            mrSelect.innerHTML = '<option value="">Все</option>';
-            Array.from(mrValues).sort().forEach(mr => {
-                const opt = document.createElement('option');
-                opt.value = mr; opt.textContent = mr;
-                if (mr === currentSelectedMR) opt.selected = true;
-                mrSelect.appendChild(opt);
-            });
+        function fillSelect(selectEl, setValues, currentValue) {
+            const firstOpt = selectEl.options[0];
+            selectEl.innerHTML = '';
+            selectEl.appendChild(firstOpt);
 
-            mfgSelect.innerHTML = '<option value="">Все заводы</option>';
-            Array.from(mfgs).sort().forEach(mfg => {
+            Array.from(setValues).sort().forEach(val => {
                 const opt = document.createElement('option');
-                opt.value = mfg; opt.textContent = mfg;
-                if (mfg === currentSelectedMfg) opt.selected = true;
-                mfgSelect.appendChild(opt);
+                opt.value = val;
+                opt.textContent = val;
+                if (val === currentValue) opt.selected = true;
+                selectEl.appendChild(opt);
             });
         }
 
@@ -818,58 +918,44 @@
             return dataRange.min <= inputRange.min && dataRange.max >= inputRange.max;
         }
 
-        function extractSizeNumber(str) {
-            if (!str) return null;
-            const match = str.replace(',', '.').match(/M?\s*(\d+(?:\.\d+)?)/i);
-            return match ? parseFloat(match[1]) : null;
-        }
-
-        function checkIsFilterActive() {
-            const isDefaultFunc = functionSelect.value === 'gland';
-            const hasTextSearch = searchInput.value.trim() !== '';
-            const hasMat = materialSelect.value !== '';
-            const hasMR = mrSelect.value !== '';
-            const hasMfg = mfgSelect.value !== '';
-            const hasHole = holeInput.value.trim() !== '';
-            const hasCable = cableDiameterInput.value.trim() !== '';
-            const hasArmor = armorInput.value.trim() !== '';
-            const hasExChanged = !stateEx || !stateO;
-
-            const isFiltered = !isDefaultFunc || hasTextSearch || hasMat || hasMR || hasMfg || hasHole || hasCable || hasArmor || hasExChanged;
-            openDrawerBtn.classList.toggle('active', isFiltered);
-        }
-
         function applyFilters() {
-            checkIsFilterActive();
             const query = searchInput.value.trim().toLowerCase();
             const selectedFunc = functionSelect.value;
+            const selectedHole = holeSelect.value;
+            const selectedPod = podKvSelect.value;
             const selectedMat = materialSelect.value;
             const selectedMR = mrSelect.value;
             const selectedMfg = mfgSelect.value;
-            const holeVal = parseFloat(holeInput.value.replace(',', '.'));
             const cableRange = parseRangeInput(cableDiameterInput.value);
             const armorRange = parseRangeInput(armorInput.value);
 
+            const isDefault = selectedFunc === 'gland' && !query && !selectedHole && !selectedPod && !selectedMat && !selectedMR && !selectedMfg && !cableRange && !armorRange && stateEx && stateO;
+            openDrawerBtn.classList.toggle('active', !isDefault);
+            resetTopBtn.style.display = !isDefault ? 'flex' : 'none';
+
             let filtered = validRawData.filter(item => {
-                if (query !== '') {
+                if (query) {
                     const fullText = `${item['ProjectName'] || ''} ${item['PartNumber'] || ''} ${item['Manufacturer'] || ''} ${item['Size/thread'] || ''}`.toLowerCase();
                     if (!fullText.includes(query)) return false;
                 }
 
                 if (!checkFunctionMatch(item['Function'], selectedFunc)) return false;
-                if (selectedMat !== '' && (item['Material'] || '').trim() !== selectedMat) return false;
-                if (selectedMfg !== '' && (item['Manufacturer'] || '').trim() !== selectedMfg) return false;
+                if (selectedMat && (item['Material'] || '').trim() !== selectedMat) return false;
+                if (selectedMfg && (item['Manufacturer'] || '').trim() !== selectedMfg) return false;
 
-                if (!isNaN(holeVal) && (selectedFunc === 'gland' || selectedFunc === 'adapter' || selectedFunc === 'plug' || selectedFunc === 'all')) {
-                    const itemHoleNum = extractSizeNumber(item['Size/thread']);
-                    if (itemHoleNum === null || itemHoleNum !== holeVal) return false;
+                const sizeVal = item['Size/thread'] || '';
+                if (selectedFunc === 'adapter') {
+                    const parsed = parseAdapterSizes(sizeVal);
+                    if (selectedHole && parsed.pos !== selectedHole) return false;
+                    if (selectedPod && parsed.pod !== selectedPod) return false;
+                } else {
+                    if (selectedHole && sizeVal.trim() !== selectedHole) return false;
                 }
 
-                if (cableRange && (selectedFunc === 'gland' || selectedFunc === 'all') && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) return false;
-                if (armorRange && (selectedFunc === 'gland' || selectedFunc === 'all') && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) return false;
-                if (selectedMR !== '' && (selectedFunc === 'gland' || selectedFunc === 'coupler' || selectedFunc === 'all') && (item['MR'] || '').trim() !== selectedMR) return false;
+                if (cableRange && !isRangeMatching(cableRange, item['Diameter without armor Dк'])) return false;
+                if (armorRange && !isRangeMatching(armorRange, item['Outer diameter Dkb'])) return false;
+                if (selectedMR && (item['MR'] || '').trim() !== selectedMR) return false;
 
-                // Фильтрация Ex / O
                 if (selectedFunc !== 'coupler') {
                     const exVal = (item['Ex'] || '').toLowerCase();
                     const isExRow = exVal.includes('ex');
@@ -902,32 +988,46 @@
             tableBody.innerHTML = data.map((item, index) => {
                 const exText = item['Ex'] || item['Explosion protection'] || '-';
                 const isEx = exText.toLowerCase().includes('ex');
-                let cableVal = item['Cable'] || '-';
-                if (cableVal.trim() === '(для брони)') cableVal = '<strong>Б</strong>';
+                
+                const cableRaw = (item['Cable'] || '').toLowerCase().trim();
+                let cableHtml = '-';
+                if (cableRaw.includes('без') && cableRaw.includes('брони')) {
+                    cableHtml = `<span class="b-circle b-ub" title="Б синяя - для кабелей в броне и без">Б</span>`;
+                } else if (cableRaw.includes('брони') || cableRaw === 'б') {
+                    cableHtml = `<span class="b-circle" title="Б черная - для кабелей в броне">Б</span>`;
+                }
+
+                const uppCode = item['PartNumber'] || '-';
 
                 return `
-                    <tr onclick="openModal(${index})" data-index="${index}">
+                    <tr>
                         <td><strong>${item['Manufacturer'] || '-'}</strong></td>
                         <td>${isEx ? `<span class="badge badge-ex">${exText}</span>` : `<span class="badge">${exText}</span>`}</td>
-                        <td style="text-align: center;">${cableVal}</td>
+                        <td>${cableHtml}</td>
                         <td>${item['MR'] || '-'}</td>
-                        <td>${item['ProjectName'] || '-'}</td>
-                        <td><code style="font-size:11px; font-weight:600;">${item['PartNumber'] || '-'}</code></td>
+                        <td onclick="openModal(${index})" style="cursor:pointer; font-weight:500;">${item['ProjectName'] || '-'}</td>
+                        <td>
+                            <span class="clickable-code" onclick="copyToClipboard('${uppCode}', 'УПП скопирован')">${uppCode}</span>
+                        </td>
                     </tr>
                 `;
             }).join('');
 
-            // Привязка открытий карточек к отфильтрованным объектам
             window.currentFilteredData = data;
         }
 
-        // Открытие карточки
         window.openModal = function(index) {
             const item = window.currentFilteredData[index];
             if (!item) return;
 
             modalImg.src = item['IMG'] || '';
             modalImg.style.display = item['IMG'] ? 'block' : 'none';
+            
+            const mfg = item['Manufacturer'] || '';
+            modalMfgBadge.textContent = mfg;
+            modalMfgBadge.style.backgroundColor = MFG_COLORS[mfg.toUpperCase()] || '#607D8B';
+            modalMfgBadge.style.display = mfg ? 'block' : 'none';
+
             modalTitle.textContent = item['ProjectName'] || 'Детали изделия';
 
             modalTableBody.innerHTML = '';
@@ -935,7 +1035,8 @@
                 const val = item[key];
                 if (val && val !== '-' && val.trim() !== '' && key !== 'IMG' && key !== 'Link' && key !== 'Status') {
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${key}</td><td>${val}</td>`;
+                    const label = FIELD_LABELS[key] || key;
+                    tr.innerHTML = `<td>${label}</td><td onclick="copyToClipboard('${val.replace(/'/g, "\\'")}', '${label} скопировано')">${val}</td>`;
                     modalTableBody.appendChild(tr);
                 }
             });
@@ -955,20 +1056,10 @@
             if (e.target === modalOverlay) modalOverlay.classList.remove('open');
         });
 
-        // Управление Drawer
         openDrawerBtn.addEventListener('click', () => {
-            drawerOverlay.classList.add('open');
-            drawer.classList.add('open');
+            drawer.classList.toggle('open');
         });
 
-        function closeDrawer() {
-            drawerOverlay.classList.remove('open');
-            drawer.classList.remove('open');
-        }
-
-        drawerOverlay.addEventListener('click', closeDrawer);
-
-        // Логика Ex / O
         btnEx.addEventListener('click', () => {
             stateEx = !stateEx;
             btnEx.classList.toggle('active', stateEx);
@@ -981,7 +1072,6 @@
             applyFilters();
         });
 
-        // Поиск с крестиком
         searchInput.addEventListener('input', () => {
             clearSearchBtn.style.display = searchInput.value ? 'flex' : 'none';
             applyFilters();
@@ -993,34 +1083,37 @@
             applyFilters();
         });
 
-        // Тип изделия
         functionSelect.addEventListener('change', () => {
+            resetFilterFields();
             updateLayoutByFunction();
-            populateDynamicSelects();
+            updateDynamicOptions();
             applyFilters();
         });
 
-        [holeInput, cableDiameterInput, armorInput].forEach(input => input.addEventListener('input', applyFilters));
-        [materialSelect, mrSelect, mfgSelect].forEach(select => select.addEventListener('change', applyFilters));
+        [holeSelect, podKvSelect, materialSelect, mrSelect, mfgSelect].forEach(select => {
+            select.addEventListener('change', () => {
+                updateDynamicOptions();
+                applyFilters();
+            });
+        });
 
-        // Сброс фильтров
+        [cableDiameterInput, armorInput].forEach(input => input.addEventListener('input', applyFilters));
+
         resetFiltersBtn.addEventListener('click', () => {
             functionSelect.value = 'gland';
+            resetFilterFields();
             updateLayoutByFunction();
-            populateDynamicSelects();
+            updateDynamicOptions();
+            applyFilters();
+        });
 
-            materialSelect.value = '';
-            mrSelect.value = '';
-            mfgSelect.value = '';
-            holeInput.value = '';
-            cableDiameterInput.value = '';
-            armorInput.value = '';
-
-            stateEx = true;
-            stateO = true;
-            btnEx.classList.add('active');
-            btnO.classList.add('active');
-
+        resetTopBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.style.display = 'none';
+            functionSelect.value = 'gland';
+            resetFilterFields();
+            updateLayoutByFunction();
+            updateDynamicOptions();
             applyFilters();
         });
 

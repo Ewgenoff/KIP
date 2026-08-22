@@ -221,23 +221,6 @@
             color: white;
         }
 
-        .btn-poster {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: var(--blue);
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            transition: background 0.2s;
-        }
-        .btn-poster:hover { background: #0062cc; }
-
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -616,12 +599,12 @@
         .decode-table .col-code { width: 18%; font-weight: 700; color: var(--blue); }
         .decode-table .col-desc { width: 50%; }
 
-        /* Боковая панель БЕЗ блюра */
+        /* ИЗМЕНЕНИЯ 1: Убран backdrop-filter для размытия */
         .side-panel-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.2);
             z-index: 998;
         }
         .side-panel-overlay.active { display: block; }
@@ -652,12 +635,13 @@
             align-items: center;
         }
 
+        /* ИЗМЕНЕНИЯ 2: Расширена ширина блока вкладок для кнопки с линейкой */
         .panel-tabs {
             display: flex;
             background: rgba(120, 120, 128, 0.12);
             border-radius: 9px;
             padding: 2px;
-            width: 250px;
+            width: 270px;
         }
 
         .tab-btn {
@@ -671,9 +655,6 @@
             cursor: pointer;
             color: var(--label-primary);
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .tab-btn.active {
@@ -686,13 +667,66 @@
             padding: 12px;
             overflow-y: auto;
             flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
-        .panel-content-scroll {
+        /* Стили для формы расчета длины штока */
+        .calc-box {
+            background: var(--card-bg);
+            border: 1px solid var(--separator);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .calc-field {
+            margin-bottom: 12px;
+        }
+        .calc-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--label-primary);
+        }
+        .calc-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--separator);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .calc-input:focus {
+            border-color: var(--blue);
+        }
+        .boss-options {
+            display: flex;
+            gap: 8px;
+        }
+        .boss-btn {
             flex: 1;
-            overflow-y: auto;
+            padding: 8px;
+            border: 1px solid var(--separator);
+            background: var(--gray-bg);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--label-primary);
+            text-align: center;
+        }
+        .boss-btn.active {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+        .calc-result {
+            background: rgba(0, 122, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+            color: var(--blue);
+            font-weight: 500;
+            line-height: 1.4;
         }
 
         .sort-btn {
@@ -812,92 +846,6 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Элементы калькулятора */
-        .calc-group {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 14px;
-            border: 1px solid var(--separator);
-            margin-bottom: 12px;
-        }
-        .calc-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--label-primary);
-            margin-bottom: 8px;
-            display: block;
-        }
-        .calc-input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--separator);
-            font-size: 14px;
-            outline: none;
-            margin-bottom: 12px;
-        }
-        .boss-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .boss-btn {
-            flex: 1;
-            padding: 8px 0;
-            border: 1px solid var(--separator);
-            background: var(--gray-bg);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--label-primary);
-            transition: all 0.2s;
-        }
-        .boss-btn.active {
-            background: var(--blue);
-            color: white;
-            border-color: var(--blue);
-        }
-        .calc-result {
-            font-size: 12px;
-            color: var(--label-secondary);
-            background: rgba(0, 122, 255, 0.08);
-            padding: 10px;
-            border-radius: 8px;
-            line-height: 1.4;
-        }
-
-        /* Поиск кабелей */
-        .cable-modal-content {
-            border-radius: 16px;
-            max-width: 600px;
-            width: 90%;
-            margin: auto;
-            align-self: center;
-            background: var(--card-bg);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            max-height: 80vh;
-            overflow: hidden;
-        }
-        .cable-list {
-            overflow-y: auto;
-            flex: 1;
-        }
-        .cable-item {
-            padding: 10px 16px;
-            border-bottom: 0.5px solid var(--separator);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-        .cable-item:hover { background: var(--gray-bg-hover); }
-        .cable-item-name { font-weight: 500; color: var(--label-primary); flex: 1; padding-right: 10px;}
-        .cable-item-val { font-weight: 600; color: var(--blue); }
-
         .ios-toast {
             position: fixed;
             top: 40px;
@@ -996,24 +944,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно выбора кабеля -->
-    <div class="modal-overlay" id="cableModalOverlay" onclick="if(event.target === this) closeCableModal()">
-        <div class="cable-modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Выбор диаметра кабеля</h2>
-            </div>
-            <div style="padding: 10px 16px; border-bottom: 0.5px solid var(--separator);">
-                <input type="text" id="cableSearchInput" placeholder="Поиск кабеля по наименованию..." style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--separator); outline:none;" oninput="filterCableList()">
-            </div>
-            <div class="cable-list" id="cableListContainer">
-                <div class="loading">Загрузка кабелей...</div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal-action btn-close-modal-footer" onclick="closeCableModal()">Отмена</button>
-            </div>
-        </div>
-    </div>
-
     <div class="image-modal" id="imageModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); z-index:2000; justify-content:center; align-items:center;" onclick="closeImageModal()">
         <img id="fullImage" src="" alt="Просмотр" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:8px;">
     </div>
@@ -1022,50 +952,45 @@
 
     <div class="side-panel" id="combinedPanel">
         <div class="panel-header">
+            <!-- ИЗМЕНЕНИЯ 3: Добавлена новая вкладка с кнопкой 📐 между фильтром и сортировкой -->
             <div class="panel-tabs">
                 <button class="tab-btn active" id="tabFilter" onclick="switchTab('filter')">Фильтр</button>
+                <button class="tab-btn" id="tabCalc" onclick="switchTab('calc')">📐</button>
                 <button class="tab-btn" id="tabSort" onclick="switchTab('sort')">Сортировка</button>
-                <button class="tab-btn" id="tabCalc" onclick="switchTab('calc')" title="Калькулятор длины штока">🧮</button>
             </div>
             <button class="btn btn-close-header" onclick="closePanels()">×</button>
         </div>
         
         <div class="panel-body" id="tabContentFilter">
-            <div class="panel-content-scroll">
-                <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
-                <div id="filterPanelContent"></div>
-            </div>
-            <!-- Ссылка на Плакат взрывозащиты внизу боковой панели -->
-            <a class="btn-poster" href="https://exd.ru/pdf/%D0%9F%D0%BB%D0%B0%D0%BA%D0%B0%D1%82%20%D0%BF%D0%BE%20%D0%B2%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B5_2026.pdf" target="_blank">Плакат взрывозащиты</a>
+            <button class="btn btn-reset-panel" id="panelResetBtn" onclick="clearAllFilters()">Сбросить фильтры</button>
+            <div id="filterPanelContent"></div>
         </div>
 
-        <div class="panel-body" id="tabContentSort" style="display: none;">
-            <div class="panel-content-scroll">
-                <button class="sort-btn" onclick="sortCards('ProjectName')">По Наименованию (А-Я)</button>
-                <button class="sort-btn" onclick="sortCards('Naznachenie')">По Назначению (А-Я)</button>
-                <button class="sort-btn" onclick="sortCards('Proizvodetel')">По Производителю (А-Я)</button>
-            </div>
-            <a class="btn-poster" href="https://exd.ru/pdf/%D0%9F%D0%BB%D0%B0%D0%BA%D0%B0%D1%82%20%D0%BF%D0%BE%20%D0%B2%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B5_2026.pdf" target="_blank">Плакат взрывозащиты</a>
-        </div>
-
+        <!-- ИЗМЕНЕНИЯ 4: Разметка содержимого для новой вкладки расчета длины штока -->
         <div class="panel-body" id="tabContentCalc" style="display: none;">
-            <div class="panel-content-scroll">
-                <div class="calc-group">
-                    <label class="calc-label">Выбор бобышки</label>
-                    <div class="boss-selector">
+            <div class="calc-box">
+                <div class="calc-field">
+                    <label for="ductDiameter">Диаметр трубы/сечение воздуховода (мм):</label>
+                    <input type="number" id="ductDiameter" class="calc-input" placeholder="Введите размер в мм..." oninput="calculateStemLength()">
+                </div>
+                <div class="calc-field">
+                    <label>Размер бобышки:</label>
+                    <div class="boss-options">
                         <button class="boss-btn active" id="boss50" onclick="selectBoss(50)">50 мм</button>
                         <button class="boss-btn" id="boss100" onclick="selectBoss(100)">100 мм</button>
                     </div>
-
-                    <label class="calc-label">Диаметр трубы / сечение воздуховода (мм)</label>
-                    <input type="number" class="calc-input" id="pipeD" placeholder="Введите размер, например: 300" oninput="calculateSensorLength()">
-
-                    <div class="calc-result" id="calcResultText">
-                        Введите размер воздуховода для расчета диапазона монтажной длины штока.
-                    </div>
                 </div>
+                <div class="calc-result" id="calcResult">
+                    Введите диаметр воздуховода для расчета длины штока.
+                </div>
+                <button class="btn btn-reset-panel" style="margin-top: 12px; margin-bottom: 0;" onclick="resetStemFilter()">Сбросить фильтр длины</button>
             </div>
-            <a class="btn-poster" href="https://exd.ru/pdf/%D0%9F%D0%BB%D0%B0%D0%BA%D0%B0%D1%82%20%D0%BF%D0%BE%20%D0%B2%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B5_2026.pdf" target="_blank">Плакат взрывозащиты</a>
+        </div>
+
+        <div class="panel-body" id="tabContentSort" style="display: none;">
+            <button class="sort-btn" onclick="sortCards('ProjectName')">По Наименованию (А-Я)</button>
+            <button class="sort-btn" onclick="sortCards('Naznachenie')">По Назначению (А-Я)</button>
+            <button class="sort-btn" onclick="sortCards('Proizvodetel')">По Производителю (А-Я)</button>
         </div>
     </div>
 
@@ -1163,19 +1088,19 @@
         ];
 
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1716395972&single=true&output=csv";
-        const cablesCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1009866427&single=true&output=csv";
-        
         let rawData = [];
-        let rawCablesData = [];
         let activeFilters = {};
-        let calcFilterRange = null; 
         let currentSort = { key: null, direction: 'asc' };
         
         let filterStatus = true;
         let filterOnlyUniquePart = false;
         let tspt101Data = null;
         let isDecodePinned = false;
+
+        /* Переменные для расчета длины штока */
         let selectedBoss = 50;
+        let stemMinLength = null;
+        let stemMaxLength = null;
 
         fetch('TSPT.json')
             .then(res => res.json())
@@ -1227,6 +1152,7 @@
             renderCards();
         }
 
+        /* ИЗМЕНЕНИЯ 5: В расчете длины штока производится фильтрация по полю Characteristic */
         function renderCards() {
             const grid = document.getElementById('cardsGrid');
             const counter = document.getElementById('counter');
@@ -1245,34 +1171,23 @@
                 });
             }
 
-            // Фильтрация по активным категориям
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
-                    if (key === 'Группа') {
-                        dataToRender = dataToRender.filter(item => {
-                            const val = (item['Группа'] || '').trim();
-                            const isAcc = activeFilters['Группа'].includes('Аксессуары');
-                            const knownGroups = [...new Set(rawData.map(i => (i['Группа'] || '').trim()).filter(v => v !== ''))];
-                            const isOtherGroup = activeFilters['Группа'].some(g => g !== 'Аксессуары' && g === val);
-                            
-                            const matchesAcc = isAcc && (val === '' || !knownGroups.includes(val) || val === 'Аксессуары');
-                            return matchesAcc || isOtherGroup;
-                        });
-                    } else {
-                        dataToRender = dataToRender.filter(item => activeFilters[key].includes(item[key] || ""));
-                    }
+                    dataToRender = dataToRender.filter(item => activeFilters[key].includes(item[key] || ""));
                 }
             }
 
-            // Фильтрация по калькулятору длины штока (по полю Characteristic)
-            if (calcFilterRange) {
+            // Фильтрация по длине штока на основе поля Characteristic
+            if (stemMinLength !== null && stemMaxLength !== null) {
                 dataToRender = dataToRender.filter(item => {
                     const charStr = (item["Characteristic"] || "").toString();
+                    // Извлекаем числа из строки длиной 2, 3 или 4 цифры
                     const matches = charStr.match(/\b\d{2,4}\b/g);
                     if (!matches) return false;
-                    return matches.some(numStr => {
-                        const val = parseFloat(numStr);
-                        return val >= calcFilterRange.min && val <= calcFilterRange.max;
+                    
+                    return matches.some(valStr => {
+                        const val = parseFloat(valStr);
+                        return val >= stemMinLength && val <= stemMaxLength;
                     });
                 });
             }
@@ -1339,7 +1254,7 @@
                 const isStatusFalse = (item["Status"] || "").toString().trim().toUpperCase() === "FALSE";
 
                 const groupRaw = item["Группа"] || '';
-                const groupClean = groupRaw.replace(/Группа\s*/gi, '').trim() || 'Аксессуары';
+                const groupClean = groupRaw.replace(/Группа\s*/gi, '').trim();
 
                 const producerStyle = getProducerColor(producer);
 
@@ -1818,31 +1733,74 @@
             document.getElementById('combinedPanel').classList.add('active');
         }
 
+        /* ИЗМЕНЕНИЯ 6: Логика переключения между 3 вкладками */
         function switchTab(tab) {
             const tabFilter = document.getElementById('tabFilter');
-            const tabSort = document.getElementById('tabSort');
             const tabCalc = document.getElementById('tabCalc');
+            const tabSort = document.getElementById('tabSort');
+            
             const contentFilter = document.getElementById('tabContentFilter');
-            const contentSort = document.getElementById('tabContentSort');
             const contentCalc = document.getElementById('tabContentCalc');
+            const contentSort = document.getElementById('tabContentSort');
 
             tabFilter.classList.remove('active');
-            tabSort.classList.remove('active');
             tabCalc.classList.remove('active');
+            tabSort.classList.remove('active');
+
             contentFilter.style.display = 'none';
-            contentSort.style.display = 'none';
             contentCalc.style.display = 'none';
+            contentSort.style.display = 'none';
 
             if (tab === 'filter') {
                 tabFilter.classList.add('active');
-                contentFilter.style.display = 'flex';
-            } else if (tab === 'sort') {
-                tabSort.classList.add('active');
-                contentSort.style.display = 'flex';
+                contentFilter.style.display = 'block';
             } else if (tab === 'calc') {
                 tabCalc.classList.add('active');
-                contentCalc.style.display = 'flex';
+                contentCalc.style.display = 'block';
+            } else {
+                tabSort.classList.add('active');
+                contentSort.style.display = 'block';
             }
+        }
+
+        /* ИЗМЕНЕНИЯ 7: Функции расчета длины штока и применения фильтра */
+        function selectBoss(size) {
+            selectedBoss = size;
+            document.getElementById('boss50').classList.toggle('active', size === 50);
+            document.getElementById('boss100').classList.toggle('active', size === 100);
+            calculateStemLength();
+        }
+
+        function calculateStemLength() {
+            const inputVal = parseFloat(document.getElementById('ductDiameter').value);
+            const resContainer = document.getElementById('calcResult');
+
+            if (isNaN(inputVal) || inputVal <= 0) {
+                stemMinLength = null;
+                stemMaxLength = null;
+                resContainer.innerHTML = 'Введите корректный диаметр воздуховода.';
+                updateFilterButtonState();
+                renderCards();
+                return;
+            }
+
+            // Глубина погружения от 1/3 до 2/3 от сечения + размер бобышки
+            stemMinLength = Math.round((inputVal / 3) + selectedBoss);
+            stemMaxLength = Math.round(((2 * inputVal) / 3) + selectedBoss);
+
+            resContainer.innerHTML = `Рекомендуемая длина штока с учетом бобышки (${selectedBoss} мм):<br><b>от ${stemMinLength} мм до ${stemMaxLength} мм</b>`;
+            
+            updateFilterButtonState();
+            renderCards();
+        }
+
+        function resetStemFilter() {
+            document.getElementById('ductDiameter').value = '';
+            stemMinLength = null;
+            stemMaxLength = null;
+            document.getElementById('calcResult').innerHTML = 'Введите диаметр воздуховода для расчета длины штока.';
+            updateFilterButtonState();
+            renderCards();
         }
 
         function closePanels() {
@@ -1862,7 +1820,6 @@
             renderCards();
         }
 
-        /* Построение фильтров */
         function buildFilterPanel() {
             const panelContent = document.getElementById('filterPanelContent');
             panelContent.innerHTML = '';
@@ -1872,17 +1829,9 @@
                 if(!displayName) return;
 
                 let uniqueVals = [...new Set(rawData.map(item => (item[key] || "").trim()).filter(v => v !== ""))];
-                
-                // Для "Группы" гарантируем наличие пункта "Аксессуары"
-                if (key === 'Группа') {
-                    if (!uniqueVals.includes('Аксессуары')) {
-                        uniqueVals.unshift('Аксессуары');
-                    }
-                } else if (uniqueVals.length === 0) {
-                    return;
-                }
+                if (uniqueVals.length === 0) return;
 
-                uniqueVals.sort((a,b) => a === 'Аксессуары' ? -1 : b === 'Аксессуары' ? 1 : a.localeCompare(b));
+                uniqueVals.sort();
 
                 const groupDiv = document.createElement('div');
                 groupDiv.className = 'filter-group';
@@ -1890,13 +1839,9 @@
                 const btn = document.createElement('button');
                 btn.className = 'filter-group-title';
                 btn.setAttribute('data-filter-key', key);
-
-                // Обертка клика по названию Кабельный ввод для поиска по таблице кабелей
-                let isCableField = (displayName === "Диаметр кабеля");
-
                 btn.innerHTML = `
-                    <div class="filter-group-title-left" ${isCableField ? 'onclick="openCableModal(event)"' : ''}>
-                        <span>${displayName} ${isCableField ? '🔍' : ''}</span>
+                    <div class="filter-group-title-left">
+                        <span>${displayName}</span>
                     </div>
                     <div class="filter-group-title-right">
                         <span class="group-counter" style="color: var(--label-secondary); font-size: 12px;">0/${uniqueVals.length}</span>
@@ -1904,10 +1849,7 @@
                     </div>
                 `;
                 
-                btn.onclick = (e) => {
-                    if (e.target.closest('.filter-group-title-left') && isCableField) {
-                        return; // Поиск откроется отдельно
-                    }
+                btn.onclick = () => {
                     const dropdown = groupDiv.querySelector('.filter-dropdown');
                     const isOpen = dropdown.classList.contains('open');
                     
@@ -1965,9 +1907,7 @@
                 const counterSpan = btn.querySelector('.group-counter');
                 if (!counterSpan) return;
 
-                let totalVals = [...new Set(rawData.map(item => (item[key] || "").trim()).filter(v => v !== ""))].length;
-                if (key === 'Группа') totalVals = [...new Set(['Аксессуары', ...rawData.map(item => (item[key] || "").trim()).filter(v => v !== "")])].length;
-                
+                const totalVals = [...new Set(rawData.map(item => (item[key] || "").trim()).filter(v => v !== ""))].length;
                 const selectedCount = activeFilters[key] ? activeFilters[key].length : 0;
 
                 counterSpan.innerText = `${selectedCount}/${totalVals}`;
@@ -1995,120 +1935,6 @@
             renderCards();
         }
 
-        /* --- Логика Калькулятора --- */
-        function selectBoss(val) {
-            selectedBoss = val;
-            document.getElementById('boss50').classList.toggle('active', val === 50);
-            document.getElementById('boss100').classList.toggle('active', val === 100);
-            calculateSensorLength();
-        }
-
-        function calculateSensorLength() {
-            const inputVal = parseFloat(document.getElementById('pipeD').value);
-            const resBox = document.getElementById('calcResultText');
-
-            if (isNaN(inputVal) || inputVal <= 0) {
-                calcFilterRange = null;
-                resBox.innerHTML = "Введите размер воздуховода для расчета диапазона монтажной длины штока.";
-                renderCards();
-                return;
-            }
-
-            const minL = Math.round((inputVal / 3) + selectedBoss);
-            const maxL = Math.round(((2 * inputVal) / 3) + selectedBoss);
-
-            calcFilterRange = { min: minL, max: maxL };
-            resBox.innerHTML = `Расчетный диапазон длины штока с бобышкой ${selectedBoss} мм:<br><b>от ${minL} мм до ${maxL} мм</b>. Список отфильтрован по совпадению.`;
-
-            renderCards();
-        }
-
-        /* --- Выбор Диаметра Кабеля из Таблицы Кабелей --- */
-        function openCableModal(e) {
-            if (e) e.stopPropagation();
-            document.getElementById('cableModalOverlay').classList.add('active');
-            
-            if (rawCablesData.length === 0) {
-                Papa.parse(cablesCsvUrl, {
-                    download: true,
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        rawCablesData = results.data;
-                        renderCableList(rawCablesData);
-                    },
-                    error: function() {
-                        document.getElementById('cableListContainer').innerHTML = '<div class="loading">Ошибка загрузки таблицы кабелей</div>';
-                    }
-                });
-            } else {
-                renderCableList(rawCablesData);
-            }
-        }
-
-        function closeCableModal() {
-            document.getElementById('cableModalOverlay').classList.remove('active');
-        }
-
-        function renderCableList(data) {
-            const container = document.getElementById('cableListContainer');
-            container.innerHTML = '';
-
-            if (data.length === 0) {
-                container.innerHTML = '<div class="loading">Кабели не найдены</div>';
-                return;
-            }
-
-            data.forEach(row => {
-                const name = row["Марка"] || row["Наименование"] || row["Название кабеля"] || Object.values(row)[0] || '';
-                let rawVal = row["Диаметр макс."] || row["Диаметр"] || row["Макс. диаметр"] || Object.values(row)[1] || '';
-                
-                // Приведение значения к виду 17 или 10,5
-                let formattedVal = rawVal.toString().replace('.', ',').trim();
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'cable-item';
-                itemDiv.innerHTML = `
-                    <span class="cable-item-name">${escapeHtml(name)}</span>
-                    <span class="cable-item-val">${escapeHtml(formattedVal)} мм</span>
-                `;
-
-                itemDiv.onclick = () => selectCableDiameter(formattedVal);
-                container.appendChild(itemDiv);
-            });
-        }
-
-        function filterCableList() {
-            const query = document.getElementById('cableSearchInput').value.toLowerCase().trim();
-            const filtered = rawCablesData.filter(row => {
-                return Object.values(row).some(v => v && v.toString().toLowerCase().includes(query));
-            });
-            renderCableList(filtered);
-        }
-
-        function selectCableDiameter(val) {
-            closeCableModal();
-
-            // Передача диаметра в фильтры
-            if (!activeFilters["DiamKabelya"]) activeFilters["DiamKabelya"] = [];
-            if (!activeFilters["DiamKabelya"].includes(val)) {
-                activeFilters["DiamKabelya"].push(val);
-            }
-
-            // Отмечаем соответствующие чекбоксы
-            const groupBtn = document.querySelector(`[data-filter-key="DiamKabelya"]`);
-            if (groupBtn) {
-                const groupDiv = groupBtn.closest('.filter-group');
-                const cb = groupDiv.querySelector(`input[value="${val}"]`);
-                if (cb) cb.checked = true;
-                updateGroupTitleStyle(groupDiv, "DiamKabelya");
-            }
-
-            updateFilterButtonState();
-            renderCards();
-            showToast(`Выбран диаметр: ${val} мм`);
-        }
-
         let resetClickCount = 0;
         let resetClickTimer = null;
 
@@ -2127,10 +1953,6 @@
             }, 1500);
 
             activeFilters = {};
-            calcFilterRange = null;
-            document.getElementById('pipeD').value = '';
-            document.getElementById('calcResultText').innerText = 'Введите размер воздуховода для расчета диапазона монтажной длины штока.';
-
             filterOnlyUniquePart = false;
             document.getElementById('btnUniquePart').classList.remove('active');
             
@@ -2139,6 +1961,10 @@
             clearInput('searchName', 'clearName');
             clearInput('searchGlobal', 'clearGlobal');
             currentSort = { key: null, direction: 'asc' };
+            
+            // ИЗМЕНЕНИЯ 8: Сброс параметров расчета штока при общем сбросе
+            resetStemFilter();
+
             updateFilterButtonState();
             renderCards();
         }
@@ -2146,13 +1972,18 @@
         function updateFilterButtonState() {
             const btnHeader = document.getElementById('clearFiltersBtn');
             const btnPanel = document.getElementById('panelResetBtn');
-            let isFiltered = (calcFilterRange !== null);
+            let isFiltered = false;
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
                     isFiltered = true;
                     break;
                 }
             }
+
+            if (stemMinLength !== null && stemMaxLength !== null) {
+                isFiltered = true;
+            }
+
             if (isFiltered) {
                 btnHeader.classList.add('active');
                 btnPanel.classList.add('active');
@@ -2172,7 +2003,6 @@
             if (e.key === 'Escape') {
                 closeModal();
                 closeDecodeModal(true);
-                closeCableModal();
                 closeImageModal();
                 closePanels();
             }

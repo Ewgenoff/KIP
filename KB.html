@@ -171,6 +171,7 @@
             cursor: pointer;
         }
 
+        /* Выравнивание по центру столбцов 1, 2, 3, 4, 6 */
         th:nth-child(1), td:nth-child(1),
         th:nth-child(2), td:nth-child(2),
         th:nth-child(3), td:nth-child(3),
@@ -187,7 +188,7 @@
         }
 
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background-color: rgba(0,0,0,0.02); }
+        tbody tr:hover { filter: brightness(0.97); }
 
         .badge {
             display: inline-block;
@@ -229,9 +230,9 @@
 
         .clickable-code {
             cursor: pointer;
-            font-weight: 600;
-            font-family: monospace;
-            background: var(--ios-gray-bg);
+            font-weight: 500;
+            font-family: inherit;
+            background: transparent;
             padding: 2px 4px;
             border-radius: 4px;
         }
@@ -295,18 +296,18 @@
 
         .drawer-footer {
             padding: 12px 16px;
-            border-top: 1px solid var(--ios-gray-light);
             text-align: center;
             background: var(--ios-card);
+            border-top: 1px solid var(--ios-gray-light);
         }
 
-        .drawer-footer-link {
+        .drawer-footer a {
             font-size: 11px;
             color: var(--ios-gray);
             text-decoration: none;
         }
 
-        .drawer-footer-link:hover {
+        .drawer-footer a:hover {
             text-decoration: underline;
         }
 
@@ -322,12 +323,6 @@
             font-weight: 600;
             color: var(--ios-gray);
             text-transform: uppercase;
-        }
-
-        .clickable-label {
-            cursor: pointer;
-            color: var(--ios-blue) !important;
-            text-decoration: underline;
         }
 
         .form-row-2 {
@@ -383,7 +378,7 @@
             border-color: var(--ios-blue);
         }
 
-        /* Модальные окна */
+        /* Карточка */
         .modal-overlay {
             position: fixed;
             top:0; left:0; right:0; bottom:0;
@@ -510,54 +505,6 @@
             color: var(--text-main);
         }
 
-        /* Стили для поиска кабелей */
-        .cable-search-input {
-            width: 100%;
-            height: 40px;
-            padding: 0 12px;
-            font-size: 14px;
-            border: 1px solid var(--ios-border);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            outline: none;
-        }
-
-        .cable-list {
-            list-style: none;
-            max-height: 350px;
-            overflow-y: auto;
-            border: 1px solid var(--ios-gray-light);
-            border-radius: 8px;
-        }
-
-        .cable-item {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--ios-gray-light);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-        }
-
-        .cable-item:last-child {
-            border-bottom: none;
-        }
-
-        .cable-item:hover {
-            background-color: var(--ios-gray-bg);
-        }
-
-        .cable-item-name {
-            font-weight: 500;
-        }
-
-        .cable-item-diam {
-            font-weight: 700;
-            color: var(--ios-blue);
-            margin-left: 10px;
-            white-space: nowrap;
-        }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -644,7 +591,7 @@
 
             <div id="cableAndArmorRow" class="form-row-2">
                 <div id="cableDiamGroup" class="form-group">
-                    <label for="cableDiameterInput" class="clickable-label" id="labelCableDiameter" title="Нажмите для поиска кабеля">Диаметр кабеля 🔍</label>
+                    <label for="cableDiameterInput">Диаметр кабеля</label>
                     <input type="text" id="cableDiameterInput" class="form-control">
                 </div>
                 <div id="armorGroup" class="form-group">
@@ -680,13 +627,12 @@
                 <select id="materialSelect" class="form-control"><option value="">Все материалы</option></select>
             </div>
         </div>
-
         <div class="drawer-footer">
-            <a href="https://exd.ru/pdf/%D0%9F%D0%BB%D0%B0%D0%BA%D0%B0%D1%82%20%D0%BF%D0%BE%20%D0%B2%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B5_2026.pdf" target="_blank" class="drawer-footer-link">Плакат взрывозащиты</a>
+            <a href="https://exd.ru/pdf/%D0%9F%D0%BB%D0%B0%D0%BA%D0%B0%D1%82%20%D0%BF%D0%BE%20%D0%B2%D0%B7%D1%80%D1%8B%D0%B2%D0%BE%D0%B7%D0%B0%D1%89%D0%B8%D1%82%D0%B5_2026.pdf" target="_blank">Плакат взрывозащиты</a>
         </div>
     </div>
 
-    <!-- Модальная карточка изделия -->
+    <!-- Модальная карточка -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-image-container">
@@ -708,30 +654,11 @@
         </div>
     </div>
 
-    <!-- Модальное окно поиска кабеля -->
-    <div id="cableModalOverlay" class="modal-overlay">
-        <div class="modal-card" style="max-height: 80vh;">
-            <div class="modal-body" style="padding: 16px;">
-                <h3 style="margin-bottom: 12px; font-size: 16px;">Поиск кабеля</h3>
-                <input type="text" id="cableSearchInput" class="cable-search-input" placeholder="Введите название кабеля...">
-                <ul id="cableList" class="cable-list">
-                    <li class="loader">Загрузка кабелей...</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="cableModalCloseBtn" class="btn-modal">Отмена</button>
-            </div>
-        </div>
-    </div>
-
     <div id="toast" class="toast">Скопировано</div>
 
     <script>
         const PRIMARY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1228517333&single=true&output=csv';
         const PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PRIMARY_CSV_URL);
-
-        const CABLES_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSzAETiIKfUBvchm03dtQKognrImGtEbT5O13_WQpCe7exHxLvPXOAAqFdm9899nSeF3gVvkrTsTcej/pub?gid=1009866427&single=true&output=csv';
-        const CABLES_PROXY_CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(CABLES_CSV_URL);
 
         const FIELD_LABELS = {
             'Manufacturer': 'Завод',
@@ -755,8 +682,18 @@
             'КОРТЕМ': '#8E24AA'
         };
 
+        // Пастельные цвета для строк таблицы по производителям
+        const MFG_ROW_BG = {
+            'ЗЭТА': '#FFEBEE',
+            'ВЕЛАН': '#E3F2FD',
+            'РЕЗЕДА': '#E8F5E9',
+            'ПРОМТЕЛ': '#FFF3E0',
+            'КОРТЕМ': '#F3E5F5',
+            'ШТОК': '#E0F7FA',
+            'SHTOK': '#E0F7FA'
+        };
+
         let validRawData = [];
-        let cablesData = [];
         let sortColumn = null;
         let sortDirection = 'asc';
         
@@ -788,7 +725,6 @@
         const mfgSelect = document.getElementById('mfgSelect');
         const cableDiameterInput = document.getElementById('cableDiameterInput');
         const armorInput = document.getElementById('armorInput');
-        const labelCableDiameter = document.getElementById('labelCableDiameter');
 
         const tableBody = document.getElementById('tableBody');
         const statusInfo = document.getElementById('statusInfo');
@@ -800,12 +736,6 @@
         const modalTableBody = document.getElementById('modalTableBody');
         const modalSiteBtn = document.getElementById('modalSiteBtn');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-        const cableModalOverlay = document.getElementById('cableModalOverlay');
-        const cableSearchInput = document.getElementById('cableSearchInput');
-        const cableList = document.getElementById('cableList');
-        const cableModalCloseBtn = document.getElementById('cableModalCloseBtn');
-
         const toast = document.getElementById('toast');
 
         function showToast(text) {
@@ -853,20 +783,20 @@
             return objects;
         }
 
-        async function fetchCSV(primary, proxy) {
+        async function fetchCSV() {
             try {
-                let res = await fetch(primary);
+                let res = await fetch(PRIMARY_CSV_URL);
                 if (!res.ok) throw new Error();
                 return await res.text();
             } catch (err) {
-                let res = await fetch(proxy);
+                let res = await fetch(PROXY_CSV_URL);
                 return await res.text();
             }
         }
 
         async function loadData() {
             try {
-                const csvText = await fetchCSV(PRIMARY_CSV_URL, PROXY_CSV_URL);
+                const csvText = await fetchCSV();
                 validRawData = parseCSV(csvText).filter(item => (item['Status'] || '').trim().toUpperCase() !== 'FALSE');
                 updateLayoutByFunction();
                 updateDynamicOptions();
@@ -876,81 +806,6 @@
                 tableBody.innerHTML = '<tr><td colspan="6" class="no-data">Ошибка загрузки CSV.</td></tr>';
             }
         }
-
-        async function loadCablesData() {
-            if (cablesData.length > 0) return;
-            try {
-                const csvText = await fetchCSV(CABLES_CSV_URL, CABLES_PROXY_CSV_URL);
-                cablesData = parseCSV(csvText);
-                renderCableList(cablesData);
-            } catch (error) {
-                cableList.innerHTML = '<li class="no-data">Ошибка загрузки списка кабелей</li>';
-            }
-        }
-
-        function formatDiameter(val) {
-            if (!val) return '';
-            let clean = val.replace(',', '.').trim();
-            let num = parseFloat(clean);
-            if (isNaN(num)) return val;
-            return String(num).replace('.', ',');
-        }
-
-        function renderCableList(data) {
-            if (!data || data.length === 0) {
-                cableList.innerHTML = '<li class="no-data">Кабели не найдены</li>';
-                return;
-            }
-            cableList.innerHTML = data.map(item => {
-                const name = item['Наименование'] || item['Кабель'] || item['Название'] || Object.values(item)[0] || '';
-                const maxDiam = item['Диаметр макс.'] || item['Диаметр макс'] || '';
-                const formattedDiam = formatDiameter(maxDiam);
-                return `
-                    <li class="cable-item" onclick="selectCable('${formattedDiam.replace(/'/g, "\\'")}')">
-                        <span class="cable-item-name">${name}</span>
-                        <span class="cable-item-diam">${formattedDiam ? formattedDiam + ' мм' : ''}</span>
-                    </li>
-                `;
-            }).join('');
-        }
-
-        window.selectCable = function(diam) {
-            if (diam) {
-                cableDiameterInput.value = diam;
-                armorInput.value = diam;
-                updateDynamicOptions();
-                applyFilters();
-            }
-            cableModalOverlay.classList.remove('open');
-        };
-
-        function openCableSearchModal() {
-            cableModalOverlay.classList.add('open');
-            cableSearchInput.value = '';
-            cableSearchInput.focus();
-            loadCablesData().then(() => renderCableList(cablesData));
-        }
-
-        labelCableDiameter.addEventListener('click', openCableSearchModal);
-        cableDiameterInput.addEventListener('click', (e) => {
-            // Открываем поиск если поле пустое или при явном вызове
-            if (!cableDiameterInput.value) {
-                openCableSearchModal();
-            }
-        });
-
-        cableSearchInput.addEventListener('input', () => {
-            const query = cableSearchInput.value.trim().toLowerCase();
-            const filtered = cablesData.filter(item => {
-                return Object.values(item).some(val => val.toLowerCase().includes(query));
-            });
-            renderCableList(filtered);
-        });
-
-        cableModalCloseBtn.addEventListener('click', () => cableModalOverlay.classList.remove('open'));
-        cableModalOverlay.addEventListener('click', (e) => {
-            if (e.target === cableModalOverlay) cableModalOverlay.classList.remove('open');
-        });
 
         function resetFilterFields() {
             if (holeSelect) holeSelect.value = '';
@@ -974,8 +829,9 @@
             holeGroup.style.display = 'none';
             podKvGroup.style.display = 'none';
 
-            if (func === 'all' || func === 'accessory') {
-                holeContainer.innerHTML = '<input type="text" id="holeSelect" class="form-control" placeholder="М20х1.5, G1/2...">';
+            // Управление типом поля "Посадочное отв." (Input без placeholder на вкладке Все, Select на остальных)
+            if (func === 'all') {
+                holeContainer.innerHTML = '<input type="text" id="holeSelect" class="form-control">';
             } else {
                 holeContainer.innerHTML = '<select id="holeSelect" class="form-control"><option value="">Все</option></select>';
             }
@@ -997,8 +853,13 @@
                 holeGroup.style.display = 'flex';
             } else if (func === 'coupler') {
                 mrGroup.style.display = 'flex';
+            } else if (func === 'accessory') {
+                // Доступны все поля как у "Все", кроме "Типоразмер МР"
+                exGroup.style.display = 'block';
+                cableAndArmorRow.style.display = 'flex';
+                holeGroup.style.display = 'flex';
             } else {
-                // 'all' или 'accessory'
+                // 'all'
                 exGroup.style.display = 'block';
                 cableAndArmorRow.style.display = 'flex';
                 mrGroup.style.display = 'flex';
@@ -1014,11 +875,12 @@
             if (selectedFunc === 'coupler') return func.includes('муфта вводная');
             if (selectedFunc === 'adapter') return func.includes('переходник');
             if (selectedFunc === 'accessory') {
+                // Элементы, не вошедшие в другие основные категории
                 const isGland = func === 'каб. ввод' || func === 'каб. ввод под мр' || func === 'кабельный ввод';
                 const isPlug = func.includes('заглушка');
                 const isCoupler = func.includes('муфта вводная');
                 const isAdapter = func.includes('переходник');
-                return !(isGland || isPlug || isCoupler || isAdapter);
+                return !isGland && !isPlug && !isCoupler && !isAdapter;
             }
             return true;
         }
@@ -1098,7 +960,7 @@
                 if (parsed.pod !== podKvSelect.value) return false;
             }
 
-            if (excludeField !== 'mr' && mrSelect.value && (item['MR'] || '').trim() !== mrSelect.value) return false;
+            if (excludeField !== 'mr' && selectedFunc !== 'accessory' && mrSelect.value && (item['MR'] || '').trim() !== mrSelect.value) return false;
             if (excludeField !== 'mfg' && mfgSelect.value && (item['Manufacturer'] || '').trim() !== mfgSelect.value) return false;
             if (excludeField !== 'material' && materialSelect.value && (item['Material'] || '').trim() !== materialSelect.value) return false;
 
@@ -1213,6 +1075,16 @@
                 } else {
                     exHtml = `<span class="badge">${exText}</span>`;
                 }
+
+                // Замена треугольной линейки на Шток
+                let mfgName = (item['Manufacturer'] || '').trim();
+                if (mfgName === '📐' || mfgName.includes('📐')) {
+                    mfgName = 'Шток';
+                }
+
+                // Заливка строк пастельными тонами в зависимости от производителя
+                const mfgUpper = mfgName.toUpperCase();
+                const rowBg = MFG_ROW_BG[mfgUpper] || 'transparent';
                 
                 const cableRaw = (item['Cable'] || '').toLowerCase().trim();
                 let cableHtml = '-';
@@ -1225,8 +1097,8 @@
                 const uppCode = item['PartNumber'] || '-';
 
                 return `
-                    <tr>
-                        <td><strong>${item['Manufacturer'] || '-'}</strong></td>
+                    <tr style="background-color: ${rowBg};">
+                        <td><strong>${mfgName || '-'}</strong></td>
                         <td>${exHtml}</td>
                         <td>${cableHtml}</td>
                         <td>${item['MR'] || '-'}</td>
@@ -1248,7 +1120,10 @@
             modalImg.src = item['IMG'] || '';
             modalImg.style.display = item['IMG'] ? 'block' : 'none';
             
-            const mfg = item['Manufacturer'] || '';
+            let mfg = item['Manufacturer'] || '';
+            if (mfg === '📐' || mfg.includes('📐')) {
+                mfg = 'Шток';
+            }
             modalMfgBadge.textContent = mfg;
             modalMfgBadge.style.backgroundColor = MFG_COLORS[mfg.toUpperCase()] || '#607D8B';
             modalMfgBadge.style.display = mfg ? 'block' : 'none';

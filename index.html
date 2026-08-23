@@ -70,7 +70,7 @@
         .input-wrapper input {
             width: 100%;
             height: 40px;
-            padding: 0 65px 0 16px;
+            padding: 0 40px 0 16px;
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -87,17 +87,17 @@
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
 
-        /* Исчезающая кнопка Сброс по стилю KB.txt */
+        /* Исчезающая кнопка Крестик в полях ввода */
         .clear-btn {
             position: absolute;
             right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: transparent;
-            color: var(--blue);
+            color: var(--label-secondary);
             border: none;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 18px;
             font-weight: 500;
             display: none;
             align-items: center;
@@ -106,7 +106,7 @@
         }
 
         .clear-btn:hover {
-            opacity: 0.8;
+            color: var(--label-primary);
         }
 
         .toolbar {
@@ -136,7 +136,6 @@
             align-items: center;
         }
 
-        /* Кнопки в стиле KB.txt */
         .btn-top {
             height: 36px;
             padding: 0 14px;
@@ -167,14 +166,25 @@
 
         /* Кнопка Дубль с диагональным перечеркиванием при нажатии */
         .btn-double.active {
-            background: linear-gradient(to top right, transparent calc(50% - 1px), #ff3b30 calc(50% - 1px), #ff3b30 calc(50% + 1px), transparent calc(50% + 1px)), var(--blue);
+            position: relative;
+            background-color: var(--blue);
             color: #FFFFFF;
             border-color: var(--blue);
         }
 
+        .btn-double.active::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top right, transparent calc(50% - 1px), #ff3b30 calc(50% - 1px), #ff3b30 calc(50% + 1px), transparent calc(50% + 1px));
+            pointer-events: none;
+            border-radius: 9px;
+        }
+
+        /* Уменьшенная на 30% кнопка Статус (25px) */
         .status-toggle {
-            width: 36px;
-            height: 36px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             border: 1px solid var(--separator);
             cursor: pointer;
@@ -183,39 +193,26 @@
             justify-content: center;
             transition: background 0.2s, transform 0.1s;
             background: var(--card-bg);
+            flex-shrink: 0;
         }
         .status-toggle:active { transform: scale(0.95); }
         .status-toggle.green { background: rgba(52, 199, 89, 0.18); border-color: rgba(52, 199, 89, 0.4); }
         .status-toggle.red { background: rgba(255, 59, 48, 0.18); border-color: rgba(255, 59, 48, 0.4); }
         .status-toggle::after {
             content: '';
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
         }
         .status-toggle.green::after { background: var(--green); }
         .status-toggle.red::after { background: var(--red); }
 
-        .btn-close-header {
-            background: var(--card-bg);
-            color: var(--label-secondary);
-            border: 1px solid var(--separator);
-            font-weight: 600;
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Прямоугольная кнопка Сброс в шапке */
+        .btn-reset-header {
+            display: none;
         }
-
-        .btn-close-header.active {
-            background: rgba(255, 59, 48, 0.18);
-            color: var(--red);
-            border-color: var(--red);
+        .btn-reset-header.active {
+            display: flex;
         }
 
         .btn-reset-panel {
@@ -441,7 +438,6 @@
 
         .modal-body { padding: 8px 0; overflow-y: auto; background: var(--card-bg); }
 
-        /* Полосатые строки в больших карточках: белая, затем светло-голубая */
         .modal-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .modal-table tr { border-bottom: 0.5px solid var(--separator); cursor: pointer; transition: background 0.15s; }
         .modal-table tr:nth-child(odd) { background-color: #ffffff; }
@@ -624,7 +620,6 @@
         }
         .side-panel-overlay.active { display: block; }
 
-        /* Уменьшена ширина панели фильтрации на 20%: с 360px до 288px */
         .side-panel {
             position: fixed;
             top: 0; right: -100%; bottom: 0;
@@ -638,7 +633,6 @@
         }
         .side-panel.active { right: 0; }
 
-        /* Для мобильных устройств ширина также уменьшена на 20%: с 85vw до 68vw */
         @media (max-width: 768px) {
             .side-panel { width: 68vw; }
         }
@@ -686,7 +680,6 @@
             flex: 1;
         }
 
-        /* Стили для формы расчета длины штока */
         .calc-box {
             background: var(--card-bg);
             border: 1px solid var(--separator);
@@ -747,7 +740,6 @@
             line-height: 1.4;
         }
 
-        /* Стилевое оформление для предупреждающего сообщения о вводе диаметра */
         .calc-result-warning {
             background: rgba(255, 149, 0, 0.12);
             border: 1px solid rgba(255, 149, 0, 0.3);
@@ -917,22 +909,20 @@
             <div class="search-container">
                 <div class="input-wrapper">
                     <input type="text" id="searchName" placeholder="Поиск по наименованию..." oninput="handleSearch()">
-                    <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">Сброс</button>
+                    <button class="clear-btn" id="clearName" onclick="clearInput('searchName', 'clearName')">×</button>
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="searchGlobal" placeholder="Поиск по всей таблице..." oninput="handleSearch()">
-                    <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">Сброс</button>
+                    <button class="clear-btn" id="clearGlobal" onclick="clearInput('searchGlobal', 'clearGlobal')">×</button>
                 </div>
             </div>
             <div class="toolbar">
                 <div class="counter" id="counter">0 из 0</div>
                 <div class="toolbar-buttons">
-                    <!-- Заменено на кнопку Дубль (с перечеркиванием в активном состоянии) -->
+                    <!-- Дубль, Фильтр и Сброс расположены друг за другом слева направо -->
                     <button class="btn-top btn-double" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">Дубль</button>
-                    <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
-                    <!-- Кнопка Фильтр по стилю KB.txt -->
                     <button class="btn-top" onclick="openCombinedPanel()">Фильтр</button>
-                    <button class="btn-close-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">×</button>
+                    <button class="btn-top btn-reset-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">Сброс</button>
                 </div>
             </div>
         </div>
@@ -992,7 +982,8 @@
                 <button class="tab-btn" id="tabCalc" onclick="switchTab('calc')">Шток</button>
                 <button class="tab-btn" id="tabSort" onclick="switchTab('sort')">Сортировка</button>
             </div>
-            <button class="btn-close-header" onclick="closePanels()">×</button>
+            <!-- Справа от Сортировки перемещена уменьшенная кнопка Статус -->
+            <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
         </div>
         
         <div class="panel-body" id="tabContentFilter">
@@ -1008,7 +999,6 @@
                 </div>
                 <div class="calc-field">
                     <label>Размер бобышки:</label>
-                    <!-- Добавлен 3-й выбор: 0 мм -->
                     <div class="boss-options">
                         <button class="boss-btn" id="boss0" onclick="selectBoss(0)">0 мм</button>
                         <button class="boss-btn active" id="boss50" onclick="selectBoss(50)">50 мм</button>
@@ -1183,6 +1173,7 @@
             } else {
                 btn.classList.remove('active');
             }
+            updateFilterButtonState();
             renderCards();
         }
 
@@ -1386,6 +1377,7 @@
             const globalQuery = document.getElementById('searchGlobal').value;
             document.getElementById('clearName').style.display = nameQuery ? 'flex' : 'none';
             document.getElementById('clearGlobal').style.display = globalQuery ? 'flex' : 'none';
+            updateFilterButtonState();
             renderCards();
         }
 
@@ -2005,6 +1997,7 @@
             const btnHeader = document.getElementById('clearFiltersBtn');
             const btnPanel = document.getElementById('panelResetBtn');
             let isFiltered = false;
+
             for (let key in activeFilters) {
                 if (activeFilters[key].length > 0) {
                     isFiltered = true;
@@ -2013,6 +2006,16 @@
             }
 
             if (stemMinLength !== null && stemMaxLength !== null) {
+                isFiltered = true;
+            }
+
+            if (filterOnlyUniquePart) {
+                isFiltered = true;
+            }
+
+            const nameQuery = document.getElementById('searchName').value.trim();
+            const globalQuery = document.getElementById('searchGlobal').value.trim();
+            if (nameQuery !== '' || globalQuery !== '') {
                 isFiltered = true;
             }
 

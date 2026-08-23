@@ -15,7 +15,7 @@
             --ios-orange: #FF9500;
             --ios-gray: #8E8E93;
             --ios-gray-light: #E5E5EA;
-            --ios-gray-bg: #7676801F;
+            --ios-gray-bg: #FFFFFF;
             --ios-border: #C6C6C8;
             --text-main: #000000;
         }
@@ -48,6 +48,12 @@
             letter-spacing: -0.4px;
         }
 
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 13px;
+            }
+        }
+
         /* Шапка */
         .top-bar {
             display: flex;
@@ -68,8 +74,8 @@
             padding: 0 32px 0 36px;
             font-size: 15px;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
-            background-color: var(--ios-gray-bg);
-            border: none;
+            background-color: #FFFFFF;
+            border: 1px solid var(--ios-border);
             border-radius: 10px;
             outline: none;
             color: var(--text-main);
@@ -176,7 +182,6 @@
             cursor: pointer;
         }
 
-        /* Выравнивание по центру столбцов 1, 2, 3, 4, 6 */
         th:nth-child(1), td:nth-child(1),
         th:nth-child(2), td:nth-child(2),
         th:nth-child(3), td:nth-child(3),
@@ -193,17 +198,21 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
         }
 
-        /* Чередование заливки строк только для общей таблицы */
-        tbody tr:nth-child(odd) {
+        tbody tr {
+            display: table-row;
+            width: 100%;
+        }
+
+        tbody tr:nth-child(odd) td {
             background-color: #ffffff;
         }
 
-        tbody tr:nth-child(even) {
+        tbody tr:nth-child(even) td {
             background-color: #e6f2ff;
         }
 
         tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { filter: brightness(0.97); }
+        tbody tr:hover td { filter: brightness(0.97); }
 
         .badge {
             display: inline-block;
@@ -211,6 +220,7 @@
             border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
+            user-select: text;
         }
 
         .badge-ex {
@@ -236,6 +246,7 @@
             font-size: 11px;
             color: #000;
             cursor: help;
+            user-select: text;
         }
 
         .b-circle.b-ub {
@@ -250,13 +261,13 @@
             background: transparent;
             padding: 2px 4px;
             border-radius: 4px;
+            user-select: text;
         }
 
         .clickable-code:hover {
             background: var(--ios-gray-light);
         }
 
-        /* Дровер панель */
         .drawer {
             position: fixed;
             top: 0; right: 0; bottom: 0;
@@ -289,6 +300,12 @@
         .drawer-header h2 {
             font-size: 16px;
             font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .drawer-header h2 {
+                font-size: 14px;
+            }
         }
 
         .reset-btn-drawer {
@@ -377,7 +394,7 @@
             background-color: var(--ios-gray-light);
             color: var(--ios-gray);
             font-weight: 700;
-            font-size: 11px;
+            font-size: 13px;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
             cursor: pointer;
             white-space: nowrap;
@@ -463,6 +480,15 @@
             margin-bottom: 12px;
             cursor: pointer;
             text-align: center;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            white-space: normal;
+        }
+
+        @media (max-width: 768px) {
+            .modal-title {
+                font-size: 14px;
+            }
         }
 
         .modal-table-scroll {
@@ -476,6 +502,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+            table-layout: fixed;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", sans-serif;
         }
 
@@ -483,6 +510,9 @@
             padding: 8px 10px;
             border-bottom: 1px solid var(--ios-gray-light);
             background-color: #ffffff !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            white-space: normal;
         }
 
         .detail-table tr:last-child td {
@@ -490,7 +520,7 @@
         }
 
         .detail-table td:first-child {
-            width: 33.333%;
+            width: 35%;
             text-align: right;
             font-weight: 600;
             color: var(--ios-gray);
@@ -499,10 +529,18 @@
         }
 
         .detail-table td:last-child {
-            width: 66.666%;
+            width: 65%;
             text-align: left;
             padding-left: 12px;
             cursor: pointer;
+        }
+
+        .detail-table tr.comment-row td {
+            color: #FF3B30 !important;
+        }
+
+        .detail-table tr.comment-row td:first-child {
+            color: #FF3B30 !important;
         }
 
         .modal-footer {
@@ -608,7 +646,7 @@
 
             <div id="exGroup" class="form-group">
                 <div class="toggle-pair">
-                    <button type="button" id="btnEx" class="btn-toggle ex-btn">Ex-взрывозащ.</button>
+                    <button type="button" id="btnEx" class="btn-toggle ex-btn active">Ex-взрывозащ.</button>
                     <button type="button" id="btnO" class="btn-toggle o-btn active">О-общепром.</button>
                 </div>
             </div>
@@ -712,7 +750,7 @@
         let sortColumn = null;
         let sortDirection = 'asc';
         
-        let stateEx = false;
+        let stateEx = true;
         let stateO = true;
 
         const searchInput = document.getElementById('searchInput');
@@ -830,9 +868,9 @@
             mfgSelect.value = '';
             cableDiameterInput.value = '';
             armorInput.value = '';
-            stateEx = false;
+            stateEx = true;
             stateO = true;
-            btnEx.classList.remove('active');
+            btnEx.classList.add('active');
             btnO.classList.add('active');
         }
 
@@ -844,7 +882,6 @@
             holeGroup.style.display = 'none';
             podKvGroup.style.display = 'none';
 
-            // Поле Посадочное с вводом на вкладках "all" и "accessory"
             if (func === 'all' || func === 'accessory') {
                 holeContainer.innerHTML = '<input type="text" id="holeSelect" class="form-control">';
             } else {
@@ -872,7 +909,6 @@
                 exGroup.style.display = 'block';
                 holeGroup.style.display = 'flex';
             } else {
-                // 'all'
                 exGroup.style.display = 'block';
                 cableAndArmorRow.style.display = 'flex';
                 mrGroup.style.display = 'flex';
@@ -1057,7 +1093,7 @@
             const isFilterActive = selectedFunc !== 'all' || 
                 (holeSelect && holeSelect.value) || podKvSelect.value || materialSelect.value || 
                 mrSelect.value || mfgSelect.value || cableRange || armorRange || 
-                stateEx !== false || stateO !== true;
+                stateEx !== true || stateO !== true;
 
             openDrawerBtn.classList.toggle('active', isFilterActive);
             resetTopBtn.style.display = isFilterActive ? 'flex' : 'none';
@@ -1174,6 +1210,7 @@
             if (commentKey && item[commentKey] && item[commentKey].trim() !== '' && item[commentKey] !== '-') {
                 const commentVal = item[commentKey];
                 const tr = document.createElement('tr');
+                tr.className = 'comment-row';
                 const label = FIELD_LABELS[commentKey] || 'Комментарий';
                 tr.innerHTML = `<td>${label}</td><td onclick="copyToClipboard('${commentVal.replace(/'/g, "\\'")}', 'Комментарий скопирован')">${commentVal}</td>`;
                 modalTableBody.appendChild(tr);

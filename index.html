@@ -87,7 +87,6 @@
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
         }
 
-        /* Исчезающая кнопка Крестик в полях ввода */
         .clear-btn {
             position: absolute;
             right: 8px;
@@ -164,24 +163,23 @@
             border-color: var(--blue);
         }
 
-        /* Кнопка Дубль с диагональным перечеркиванием при нажатии */
+        /* Кнопка Дубль: белая, с красным перечеркиванием при нажатии */
         .btn-double.active {
             position: relative;
-            background-color: var(--blue);
-            color: #FFFFFF;
-            border-color: var(--blue);
+            background-color: var(--card-bg);
+            color: var(--label-primary);
+            border-color: var(--separator);
         }
 
         .btn-double.active::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top right, transparent calc(50% - 1px), #ff3b30 calc(50% - 1px), #ff3b30 calc(50% + 1px), transparent calc(50% + 1px));
+            background: linear-gradient(to top right, transparent calc(50% - 1px), var(--red) calc(50% - 1px), var(--red) calc(50% + 1px), transparent calc(50% + 1px));
             pointer-events: none;
             border-radius: 9px;
         }
 
-        /* Уменьшенная на 30% кнопка Статус (25px) */
         .status-toggle {
             width: 25px;
             height: 25px;
@@ -207,12 +205,15 @@
         .status-toggle.green::after { background: var(--green); }
         .status-toggle.red::after { background: var(--red); }
 
-        /* Прямоугольная кнопка Сброс в шапке */
+        /* Кнопка Сброс: в активном состоянии остается белой с красным текстом */
         .btn-reset-header {
             display: none;
         }
-        .btn-reset-header.active {
+        .btn-top.btn-reset-header.active {
             display: flex;
+            background-color: var(--card-bg);
+            color: var(--red);
+            border-color: var(--separator);
         }
 
         .btn-reset-panel {
@@ -228,8 +229,9 @@
         }
 
         .btn-reset-panel.active {
-            background: var(--blue);
-            color: white;
+            background: var(--card-bg);
+            color: var(--red);
+            border: 1px solid var(--separator);
         }
 
         .cards-grid {
@@ -919,7 +921,6 @@
             <div class="toolbar">
                 <div class="counter" id="counter">0 из 0</div>
                 <div class="toolbar-buttons">
-                    <!-- Дубль, Фильтр и Сброс расположены друг за другом слева направо -->
                     <button class="btn-top btn-double" id="btnUniquePart" onclick="toggleUniquePart()" title="Только уникальные УПП">Дубль</button>
                     <button class="btn-top" onclick="openCombinedPanel()">Фильтр</button>
                     <button class="btn-top btn-reset-header" id="clearFiltersBtn" onclick="clearAllFilters()" title="Сбросить фильтры">Сброс</button>
@@ -982,7 +983,6 @@
                 <button class="tab-btn" id="tabCalc" onclick="switchTab('calc')">Шток</button>
                 <button class="tab-btn" id="tabSort" onclick="switchTab('sort')">Сортировка</button>
             </div>
-            <!-- Справа от Сортировки перемещена уменьшенная кнопка Статус -->
             <button class="status-toggle green" id="statusToggleBtn" onclick="toggleStatusFilter()" title="Актуальность"></button>
         </div>
         
@@ -1173,7 +1173,6 @@
             } else {
                 btn.classList.remove('active');
             }
-            updateFilterButtonState();
             renderCards();
         }
 
@@ -2006,10 +2005,6 @@
             }
 
             if (stemMinLength !== null && stemMaxLength !== null) {
-                isFiltered = true;
-            }
-
-            if (filterOnlyUniquePart) {
                 isFiltered = true;
             }
 

@@ -102,7 +102,7 @@
       align-items: center;
       justify-content: space-between;
       text-decoration: none;
-      padding: 10px 16px 10px 10px; /* Уменьшенные внутренние отступы */
+      padding: 8px 18px 8px 8px; /* Минимальный отступ слева под большую PNG-иконку */
       border-radius: 22px;
       background: rgba(255, 255, 255, 0.22);
       backdrop-filter: blur(20px) saturate(1.5);
@@ -129,24 +129,13 @@
       gap: 16px;
     }
 
-    /* Большая область под иконку */
-    .btn-icon-wrapper {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
+    /* Иконка кнопки — увеличен размер (~30%), без рамок и подложек */
     .btn-icon {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
     }
 
     .btn-content {
@@ -225,8 +214,8 @@
     /* Для очень маленьких экранов */
     @media (max-height: 500px) {
       .title { margin-bottom: 20px; }
-      .btn { padding: 8px 14px 8px 8px; }
-      .btn-icon-wrapper { width: 50px; height: 50px; }
+      .btn { padding: 6px 14px 6px 6px; }
+      .btn-icon { width: 42px; height: 42px; }
     }
 
     /* Уменьшаем размытие на слабых устройствах */
@@ -248,9 +237,7 @@
     <div class="buttons">
       <a href="KIP.html" class="btn">
         <div class="btn-left">
-          <div class="btn-icon-wrapper">
-            <img src="KIP.png" alt="" class="btn-icon">
-          </div>
+          <img src="KIP.png" alt="" class="btn-icon">
           <div class="btn-content">
             <span class="btn-title">Подбор КИПиА</span>
             <span class="btn-subtitle">Контрольно-измерительные приборы</span>
@@ -263,9 +250,7 @@
 
       <a href="KB.html" class="btn">
         <div class="btn-left">
-          <div class="btn-icon-wrapper">
-            <img src="KB.png" alt="" class="btn-icon">
-          </div>
+          <img src="KB.png" alt="" class="btn-icon">
           <div class="btn-content">
             <span class="btn-title">Подбор кабельных вводов</span>
             <span class="btn-subtitle">Заглушки, переходники, муфты и пр.</span>
@@ -278,9 +263,7 @@
 
       <a href="https://skyrillchanel2000-source.github.io/YPPEMERE XFPDKEXFPMXFPDKE/" class="btn">
         <div class="btn-left">
-          <div class="btn-icon-wrapper">
-            <img src="FindVCK.png" alt="" class="btn-icon">
-          </div>
+          <img src="FindVCK.png" alt="" class="btn-icon">
           <div class="btn-content">
             <span class="btn-title">Поиск по ВЦК</span>
             <span class="btn-subtitle"></span>
@@ -293,9 +276,7 @@
 
       <a href="Lotok.html" class="btn">
         <div class="btn-left">
-          <div class="btn-icon-wrapper">
-            <img src="Lotok.png" alt="" class="btn-icon">
-          </div>
+          <img src="Lotok.png" alt="" class="btn-icon">
           <div class="btn-content">
             <span class="btn-title">Заполняемость лотка</span>
             <span class="btn-subtitle">Расчёт заполнения кабельного лотка</span>
@@ -308,9 +289,7 @@
 
       <a href="Cabel.html" class="btn">
         <div class="btn-left">
-          <div class="btn-icon-wrapper">
-            <img src="Kabel.png" alt="" class="btn-icon">
-          </div>
+          <img src="Kabel.png" alt="" class="btn-icon">
           <div class="btn-content">
             <span class="btn-title">Подбор кабеля</span>
             <span class="btn-subtitle">Расчёт сечения и выбор марки кабеля</span>
